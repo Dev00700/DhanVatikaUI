@@ -1,0 +1,175 @@
+<app-navbar></app-navbar>
+
+<div class="main-content app-content">
+  <div class="container-fluid page-container main-body-container">
+    <!-- Start::page-header -->
+    <div class="page-header-breadcrumb mb-3">
+      <div class="d-flex align-center justify-content-between flex-wrap">
+        <h1 class="page-title fw-medium fs-18 mb-0">User List</h1>
+      </div>
+    </div>
+    <!-- End::page-header -->
+
+    <!-- Start::row-1 -->
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card custom-card">
+          <div class="card-header justify-content-between">
+            <div class="card-title">Assign Menu</div>
+            <div class="d-flex">
+              <a
+                [routerLink]="['/user-registration']"
+                class="btn btn-sm btn-primary btn-wave waves-light"
+                ><i class="ri-add-line fw-medium align-middle me-1"></i> Assign
+                User Menu
+              </a>
+            </div>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table text-nowrap">
+                <thead>
+                  <tr>
+                    <th scope="col">User Code</th>
+                    <th scope="col">User Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Mobile No</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    class="invoice-list"
+                    *ngFor="let item of userlist; index as i"
+                  >
+                    <td>{{ item.userCode }}</td>
+                    <td>{{ item.userName }}</td>
+                    <td>{{ item.email }}</td>
+                    <td>{{ item.mobileNo }}</td>
+                    <!-- <td>{{ item.createdOn | date : "dd-MM-yyyy" }}</td> -->
+                    <td>
+                      <button
+                        class="btn btn-primary btn-sm"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#assignMenuDrawer"
+                        (click)="openAssignMenu(item)"
+                      >
+                        Assign Menu
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card-footer border-top-0">
+            <div class="ms-auto">
+              <nav aria-label="Page navigation" class="pagination-style-2">
+                <ul class="pagination mb-0 flex-wrap justify-content-end">
+                  <li class="page-item disabled">
+                    <a class="page-link" href="javascript:void(0);"> Prev </a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="javascript:void(0);">1</a>
+                  </li>
+                  <li class="page-item active">
+                    <a class="page-link" href="javascript:void(0);">2</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="javascript:void(0);">
+                      <i class="bi bi-three-dots"></i>
+                    </a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="javascript:void(0);">17</a>
+                  </li>
+                  <li class="page-item">
+                    <a
+                      class="page-link text-primary"
+                      href="javascript:void(0);"
+                    >
+                      next
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="offcanvas offcanvas-end"
+  tabindex="-1"
+  id="assignMenuDrawer"
+  aria-labelledby="assignMenuDrawerLabel"
+>
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="assignMenuDrawerLabel">
+      Assign Menu to {{ selectedUser?.userName }}
+    </h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body">
+    <ul class="menu-tree">
+      <ng-container *ngFor="let parent of menuList">
+        <li>
+          <label>
+            <input
+              type="checkbox"
+              [checked]="selectedMenus.includes(parent.menuId)"
+              (change)="toggleMenu(parent)"
+            />
+            <b>{{ parent.menuName }}</b>
+          </label>
+          <ul *ngIf="parent.children?.length">
+            <ng-container *ngFor="let child of parent.children">
+              <li>
+                <label>
+                  <input
+                    type="checkbox"
+                    [checked]="selectedMenus.includes(child.menuId)"
+                    (change)="toggleMenu(child, parent)"
+                  />
+                  {{ child.menuName }}
+                </label>
+                <!-- Recursively show sub-children -->
+                <ul *ngIf="child.children?.length">
+                  <ng-container *ngFor="let subchild of child.children">
+                    <li>
+                      <label>
+                        <input
+                          type="checkbox"
+                          [checked]="selectedMenus.includes(subchild.menuId)"
+                          (change)="toggleMenu(subchild, child)"
+                        />
+                        {{ subchild.menuName }}
+                      </label>
+                    </li>
+                  </ng-container>
+                </ul>
+              </li>
+            </ng-container>
+          </ul>
+        </li>
+      </ng-container>
+    </ul>
+    <button
+      class="btn btn-success mt-3"
+      (click)="saveUserMenus()"
+      data-bs-dismiss="offcanvas"
+    >
+      Save
+    </button>
+  </div>
+</div>
+
+<app-footer></app-footer>

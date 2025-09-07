@@ -1,735 +1,81 @@
 <app-navbar></app-navbar>
 
-<div class="pc-container">
-  <div class="pc-content">
-    <!-- [ breadcrumb ] start -->
-    <div class="page-header">
-      <div class="page-block">
-        <div class="page-header-title">
-          <h5 class="mb-0 font-medium">Teacher Apply</h5>
-        </div>
-        <ul class="breadcrumb">
-          <li class="breadcrumb-item">
-            <a
-              href="https://codedthemes.com/demos/admin-templates/datta-able/tailwind/default/dashboard/index.html"
-              >Home</a
-            >
-          </li>
-          <li class="breadcrumb-item">
-            <a href="javascript: void(0)">Online Courses</a>
-          </li>
-          <li class="breadcrumb-item" aria-current="page">Teacher Apply</li>
-        </ul>
+<div class="main-content app-content">
+  <div class="container-fluid page-container main-body-container">
+    <!-- Start::page-header -->
+    <div class="page-header-breadcrumb mb-3">
+      <div class="d-flex align-center justify-content-between flex-wrap">
+        <h1 class="page-title fw-medium fs-18 mb-0">User List</h1>
       </div>
     </div>
-    <!-- [ breadcrumb ] end -->
+    <!-- End::page-header -->
 
-    <!-- [ Main Content ] start -->
-    <div class="grid grid-cols-12 gap-x-6">
-      <div class="col-span-12">
-        <div class="card table-card">
-          <div class="card-header">
-            <h5 class="mb-0">Apply Teacher list</h5>
+    <!-- Start::row-1 -->
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card custom-card">
+          <div class="card-header justify-content-between">
+            <div class="card-title">Manage User</div>
+            <div class="d-flex">
+              <a
+                [routerLink]="['/user-registration']"
+                class="btn btn-sm btn-primary btn-wave waves-light"
+                ><i class="ri-add-line fw-medium align-middle me-1"></i> Create
+                User</a
+              >
+              <!-- <div class="dropdown ms-2">
+                <button
+                  class="btn btn-icon btn-secondary-light btn-sm btn-wave waves-light"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <i class="ti ti-dots-vertical"></i>
+                </button>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item" href="javascript:void(0);"
+                      >All Incoming Payment</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="javascript:void(0);"
+                      >Approval Payment</a
+                    >
+                  </li>
+                </ul>
+              </div> -->
+            </div>
           </div>
-          <div class="card-body !pt-3">
+          <div class="card-body p-0">
             <div class="table-responsive">
-              <table class="table table-hover" id="pc-dt-simple">
+              <table class="table text-nowrap">
                 <thead>
                   <tr>
-                    <th>Name</th>
-                    <th>Departments</th>
-                    <th>Qualification</th>
-                    <th>Mobile</th>
-                    <th>Date/Time</th>
-                    <th>Action</th>
+                    <th scope="col">User Code</th>
+                    <th scope="col">User Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Mobile No</th>
+                    <th scope="col">Registration Date</th>
+                    <th scope="col">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>
-                      <div class="flex items-center w-44">
-                        <div class="shrink-0">
-                          <img
-                            src="../assets/images/user/avatar-1.png"
-                            alt="user image"
-                            class="rounded-full w-10"
-                          />
-                        </div>
-                        <div class="grow ltr:ml-3 rtl:mr-3">
-                          <h6 class="mb-0">Airi Satou</h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td>Developer</td>
-                    <td>B.COM., M.COM.</td>
-                    <td>(123) 4567 890</td>
-                    <td>
-                      2023/09/12
-                      <span class="text-muted text-sm block">09:05 PM</span>
-                    </td>
+                  <tr
+                    class="invoice-list"
+                    *ngFor="let item of userlist; index as i"
+                  >
+                    <td>{{ item.userCode }}</td>
+                    <td>{{ item.userName }}</td>
+                    <td>{{ item.email }}</td>
+                    <td>{{ item.mobileNo }}</td>
+                    <td>{{ item.createdOn | date : "dd-MM-yyyy" }}</td>
                     <td>
                       <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-success"
+                        class="btn btn-danger-light btn-icon ms-1 btn-sm invoice-btn"
+                        [routerLink]="['/user-registration', item.userGuid]"
                       >
-                        <i class="ti ti-check text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-danger"
-                      >
-                        <i class="ti ti-x text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-secondary"
-                      >
-                        <i class="ti ti-dots-vertical text-xl leading-none"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="flex items-center w-44">
-                        <div class="shrink-0">
-                          <img
-                            src="../assets/images/user/avatar-2.png"
-                            alt="user image"
-                            class="rounded-full w-10"
-                          />
-                        </div>
-                        <div class="grow ltr:ml-3 rtl:mr-3">
-                          <h6 class="mb-0">Ashton Cox</h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td>Junior Technical</td>
-                    <td>B.COM., M.COM.</td>
-                    <td>(123) 4567 890</td>
-                    <td>
-                      2023/12/24
-                      <span class="text-muted text-sm block">09:05 PM</span>
-                    </td>
-                    <td>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-success"
-                      >
-                        <i class="ti ti-check text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-danger"
-                      >
-                        <i class="ti ti-x text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-secondary"
-                      >
-                        <i class="ti ti-dots-vertical text-xl leading-none"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="flex items-center w-44">
-                        <div class="shrink-0">
-                          <img
-                            src="../assets/images/user/avatar-3.png"
-                            alt="user image"
-                            class="rounded-full w-10"
-                          />
-                        </div>
-                        <div class="grow ltr:ml-3 rtl:mr-3">
-                          <h6 class="mb-0">Bradley Greer</h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td>Sales Assistant</td>
-                    <td>B.A, B.C.A</td>
-                    <td>(123) 4567 890</td>
-                    <td>
-                      2022/09/19
-                      <span class="text-muted text-sm block">09:05 PM</span>
-                    </td>
-                    <td>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-success"
-                      >
-                        <i class="ti ti-check text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-danger"
-                      >
-                        <i class="ti ti-x text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-secondary"
-                      >
-                        <i class="ti ti-dots-vertical text-xl leading-none"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="flex items-center w-44">
-                        <div class="shrink-0">
-                          <img
-                            src="../assets/images/user/avatar-4.png"
-                            alt="user image"
-                            class="rounded-full w-10"
-                          />
-                        </div>
-                        <div class="grow ltr:ml-3 rtl:mr-3">
-                          <h6 class="mb-0">Brielle Williamson</h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td>JavaScript Developer</td>
-                    <td>B.A, B.C.A</td>
-                    <td>(123) 4567 890</td>
-                    <td>
-                      2022/08/22
-                      <span class="text-muted text-sm block">09:05 PM</span>
-                    </td>
-                    <td>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-success"
-                      >
-                        <i class="ti ti-check text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-danger"
-                      >
-                        <i class="ti ti-x text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-secondary"
-                      >
-                        <i class="ti ti-dots-vertical text-xl leading-none"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="flex items-center w-44">
-                        <div class="shrink-0">
-                          <img
-                            src="../assets/images/user/avatar-5.png"
-                            alt="user image"
-                            class="rounded-full w-10"
-                          />
-                        </div>
-                        <div class="grow ltr:ml-3 rtl:mr-3">
-                          <h6 class="mb-0">Airi Satou</h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td>Developer</td>
-                    <td>B.COM., M.COM.</td>
-                    <td>(123) 4567 890</td>
-                    <td>
-                      2023/09/12
-                      <span class="text-muted text-sm block">09:05 PM</span>
-                    </td>
-                    <td>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-success"
-                      >
-                        <i class="ti ti-check text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-danger"
-                      >
-                        <i class="ti ti-x text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-secondary"
-                      >
-                        <i class="ti ti-dots-vertical text-xl leading-none"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="flex items-center w-44">
-                        <div class="shrink-0">
-                          <img
-                            src="../assets/images/user/avatar-6.png"
-                            alt="user image"
-                            class="rounded-full w-10"
-                          />
-                        </div>
-                        <div class="grow ltr:ml-3 rtl:mr-3">
-                          <h6 class="mb-0">Ashton Cox</h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td>Junior Technical</td>
-                    <td>B.COM., M.COM.</td>
-                    <td>(123) 4567 890</td>
-                    <td>
-                      2023/12/24
-                      <span class="text-muted text-sm block">09:05 PM</span>
-                    </td>
-                    <td>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-success"
-                      >
-                        <i class="ti ti-check text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-danger"
-                      >
-                        <i class="ti ti-x text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-secondary"
-                      >
-                        <i class="ti ti-dots-vertical text-xl leading-none"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="flex items-center w-44">
-                        <div class="shrink-0">
-                          <img
-                            src="../assets/images/user/avatar-7.png"
-                            alt="user image"
-                            class="rounded-full w-10"
-                          />
-                        </div>
-                        <div class="grow ltr:ml-3 rtl:mr-3">
-                          <h6 class="mb-0">Bradley Greer</h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td>Sales Assistant</td>
-                    <td>B.A, B.C.A</td>
-                    <td>(123) 4567 890</td>
-                    <td>
-                      2022/09/19
-                      <span class="text-muted text-sm block">09:05 PM</span>
-                    </td>
-                    <td>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-success"
-                      >
-                        <i class="ti ti-check text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-danger"
-                      >
-                        <i class="ti ti-x text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-secondary"
-                      >
-                        <i class="ti ti-dots-vertical text-xl leading-none"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="flex items-center w-44">
-                        <div class="shrink-0">
-                          <img
-                            src="../assets/images/user/avatar-8.png"
-                            alt="user image"
-                            class="rounded-full w-10"
-                          />
-                        </div>
-                        <div class="grow ltr:ml-3 rtl:mr-3">
-                          <h6 class="mb-0">Brielle Williamson</h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td>JavaScript Developer</td>
-                    <td>B.A, B.C.A</td>
-                    <td>(123) 4567 890</td>
-                    <td>
-                      2022/08/22
-                      <span class="text-muted text-sm block">09:05 PM</span>
-                    </td>
-                    <td>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-success"
-                      >
-                        <i class="ti ti-check text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-danger"
-                      >
-                        <i class="ti ti-x text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-secondary"
-                      >
-                        <i class="ti ti-dots-vertical text-xl leading-none"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="flex items-center w-44">
-                        <div class="shrink-0">
-                          <img
-                            src="../assets/images/user/avatar-9.png"
-                            alt="user image"
-                            class="rounded-full w-10"
-                          />
-                        </div>
-                        <div class="grow ltr:ml-3 rtl:mr-3">
-                          <h6 class="mb-0">Brielle Williamson</h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td>JavaScript Developer</td>
-                    <td>B.A, B.C.A</td>
-                    <td>(123) 4567 890</td>
-                    <td>
-                      2022/08/22
-                      <span class="text-muted text-sm block">09:05 PM</span>
-                    </td>
-                    <td>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-success"
-                      >
-                        <i class="ti ti-check text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-danger"
-                      >
-                        <i class="ti ti-x text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-secondary"
-                      >
-                        <i class="ti ti-dots-vertical text-xl leading-none"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="flex items-center w-44">
-                        <div class="shrink-0">
-                          <img
-                            src="../assets/images/user/avatar-10.png"
-                            alt="user image"
-                            class="rounded-full w-10"
-                          />
-                        </div>
-                        <div class="grow ltr:ml-3 rtl:mr-3">
-                          <h6 class="mb-0">Airi Satou</h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td>Developer</td>
-                    <td>B.COM., M.COM.</td>
-                    <td>(123) 4567 890</td>
-                    <td>
-                      2023/09/12
-                      <span class="text-muted text-sm block">09:05 PM</span>
-                    </td>
-                    <td>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-success"
-                      >
-                        <i class="ti ti-check text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-danger"
-                      >
-                        <i class="ti ti-x text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-secondary"
-                      >
-                        <i class="ti ti-dots-vertical text-xl leading-none"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="flex items-center w-44">
-                        <div class="shrink-0">
-                          <img
-                            src="../assets/images/user/avatar-2.png"
-                            alt="user image"
-                            class="rounded-full w-10"
-                          />
-                        </div>
-                        <div class="grow ltr:ml-3 rtl:mr-3">
-                          <h6 class="mb-0">Ashton Cox</h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td>Junior Technical</td>
-                    <td>B.COM., M.COM.</td>
-                    <td>(123) 4567 890</td>
-                    <td>
-                      2023/12/24
-                      <span class="text-muted text-sm block">09:05 PM</span>
-                    </td>
-                    <td>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-success"
-                      >
-                        <i class="ti ti-check text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-danger"
-                      >
-                        <i class="ti ti-x text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-secondary"
-                      >
-                        <i class="ti ti-dots-vertical text-xl leading-none"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="flex items-center w-44">
-                        <div class="shrink-0">
-                          <img
-                            src="../assets/images/user/avatar-3.png"
-                            alt="user image"
-                            class="rounded-full w-10"
-                          />
-                        </div>
-                        <div class="grow ltr:ml-3 rtl:mr-3">
-                          <h6 class="mb-0">Bradley Greer</h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td>Sales Assistant</td>
-                    <td>B.A, B.C.A</td>
-                    <td>(123) 4567 890</td>
-                    <td>
-                      2022/09/19
-                      <span class="text-muted text-sm block">09:05 PM</span>
-                    </td>
-                    <td>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-success"
-                      >
-                        <i class="ti ti-check text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-danger"
-                      >
-                        <i class="ti ti-x text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-secondary"
-                      >
-                        <i class="ti ti-dots-vertical text-xl leading-none"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="flex items-center w-44">
-                        <div class="shrink-0">
-                          <img
-                            src="../assets/images/user/avatar-4.png"
-                            alt="user image"
-                            class="rounded-full w-10"
-                          />
-                        </div>
-                        <div class="grow ltr:ml-3 rtl:mr-3">
-                          <h6 class="mb-0">Brielle Williamson</h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td>JavaScript Developer</td>
-                    <td>B.A, B.C.A</td>
-                    <td>(123) 4567 890</td>
-                    <td>
-                      2022/08/22
-                      <span class="text-muted text-sm block">09:05 PM</span>
-                    </td>
-                    <td>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-success"
-                      >
-                        <i class="ti ti-check text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-danger"
-                      >
-                        <i class="ti ti-x text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-secondary"
-                      >
-                        <i class="ti ti-dots-vertical text-xl leading-none"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="flex items-center w-44">
-                        <div class="shrink-0">
-                          <img
-                            src="../assets/images/user/avatar-5.png"
-                            alt="user image"
-                            class="rounded-full w-10"
-                          />
-                        </div>
-                        <div class="grow ltr:ml-3 rtl:mr-3">
-                          <h6 class="mb-0">Airi Satou</h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td>Developer</td>
-                    <td>B.COM., M.COM.</td>
-                    <td>(123) 4567 890</td>
-                    <td>
-                      2023/09/12
-                      <span class="text-muted text-sm block">09:05 PM</span>
-                    </td>
-                    <td>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-success"
-                      >
-                        <i class="ti ti-check text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-danger"
-                      >
-                        <i class="ti ti-x text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-secondary"
-                      >
-                        <i class="ti ti-dots-vertical text-xl leading-none"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="flex items-center w-44">
-                        <div class="shrink-0">
-                          <img
-                            src="../assets/images/user/avatar-6.png"
-                            alt="user image"
-                            class="rounded-full w-10"
-                          />
-                        </div>
-                        <div class="grow ltr:ml-3 rtl:mr-3">
-                          <h6 class="mb-0">Ashton Cox</h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td>Junior Technical</td>
-                    <td>B.COM., M.COM.</td>
-                    <td>(123) 4567 890</td>
-                    <td>
-                      2023/12/24
-                      <span class="text-muted text-sm block">09:05 PM</span>
-                    </td>
-                    <td>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-success"
-                      >
-                        <i class="ti ti-check text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-danger"
-                      >
-                        <i class="ti ti-x text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-secondary"
-                      >
-                        <i class="ti ti-dots-vertical text-xl leading-none"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="flex items-center w-44">
-                        <div class="shrink-0">
-                          <img
-                            src="../assets/images/user/avatar-7.png"
-                            alt="user image"
-                            class="rounded-full w-10"
-                          />
-                        </div>
-                        <div class="grow ltr:ml-3 rtl:mr-3">
-                          <h6 class="mb-0">Bradley Greer</h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td>Sales Assistant</td>
-                    <td>B.A, B.C.A</td>
-                    <td>(123) 4567 890</td>
-                    <td>
-                      2022/09/19
-                      <span class="text-muted text-sm block">09:05 PM</span>
-                    </td>
-                    <td>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-success"
-                      >
-                        <i class="ti ti-check text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-danger"
-                      >
-                        <i class="ti ti-x text-xl leading-none"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="w-8 h-8 rounded-xl inline-flex items-center justify-center mx-1 btn-light-secondary"
-                      >
-                        <i class="ti ti-dots-vertical text-xl leading-none"></i>
+                        <i class="ri-edit-line"></i>
                       </a>
                     </td>
                   </tr>
@@ -737,11 +83,44 @@
               </table>
             </div>
           </div>
+          <div class="card-footer border-top-0">
+            <div class="ms-auto">
+              <nav aria-label="Page navigation" class="pagination-style-2">
+                <ul class="pagination mb-0 flex-wrap justify-content-end">
+                  <li class="page-item disabled">
+                    <a class="page-link" href="javascript:void(0);"> Prev </a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="javascript:void(0);">1</a>
+                  </li>
+                  <li class="page-item active">
+                    <a class="page-link" href="javascript:void(0);">2</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="javascript:void(0);">
+                      <i class="bi bi-three-dots"></i>
+                    </a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="javascript:void(0);">17</a>
+                  </li>
+                  <li class="page-item">
+                    <a
+                      class="page-link text-primary"
+                      href="javascript:void(0);"
+                    >
+                      next
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <!-- [ Main Content ] end -->
+    <!--End::row-1 -->
   </div>
 </div>
-
-<app-footer> </app-footer>
+<!-- End::app-content -->
+<app-footer></app-footer>

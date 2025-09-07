@@ -1,100 +1,118 @@
-<!-- [ Pre-loader ] start -->
-<div class="loader-bg fixed inset-0 bg-white dark:bg-themedark-cardbg z-[1034]">
-  <div
-    class="loader-track h-[5px] w-full inline-block absolute overflow-hidden top-0"
-  >
-    <div
-      class="loader-fill w-[300px] h-[5px] bg-primary-500 absolute top-0 left-0 animate-[hitZak_0.6s_ease-in-out_infinite_alternate]"
-    ></div>
+<body class="authentication-background">
+  <div class="authentication-basic-background">
+    <img src="assets/images/media/backgrounds/9.png" alt="" />
   </div>
-</div>
-<!-- [ Pre-loader ] End -->
 
-<div class="auth-main relative overflow-hidden">
-  <div class="auth-wrapper v1 flex items-center w-full h-full min-h-screen">
+  <div class="container">
     <div
-      class="auth-form flex items-center justify-center grow flex-col min-h-screen relative px-6 py-3"
+      class="row justify-content-center align-items-center authentication authentication-basic h-100"
     >
-      <div class="w-full max-w-[350px] relative">
-        <div class="auth-bg">
-          <span
-            class="absolute top-[-100px] right-[-100px] w-[300px] h-[300px] block rounded-full bg-theme-bg-1 animate-[floating_7s_infinite]"
-          ></span>
-          <span
-            class="absolute top-[150px] right-[-150px] w-5 h-5 block rounded-full bg-primary-500 animate-[floating_9s_infinite]"
-          ></span>
-          <span
-            class="absolute left-[-150px] bottom-[150px] w-5 h-5 block rounded-full bg-theme-bg-1 animate-[floating_7s_infinite]"
-          ></span>
-          <span
-            class="absolute left-[-100px] bottom-[-80px] w-[300px] h-[300px] block rounded-full bg-theme-bg-2 animate-[floating_9s_infinite]"
-          ></span>
-        </div>
-        <div class="card sm:my-12 w-full shadow-none">
-          <div class="card-body !p-10">
-            <div class="text-center mb-8">
-              <a
-                ><img
-                  src="assets/images/logo-dark.svg"
-                  alt="img"
-                  class="mx-auto auth-logo"
-              /></a>
+      <div class="col-xxl-4 col-xl-5 col-lg-6 col-md-6 col-sm-8 col-12">
+        <div class="card custom-card border-0 my-4">
+          <div class="card-body p-5">
+            <div class="">
+              <a href="javascript:void(0);">
+                <img
+                  style="margin-left: 7rem; width: 147px; height: unset"
+                  src="assets/images/brand-logos/desktop-logo.jpeg"
+                  alt="logo"
+                  class="desktop-dark"
+                />
+              </a>
             </div>
-            <h4 class="text-center font-medium mb-4">Login</h4>
+            <div>
+              <h4 class="mb-1 fw-semibold">Hi,Welcome back!</h4>
+              <p class="mb-4 text-muted fw-normal">
+                Please enter your credentials
+              </p>
+            </div>
 
             <form (ngSubmit)="onLogin()">
-              <div class="mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="username"
-                  placeholder="User Name"
-                  [(ngModel)]="username"
-                  name="username"
-                />
-              </div>
-              <div class="mb-4">
-                <input
-                  type="password"
-                  class="form-control"
-                  id="password"
-                  placeholder="password"
-                  [(ngModel)]="password"
-                  name="password"
-                />
-              </div>
-              <div class="flex mt-1 justify-between items-center flex-wrap">
-                <div class="form-check">
-                  <input
-                    class="form-check-input input-primary"
-                    type="checkbox"
-                    id="customCheckc1"
-                    checked=""
-                  />
-                  <label class="form-check-label text-muted" for="customCheckc1"
-                    >Remember me?</label
+              <div class="row gy-3">
+                <div class="col-xl-12">
+                  <label for="signin-email" class="form-label text-default"
+                    >User Name</label
                   >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="username"
+                    name="username"
+                    placeholder="Enter User Name"
+                    [(ngModel)]="username"
+                  />
                 </div>
-                <h6 class="font-normal text-primary-500 mb-0">
-                  <a> Forgot Password? </a>
-                </h6>
+                <div class="col-xl-12 mb-2">
+                  <label
+                    for="signin-password"
+                    class="form-label text-default d-block"
+                    >Password</label
+                  >
+                  <div class="position-relative">
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="password"
+                      placeholder="Enter Password"
+                      [(ngModel)]="password"
+                      name="password"
+                    />
+                  </div>
+                  <div class="mt-2">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        value=""
+                        id="defaultCheck1"
+                        checked
+                      />
+                      <label class="form-check-label" for="defaultCheck1">
+                        Remember me
+                      </label>
+                      <a
+                        href="javascript:void(0);"
+                        class="float-end link-danger fw-medium fs-12"
+                        >Forget password ?</a
+                      >
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="mt-4 text-center">
+              <div class="d-grid mt-3">
                 <button
+                  class="btn btn-primary w-100 mb-3"
                   type="submit"
-                  class="btn btn-primary mx-auto shadow-2xl"
+                  [disabled]="loading"
                 >
-                  Login
+                  <span
+                    *ngIf="loading"
+                    class="spinner-border spinner-border-sm me-2"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  {{ loading ? "Signing In..." : "Sign In" }}
                 </button>
+
+                <!-- <a href="index.html" class="btn btn-primary">Sign In</a> -->
+              </div>
+
+              <div class="text-center mt-3 fw-medium">
+                Dont have an account?
+                <a href="javascript:void()" class="text-primary"
+                  >Register Here</a
+                >
               </div>
             </form>
-            <div class="flex justify-between items-end flex-wrap mt-4">
-              <h6 class="font-medium mb-0">Don't have an Account?</h6>
-              <a class="text-primary-500">Create Account</a>
-            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+
+  <!-- Bootstrap JS -->
+  <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Show Password JS -->
+  <script src="assets/js/show-password.js"></script>
+</body>

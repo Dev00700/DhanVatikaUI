@@ -1,0 +1,179 @@
+<app-navbar></app-navbar>
+
+<div class="main-content app-content">
+  <div class="container-fluid page-container main-body-container">
+    <!-- Start::page-header -->
+    <div class="page-header-breadcrumb mb-3">
+      <div class="d-flex align-center justify-content-between flex-wrap">
+        <h1 class="page-title fw-medium fs-18 mb-0">
+          {{ addincomingpayment.iPaymentGuid ? "Update " : "Create " }}Incoming
+          Payment
+        </h1>
+        <!-- <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item">
+            <a href="javascript:void(0);"> Pages </a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="javascript:void(0);">Invoice</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            Create Invoice
+          </li>
+        </ol> -->
+      </div>
+    </div>
+    <!-- End::page-header -->
+
+    <!-- Start::row-1 -->
+
+    <form (ngSubmit)="onSubmit()" #incomingpaymentForm="ngForm">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card custom-card">
+            <div class="card-body">
+              <div class="row gy-3">
+                <div class="col-xl-3">
+                  <label for="invoice-number" class="form-label">
+                    Payment Type</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="paymentType"
+                    name="paymentType"
+                    [(ngModel)]="addincomingpayment.paymentType"
+                  />
+                </div>
+                <div class="col-xl-3">
+                  <label for="paymentModeId" class="form-label"
+                    >Payment Mode</label
+                  >
+                  <select
+                    class="form-select"
+                    [(ngModel)]="addincomingpayment.paymentModeId"
+                    name="paymentModeId"
+                    required
+                  >
+                    <option *ngFor="let c of paymentModeList" [value]="c.value">
+                      {{ c.text }}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="col-xl-3">
+                  <label for="paymentModeId" class="form-label"
+                    >Payment Source</label
+                  >
+                  <select
+                    class="form-select"
+                    [(ngModel)]="addincomingpayment.paymentSource"
+                    name="paymentSource"
+                    required
+                  >
+                    <option
+                      *ngFor="let c of paymentSourceList"
+                      [value]="c.value"
+                    >
+                      {{ c.text }}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="col-xl-3">
+                  <label for="invoice-due-amount" class="form-label">
+                    Amount</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="amount"
+                    name="amount"
+                    placeholder="Enter Amount"
+                    [(ngModel)]="addincomingpayment.amount"
+                  />
+                </div>
+
+                <div class="col-xl-3">
+                  <label for="paymentDate" class="form-label"
+                    >Payment Date</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="paymentDate"
+                    name="paymentDate"
+                    [(ngModel)]="addincomingpayment.paymentDate"
+                    placeholder="Choose date"
+                  />
+                </div>
+
+                <div class="col-xl-3">
+                  <label for="paymentDate" class="form-label">Bank Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="bankName"
+                    name="bankName"
+                    [(ngModel)]="addincomingpayment.bankName"
+                    placeholder="Enter bank Name"
+                  />
+                </div>
+
+                <div class="col-xl-3">
+                  <label for="paymentDate" class="form-label"
+                    >Branch Name</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="branchName"
+                    [(ngModel)]="addincomingpayment.branchName"
+                    placeholder="Enter Branch Name"
+                  />
+                </div>
+
+                <div class="col-xl-3">
+                  <label for="paymentDate" class="form-label">Remark</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="remarks"
+                    [(ngModel)]="addincomingpayment.remarks"
+                    placeholder="Enter remarks"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="card-footer text-end">
+              <button
+                type="submit"
+                [disabled]="loading"
+                class="btn btn-success m-1"
+              >
+                <span
+                  *ngIf="loading"
+                  class="spinner-border spinner-border-sm me-2"
+                ></span>
+                Submit
+                <i
+                  class="ri-file-pdf-line ms-1 align-middle d-inline-block"
+                ></i>
+              </button>
+              <button
+                type="button"
+                class="btn btn-warning m-1"
+                [routerLink]="['/incoming-payment']"
+              >
+                Cancel<i class="ri-cancel-2-line ms-1 d-inline-block"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <!--End::row-1 -->
+  </div>
+</div>
+<!-- End::app-content -->
+
+<app-footer></app-footer>

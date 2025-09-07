@@ -1,0 +1,195 @@
+<app-navbar></app-navbar>
+
+<div class="main-content app-content">
+  <div class="container-fluid page-container main-body-container">
+    <!-- Start::page-header -->
+    <div class="page-header-breadcrumb mb-3">
+      <div class="d-flex align-center justify-content-between flex-wrap">
+        <h1 class="page-title fw-medium fs-18 mb-0">Incoming Payment List</h1>
+      </div>
+    </div>
+    <!-- End::page-header -->
+
+    <!-- Start::row-1 -->
+    <div class="row">
+      <div class="col-xxl-3 col-xl-6">
+        <div class="card custom-card dashboard-main-card primary">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-start gap-3">
+              <div class="flex-fill">
+                <h6 class="mb-2 fs-12">Total Amount</h6>
+                <div class="pb-0 mt-0">
+                  <div>
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                      <h4 class="fw-medium mb-0">
+                        <span class="count-up" data-count="471">471</span>k
+                      </h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="avatar avatar-lg bg-primary-transparent svg-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+                  <rect width="256" height="256" fill="none" />
+                  <path
+                    d="M216,40H40A16,16,0,0,0,24,56V208a8,8,0,0,0,11.58,7.15L64,200.94l28.42,14.21a8,8,0,0,0,7.16,0L128,200.94l28.42,14.21a8,8,0,0,0,7.16,0L192,200.94l28.42,14.21A8,8,0,0,0,232,208V56A16,16,0,0,0,216,40ZM176,144H80a8,8,0,0,1,0-16h96a8,8,0,0,1,0,16Zm0-32H80a8,8,0,0,1,0-16h96a8,8,0,0,1,0,16Z"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xxl-3 col-xl-6">
+        <div class="card custom-card dashboard-main-card secondary">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-start gap-3">
+              <div class="flex-fill">
+                <h6 class="mb-2 fs-12">Total Paid</h6>
+                <div>
+                  <div class="d-flex align-items-center gap-2 mb-2">
+                    <h4 class="fw-medium mb-0">
+                      <span class="count-up" data-count="320">320</span>k
+                    </h4>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="avatar avatar-lg bg-secondary-transparent svg-secondary"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+                  <rect width="256" height="256" fill="none" />
+                  <path
+                    d="M28,128a8,8,0,0,1,0-16H56a8,8,0,0,0,0-16H40a24,24,0,0,1,0-48,8,8,0,0,1,16,0h8a8,8,0,0,1,0,16H40a8,8,0,0,0,0,16H56a24,24,0,0,1,0,48,8,8,0,0,1-16,0ZM224,48H96a8,8,0,0,0,0,16H216V96H104a8,8,0,0,0,0,16h56v32H80a8,8,0,0,0,0,16h80v32H40V152a8,8,0,0,0-16,0v40a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48Z"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-12">
+        <div class="card custom-card">
+          <div class="card-header justify-content-between">
+            <div class="card-title">Manage Incoming Payment</div>
+            <div class="d-flex">
+              <a
+                [routerLink]="['/create-incoming-payment']"
+                class="btn btn-sm btn-primary btn-wave waves-light"
+                ><i class="ri-add-line fw-medium align-middle me-1"></i> Create
+                Incoming Payment</a
+              >
+              <div class="dropdown ms-2">
+                <button
+                  class="btn btn-icon btn-secondary-light btn-sm btn-wave waves-light"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <i class="ti ti-dots-vertical"></i>
+                </button>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item" href="javascript:void(0);"
+                      >All Incoming Payment</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="javascript:void(0);"
+                      >Approval Payment</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table text-nowrap">
+                <thead>
+                  <tr>
+                    <th scope="col">Payment Type</th>
+                    <th scope="col">Payment Mode</th>
+                    <th scope="col">Payment Source</th>
+                    <th scope="col">Reference No</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Payment Date</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    class="invoice-list"
+                    *ngFor="let item of incomingpaymentlist; index as i"
+                  >
+                    <td>{{ item.paymentType }}</td>
+                    <td>{{ item.paymentMode }}</td>
+                    <td>{{ item.paymentSourceName }}</td>
+                    <td>{{ item.referenceNo }}</td>
+                    <td>{{ item.amount }}</td>
+                    <td>{{ item.paymentDate | date : "dd-MM-yyyy" }}</td>
+                    <td>
+                      <span class="badge bg-success-transparent">approved</span>
+                    </td>
+                    <td>
+                      <a class="btn btn-primary-light btn-icon btn-sm">
+                        <i class="ri-printer-line"></i>
+                      </a>
+                      <a
+                        class="btn btn-danger-light btn-icon ms-1 btn-sm invoice-btn"
+                        [routerLink]="[
+                          '/create-incoming-payment',
+                          item.iPaymentGuid
+                        ]"
+                      >
+                        <i class="ri-edit-line"></i>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card-footer border-top-0">
+            <div class="ms-auto">
+              <nav aria-label="Page navigation" class="pagination-style-2">
+                <ul class="pagination mb-0 flex-wrap justify-content-end">
+                  <li class="page-item disabled">
+                    <a class="page-link" href="javascript:void(0);"> Prev </a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="javascript:void(0);">1</a>
+                  </li>
+                  <li class="page-item active">
+                    <a class="page-link" href="javascript:void(0);">2</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="javascript:void(0);">
+                      <i class="bi bi-three-dots"></i>
+                    </a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="javascript:void(0);">17</a>
+                  </li>
+                  <li class="page-item">
+                    <a
+                      class="page-link text-primary"
+                      href="javascript:void(0);"
+                    >
+                      next
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--End::row-1 -->
+  </div>
+</div>
+<!-- End::app-content -->
+<app-footer></app-footer>

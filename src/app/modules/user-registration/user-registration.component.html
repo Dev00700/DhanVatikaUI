@@ -1,164 +1,152 @@
 <app-navbar></app-navbar>
-<!-- [ Main Content ] start -->
-<div class="pc-container">
-  <div class="pc-content">
-    <!-- [ breadcrumb ] start -->
-    <div class="page-header">
-      <div class="page-block">
-        <div class="page-header-title">
-          <h5 class="mb-0 font-medium">Teacher Add</h5>
-        </div>
-        <ul class="breadcrumb">
+
+<div class="main-content app-content">
+  <div class="container-fluid page-container main-body-container">
+    <!-- Start::page-header -->
+    <div class="page-header-breadcrumb mb-3">
+      <div class="d-flex align-center justify-content-between flex-wrap">
+        <h1 class="page-title fw-medium fs-18 mb-0">
+          {{ userregistration.userGuid ? "Update " : "Create " }}User
+        </h1>
+        <!-- <ol class="breadcrumb mb-0">
           <li class="breadcrumb-item">
-            <a
-              href="https://codedthemes.com/demos/admin-templates/datta-able/tailwind/default/dashboard/index.html"
-              >Home</a
-            >
+            <a href="javascript:void(0);"> Pages </a>
           </li>
           <li class="breadcrumb-item">
-            <a href="javascript: void(0)">Online Courses</a>
+            <a href="javascript:void(0);">Invoice</a>
           </li>
-          <li class="breadcrumb-item" aria-current="page">Teacher Add</li>
-        </ul>
+          <li class="breadcrumb-item active" aria-current="page">
+            Create Invoice
+          </li>
+        </ol> -->
       </div>
     </div>
-    <!-- [ breadcrumb ] end -->
+    <!-- End::page-header -->
 
-    <!-- [ Main Content ] start -->
-    <div class="grid grid-cols-12 gap-x-6">
-      <div class="col-span-12">
-        <div class="card">
-          <div class="card-header">
-            <h5 class="mb-0">Basic Information</h5>
-          </div>
-          <div class="card-body">
-            <div class="grid grid-cols-12 gap-x-6">
-              <div class="col-span-12 md:col-span-6">
-                <div class="mb-3">
-                  <label class="form-label">First Name</label>
+    <!-- Start::row-1 -->
+
+    <form (ngSubmit)="onSubmit()" #userregistrationForm="ngForm">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card custom-card">
+            <div class="card-body">
+              <div class="row gy-3">
+                <div class="col-xl-3">
+                  <label for="User Code" class="form-label"> User Code</label>
                   <input
                     type="text"
                     class="form-control"
-                    placeholder="Enter first name"
+                    id="userCode"
+                    name="userCode"
+                    disabled=""
+                    [(ngModel)]="userregistration.userCode"
                   />
                 </div>
-              </div>
-              <div class="col-span-12 md:col-span-6">
-                <div class="mb-3">
-                  <label class="form-label">Last Name</label>
+                <div class="col-xl-3">
+                  <label for="userName" class="form-label">User Name</label>
                   <input
                     type="text"
+                    id="userName"
+                    name="userName"
                     class="form-control"
-                    placeholder="Enter last name"
+                    [(ngModel)]="userregistration.userName"
+                    placeholder="Enter User Name"
                   />
                 </div>
-              </div>
-              <div class="col-span-12 md:col-span-6">
-                <div class="mb-3">
-                  <label class="form-label">Email</label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    placeholder="Enter email"
-                  />
-                </div>
-              </div>
-              <div class="col-span-12 md:col-span-6">
-                <div class="mb-3">
-                  <label class="form-label">Joining Date</label>
-                  <input type="date" class="form-control" />
-                </div>
-              </div>
-              <div class="col-span-12 md:col-span-6">
-                <div class="mb-3">
-                  <label class="form-label">Password</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    placeholder="Enter Password"
-                  />
-                </div>
-              </div>
-              <div class="col-span-12 md:col-span-6">
-                <div class="mb-3">
-                  <label class="form-label">Confirm Password</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    placeholder="Enter confirm password"
-                  />
-                </div>
-              </div>
-              <div class="col-span-12 md:col-span-6">
-                <div class="mb-3">
-                  <label class="form-label">Mobile Number</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    placeholder="Enter Mobile number"
-                  />
-                </div>
-              </div>
-              <div class="col-span-12 md:col-span-6">
-                <div class="mb-3">
-                  <label class="form-label">Gender</label>
-                  <select class="form-select">
-                    <option>Female</option>
-                    <option>Male</option>
+
+                <div class="col-xl-3">
+                  <label for="roleId" class="form-label">Role</label>
+                  <select
+                    class="form-select"
+                    [(ngModel)]="userregistration.roleId"
+                    name="roleId"
+                    required
+                  >
+                    <option *ngFor="let c of roleList" [value]="c.value">
+                      {{ c.text }}
+                    </option>
                   </select>
                 </div>
-              </div>
-              <div class="col-span-12 md:col-span-6">
-                <div class="mb-3">
-                  <label class="form-label">Designation</label>
+
+                <div class="col-xl-3">
+                  <label for="email" class="form-label"> Email</label>
+                  <input
+                    type="text"
+                    id="email"
+                    name="email"
+                    class="form-control"
+                    [(ngModel)]="userregistration.email"
+                    placeholder="Enter Email"
+                  />
+                </div>
+
+                <div class="col-xl-3">
+                  <label for="paymentDate" class="form-label">Mobile No</label>
+                  <input
+                    type="text"
+                    id="mobileNo"
+                    name="mobileNo"
+                    class="form-control"
+                    [(ngModel)]="userregistration.mobileNo"
+                    placeholder="Enter Mobile No"
+                  />
+                </div>
+
+                <div class="col-xl-3">
+                  <label for="password" class="form-label">Password</label>
                   <input
                     type="text"
                     class="form-control"
-                    placeholder="Enter Designation"
+                    [(ngModel)]="userregistration.password"
+                    name="password"
+                    id="password"
+                    required
                   />
                 </div>
-              </div>
-              <div class="col-span-12 md:col-span-6">
-                <div class="mb-3">
-                  <label class="form-label">Department</label>
-                  <select class="form-select">
-                    <option>Department</option>
-                    <option>Department 1</option>
-                    <option>Department 2</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-span-12 md:col-span-6">
-                <div class="mb-3">
-                  <label class="form-label">Date of Birth</label>
-                  <input type="date" class="form-control" />
-                </div>
-              </div>
-              <div class="col-span-12 md:col-span-6">
-                <div class="mb-3">
-                  <label class="form-label">Education</label>
+
+                <div class="col-xl-3">
+                  <label for="remarks" class="form-label">Remarks</label>
                   <input
                     type="text"
                     class="form-control"
-                    placeholder="Enter Education"
+                    [(ngModel)]="userregistration.remarks"
+                    name="remarks"
+                    id="remarks"
+                    required
                   />
                 </div>
               </div>
-              <div class="col-span-12">
-                <div class="mb-3">
-                  <input class="form-control" type="file" />
-                </div>
-              </div>
-              <div class="col-span-12 text-right">
-                <button class="btn btn-primary">Submit</button>
-              </div>
+            </div>
+            <div class="card-footer text-end">
+              <button
+                type="submit"
+                [disabled]="loading"
+                class="btn btn-success m-1"
+              >
+                <span
+                  *ngIf="loading"
+                  class="spinner-border spinner-border-sm me-2"
+                ></span>
+                Submit
+                <i
+                  class="ri-file-pdf-line ms-1 align-middle d-inline-block"
+                ></i>
+              </button>
+              <button
+                type="button"
+                class="btn btn-warning m-1"
+                [routerLink]="['/user-registration-list']"
+              >
+                Cancel<i class="ri-cancel-2-line ms-1 d-inline-block"></i>
+              </button>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <!-- [ Main Content ] end -->
+    </form>
+    <!--End::row-1 -->
   </div>
 </div>
+<!-- End::app-content -->
 
 <app-footer></app-footer>

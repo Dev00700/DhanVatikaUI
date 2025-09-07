@@ -28,15 +28,12 @@
               "src/assets"
             ],
             "styles": [
+             
                "node_modules/ngx-toastr/toastr.css",
               "src/styles.css"
+              
             ],
            "scripts": [
-  "src/assets/js/plugins/simplebar.min.js",
-  "src/assets/js/plugins/popper.min.js",
-  "src/assets/js/component.js",
-  "src/assets/js/theme.js",
-  "src/assets/js/script.js"
 ]
           },
           "configurations": {
@@ -94,15 +91,13 @@
               "src/assets"
             ],
             "styles": [
+             
                "node_modules/ngx-toastr/toastr.css",
               "src/styles.css"
+               
             ],
            "scripts": [
-  "src/assets/js/plugins/simplebar.min.js",
-  "src/assets/js/plugins/popper.min.js",
-  "src/assets/js/component.js",
-  "src/assets/js/theme.js",
-  "src/assets/js/script.js"
+      
 ]
           }
         }
