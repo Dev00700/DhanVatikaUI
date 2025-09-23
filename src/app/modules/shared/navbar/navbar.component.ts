@@ -12,6 +12,8 @@ import { CommonModule } from '@angular/common';
 })
 export class NavbarComponent implements AfterViewInit { 
 openMenus: number[] = [];
+
+isSidebarOpen = false;
   
   async ngAfterViewInit() {
   try {
@@ -20,15 +22,14 @@ openMenus: number[] = [];
     await this.loadScript('assets/js/sticky.js');
     await this.loadScript('assets/libs/simplebar/simplebar.min.js');
     await this.loadScript('assets/js/simplebar.js');
-    await this.loadScript('assets/libs/%40tarekraafat/autocomplete.js/autoComplete.min.js');
-    await this.loadScript('assets/libs/%40simonwep/pickr/pickr.es5.min.js');
-    await this.loadScript('assets/libs/flatpickr/flatpickr.min.js');
+    // await this.loadScript('assets/libs/%40tarekraafat/autocomplete.js/autoComplete.min.js');
+    // await this.loadScript('assets/libs/%40simonwep/pickr/pickr.es5.min.js');
+    // await this.loadScript('assets/libs/flatpickr/flatpickr.min.js');
     // await this.loadScript('assets/libs/apexcharts/apexcharts.min.js');
     // await this.loadScript('assets/js/ecommerce-dashboard.js');
-    await this.loadScript('assets/js/custom.js');
-    await this.loadScript('assets/js/custom-switcher.min.js');
+    // await this.loadScript('assets/js/custom.js');
+    // await this.loadScript('assets/js/custom-switcher.min.js');
 
-    console.log('All navbar scripts loaded ✅');
   } catch (err) {
     console.error(err);
   }
@@ -70,6 +71,12 @@ private loadScript(src: string): Promise<void> {
     script.onerror = () => reject(`Script load error: ${src}`);
     document.body.appendChild(script);
   });
+}
+
+
+toggleSidebar() {
+  debugger;
+  this.isSidebarOpen = !this.isSidebarOpen;
 }
 
 

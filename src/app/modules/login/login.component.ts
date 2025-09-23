@@ -25,22 +25,22 @@ export class LoginComponent {
   loginResponse: LoginResponse | null = null;
 
   constructor(
-    private apiService:ApiService ,
-    private router :Router,
-    private toast: ToastrService,  
+    private apiService: ApiService,
+    private router: Router,
+    private toast: ToastrService,
     private menuService: MenuService,
 
-  ) {}
+  ) { }
 
   ngonit(
-  ){
-     
+  ) {
+
   }
-  onLogin(){
+  onLogin() {
     localStorage.removeItem('authToken');
     this.error = '';
     if (!this.username || !this.password) {
-     this.toast.warning('Enter username or password');
+      this.toast.warning('Enter username or password');
       return;
     }
     this.loading = true;
@@ -48,7 +48,7 @@ export class LoginComponent {
       userName: this.username,
       password: this.password
     };
-   this.apiService.post<LoginResponse>('auth/userlogin', loginData).subscribe({
+    this.apiService.post<LoginResponse>('auth/userlogin', loginData).subscribe({
       next: (response) => {
         this.loading = false;
         if (response.token != null) {
@@ -57,10 +57,12 @@ export class LoginComponent {
           //localStorage.setItem('mCompanyGuid', response.mCompanyGuid);
           localStorage.setItem('userId', response.userId.toString());
           localStorage.setItem('userName', response.userName);
+          localStorage.setItem('isSuperAdmin', response.isSuperAdmin.toString());
+          localStorage.setItem('isAdmin', response.isAdmin.toString());
           //this.userContext.setUser(response.userId, response.userName, response.mCompanyGuid);
           this.fetchMenuDetails();
-            this.router.navigate(['/dashboard']);
-            return;
+          this.router.navigate(['/dashboard']);
+          return;
         } else {
           this.toast.warning(response.message || 'Login failed');
         }
@@ -73,15 +75,15 @@ export class LoginComponent {
     });
   }
 
-  fetchMenuDetails(){
-    const menureqdata: CommonReqDto<number> = {  
-            //mCompanyGuid: localStorage.getItem('mCompanyGuid') || '',
-            //companyGuid: localStorage.getItem('mCompanyGuid') || '',
-            PageSize: 1,
-            PageRecordCount: 1000,
-            UserId: localStorage.getItem('userId') ? parseInt(localStorage.getItem('userId')!) : 0,
-            Data: null,
-          };
+  fetchMenuDetails() {
+    const menureqdata: CommonReqDto<number> = {
+      //mCompanyGuid: localStorage.getItem('mCompanyGuid') || '',
+      //companyGuid: localStorage.getItem('mCompanyGuid') || '',
+      PageSize: 1,
+      PageRecordCount: 1000,
+      UserId: localStorage.getItem('userId') ? parseInt(localStorage.getItem('userId')!) : 0,
+      Data: null,
+    };
 
     this.apiService.post<CommonResDto<MenuItem[]>>('Menu/GetUserMenuListService', menureqdata).subscribe(res => {
       if (res) {
@@ -93,7 +95,7 @@ export class LoginComponent {
     });
   }
 
-    buildMenuTree(flatMenu: MenuItem[]): MenuItem[] {
+  buildMenuTree(flatMenu: MenuItem[]): MenuItem[] {
     const menuMap = new Map<number, MenuItem>();
     const roots: MenuItem[] = [];
 
@@ -113,5 +115,5 @@ export class LoginComponent {
     });
     return roots;
   }
-  
+
 }

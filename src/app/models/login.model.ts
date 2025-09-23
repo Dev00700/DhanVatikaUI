@@ -5,15 +5,17 @@ export interface LoginRequest {
 
 export interface LoginResponse {
     userguid: string,
-    userId:number,
+    userId: number,
     userCode: string,
-    userName:string,
+    userName: string,
     email: string,
-    mobileNo:string,
-    token:string,
+    mobileNo: string,
+    token: string,
     companyCount: number,
     isSingleUser: boolean,
     mCompanyGuid: string,
-    companyGuid:string
+    companyGuid: string
     message?: string
+    isSuperAdmin: boolean
+    isAdmin: number
 }

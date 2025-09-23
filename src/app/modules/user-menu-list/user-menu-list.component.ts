@@ -17,11 +17,16 @@ import { MenuItem, UserMenuAddReqDto } from '../../models/menu.model';
 })
 export class UserMenuListComponent {
   loading: boolean = false;
+  fullpageloader:boolean= false;
   userlist: UserList[] = [];
   selectedUser: UserList | null = null;
   selectedMenus: string[] = []; // menu ids ya names
   menuList: any[] = [];
   expandedRow: number | null = null;
+  isViewAll: boolean = false;
+  pageSize = 1;
+  pageRecordCount = 10;
+  totalCount = 0;
 
   constructor(
      private router: RouterModule,
@@ -30,73 +35,96 @@ export class UserMenuListComponent {
   ) {}
   ngOnInit() {
     this.getUserList();
-    this.getMenuList();
+    //this.getMenuList();
   }
   getUserList(){
-    this.loading = true;
+    this.fullpageloader = true;
     const reqData: CommonReqDto<string>= {
-            PageSize: 1,
-            PageRecordCount: 1000,
+           PageSize:this.isViewAll ? 1  :this.pageSize,
+            PageRecordCount: this.isViewAll ? this.totalCount|| 99999:  this.pageRecordCount,
             Data:null,
             UserId: parseInt(localStorage.getItem("userId") || '0', 10),
     };
     this.apiService.post<CommonResDto<UserList[]>>('User/GetUserListService', reqData).subscribe({
       next: (res: any) => {
-       debugger;
         this.userlist = res.data;
-        this.loading = false;
+        this.pageSize= res.pageSize;
+        this.pageRecordCount= res.pageRecordCount;
+        this.totalCount= res.totalRecordCount;
+        this.fullpageloader = false;
       },
       error: (err: any) => {
         this.toastr.error('Failed to fetch user list', 'Error');
-        this.loading = false;
+        this.fullpageloader = false;
       }
     });
   }
 
-   getMenuList(){
-    debugger;
-    this.loading = true;
+   getMenuList(user:UserList){
+    this.fullpageloader = true;
     const reqData: CommonReqDto<string>= {
             PageSize: 1,
             PageRecordCount: 1000,
             Data:null,
-            UserId: parseInt(localStorage.getItem("userId") || '0', 10),
+            UserId: user.userId,
     };
-    this.apiService.post<CommonResDto<MenuItem[]>>('Menu/GetMenuListService', reqData).subscribe({
+    this.apiService.post<CommonResDto<MenuItem[]>>('Menu/GetUserMenuForUpdateService', reqData).subscribe({
       next: (res: any) => {
-        debugger;
        const menuTree = this.buildMenuTree(res.data);
         this.menuList = menuTree;
-        this.loading = false;
+        
+        this.fullpageloader = false;
       },
       error: (err: any) => {
         this.toastr.error('Failed to fetch menu list', 'Error');
-        this.loading = false;
+        this.fullpageloader = false;
       }
     });
   }
 
-  saveUserMenus() {
+ 
 
-   const dataArr = this.selectedMenus.map(menuId => ({
-  UserId: (this.selectedUser?.userId || 0),
-  MenuId: parseInt(menuId, 10),
-  IsActive: true
-}));
-const reqData: CommonReqDto<UserMenuAddReqDto[]> = {
-  PageSize:1,  
-  PageRecordCount: 10,  
-  Data: dataArr || null,
-  UserId: parseInt(localStorage.getItem("userId") || '0', 10),
-};
-debugger;
+saveUserMenus() {
+  this.loading= true;
+    const dataArr =[] as any[];
+    const collectChecked = (menus: any[]) => {
+    menus.forEach(menu => {
+      if (menu.checked) {
+        dataArr.push({
+          UserId: (this.selectedUser?.userId || 0),
+          MenuId: menu.menuId,
+          IsActive: true
+        });
+      }
+      else if (!menu.checked){
+         dataArr.push({
+          UserId: (this.selectedUser?.userId || 0),
+          MenuId: menu.menuId,
+          IsActive: false
+        });
+      }
+      if (menu.children?.length) {
+        collectChecked(menu.children);
+      }
+    });
+  };
+  collectChecked(this.menuList);
+
+  const reqData: CommonReqDto<UserMenuAddReqDto[]> = {
+    PageSize:1,  
+    PageRecordCount: 10,  
+    Data: dataArr || null,
+    UserId: parseInt(localStorage.getItem("userId") || '0', 10),
+  };
   this.apiService.post<CommonResDto<any>>('Menu/AddMenuService', reqData).subscribe({
     next: () => {
       this.toastr.success('Menus assigned successfully');
+      this.loading=false;
       this.selectedUser = null;
     },
     error: () => {
       this.toastr.error('Failed to assign menus');
+      this.loading=false;
     }
   });
 }
@@ -104,42 +132,37 @@ debugger;
   openAssignMenu(user: UserList) {
   this.selectedUser = user;
   this.selectedMenus = []; 
+
+  this.getMenuList(user);
   }
 toggleMenu(menu: any, parent?: any) {
-  const isChecked = this.selectedMenus.includes(menu.menuId);
-  this.setChecked(menu.menuId, !isChecked);
+  menu.checked = !menu.checked;
 
   // If menu has children, recursively select/deselect all children
   if (menu.children?.length) {
-    this.toggleChildren(menu.children, !isChecked);
+    this.toggleChildren(menu.children, menu.checked);
   }
 
   // If child clicked, check if all siblings are selected, then select parent
   if (parent) {
-    const allSelected = parent.children.every((child: any) => this.selectedMenus.includes(child.menuId));
-    this.setChecked(parent.menuId, allSelected);
+    const allSelected = parent.children.every((child: any) => child.checked);
+    parent.checked = allSelected;
   }
 }
 
 // Recursive function to select/deselect all children
 toggleChildren(children: any[], checked: boolean) {
   children.forEach(child => {
-    this.setChecked(child.menuId, checked);
+    child.checked = checked;
     if (child.children?.length) {
       this.toggleChildren(child.children, checked);
     }
   });
 }
-
-setChecked(menuId: string, checked: boolean) {
-  if (checked) {
-    if (!this.selectedMenus.includes(menuId)) this.selectedMenus.push(menuId);
-  } else {
-    this.selectedMenus = this.selectedMenus.filter(id => id !== menuId);
-  }
-}
-
+ 
+ 
 buildMenuTree(flatMenu: MenuItem[]): MenuItem[] {
+ 
     const menuMap = new Map<number, MenuItem>();
     const roots: MenuItem[] = [];
 
@@ -159,6 +182,46 @@ buildMenuTree(flatMenu: MenuItem[]): MenuItem[] {
     });
     return roots;
   }
+
+    
+  get totalPages(): number {
+    return Math.ceil(this.totalCount / this.pageRecordCount);
+  }
+
+  nextPage() {
+    if (this.pageSize < this.totalPages) {
+      this.pageSize++;
+      this.getUserList();
+    }
+  }
+   prevPage() {
+    if (this.pageSize > 1) {
+      this.pageSize--;
+      this.getUserList();
+    }
+  }
+
+  getStartIndex(): number {
+  return (this.pageSize - 1) * this.pageRecordCount;
 }
+
+getEndIndex(): number {
+  const end = this.getStartIndex() + this.pageRecordCount;
+  return end > this.totalCount ? this.totalCount : end;
+}
+viewAll() {
+  this.isViewAll = true;
+  this.pageSize = 1;
+  this.getUserList();
+}
+viewLess() {
+  this.isViewAll = false;
+  this.pageSize = 1;
+  this.pageRecordCount=1;
+  this.getUserList();
+}
+}
+
+
 
  

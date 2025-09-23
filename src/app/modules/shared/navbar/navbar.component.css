@@ -1,3 +1,45 @@
 .slide.has-sub.open ul.slide-menu.child1{
   display: block;
 }
+
+/* Hide sidebar on mobile by default */
+@media (max-width: 768px) {
+  .app-sidebar {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    width: 250px;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: #fff;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+    transition: left 0.3s;
+  }
+  .app-sidebar.open {
+    display: block;
+  }
+
+  .sidebar-close-icon {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  z-index: 999999;
+}
+
+.sidebar-close-icon .close-btn {
+  background: #fff;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+@media (min-width: 769px) {
+  .sidebar-close-icon {
+    display: none;
+  }
+}
+}

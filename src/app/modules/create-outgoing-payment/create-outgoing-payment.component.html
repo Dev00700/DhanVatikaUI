@@ -6,7 +6,7 @@
     <div class="page-header-breadcrumb mb-3">
       <div class="d-flex align-center justify-content-between flex-wrap">
         <h1 class="page-title fw-medium fs-18 mb-0">
-          {{ addincomingpayment.iPaymentGuid ? "Update " : "Create " }}Incoming
+          {{ addoutgoingpayment.oPaymentGuid ? "Update " : "Create " }}Outgoing
           Payment
         </h1>
         <!-- <ol class="breadcrumb mb-0">
@@ -26,31 +26,60 @@
 
     <!-- Start::row-1 -->
 
-    <form (ngSubmit)="onSubmit()" #incomingpaymentForm="ngForm">
+    <form (ngSubmit)="onSubmit()" #outgoingpaymentForm="ngForm">
       <div class="row">
         <div class="col-xl-12">
           <div class="card custom-card">
             <div class="card-body">
               <div class="row gy-3">
                 <div class="col-xl-3">
-                  <label for="invoice-number" class="form-label">
-                    Payment Type</label
+                  <label for="expenseCategoryId" class="form-label"
+                    >Expense Category</label
+                  >
+                  <select
+                    class="form-select"
+                    [(ngModel)]="addoutgoingpayment.expenseCategoryId"
+                    name="expenseCategoryId"
+                    required
+                  >
+                    <option *ngFor="let c of expenseCatList" [value]="c.value">
+                      {{ c.text }}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="col-xl-3">
+                  <label for="expenseTitle" class="form-label">
+                    Expense Title</label
                   >
                   <input
                     type="text"
                     class="form-control"
-                    id="paymentType"
-                    name="paymentType"
-                    [(ngModel)]="addincomingpayment.paymentType"
+                    id="expenseTitle"
+                    name="expenseTitle"
+                    [(ngModel)]="addoutgoingpayment.expenseTitle"
                   />
                 </div>
+
+                <div class="col-xl-3">
+                  <label for="amount" class="form-label"> Amount</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="amount"
+                    name="amount"
+                    placeholder="Enter Amount"
+                    [(ngModel)]="addoutgoingpayment.amount"
+                  />
+                </div>
+
                 <div class="col-xl-3">
                   <label for="paymentModeId" class="form-label"
                     >Payment Mode</label
                   >
                   <select
                     class="form-select"
-                    [(ngModel)]="addincomingpayment.paymentModeId"
+                    [(ngModel)]="addoutgoingpayment.paymentModeId"
                     name="paymentModeId"
                     required
                   >
@@ -61,101 +90,72 @@
                 </div>
 
                 <div class="col-xl-3">
-                  <label for="paymentModeId" class="form-label"
-                    >Payment Source</label
-                  >
-                  <select
-                    class="form-select"
-                    [(ngModel)]="addincomingpayment.paymentSource"
-                    name="paymentSource"
-                    required
-                  >
-                    <option
-                      *ngFor="let c of paymentSourceList"
-                      [value]="c.value"
-                    >
-                      {{ c.text }}
-                    </option>
-                  </select>
-                </div>
-
-                <div class="col-xl-3">
-                  <label for="invoice-due-amount" class="form-label">
-                    Amount</label
+                  <label for="referenceNo" class="form-label"
+                    >Refrence No</label
                   >
                   <input
-                    type="number"
+                    type="text"
                     class="form-control"
-                    id="amount"
-                    name="amount"
-                    placeholder="Enter Amount"
-                    [(ngModel)]="addincomingpayment.amount"
+                    id="referenceNo"
+                    name="referenceNo"
+                    [(ngModel)]="addoutgoingpayment.referenceNo"
+                    placeholder="Enter Reference No"
                   />
                 </div>
 
                 <div class="col-xl-3">
-                  <label for="paymentDate" class="form-label"
-                    >Payment Date</label
+                  <label for="expenseDate" class="form-label"
+                    >Expense Date</label
                   >
                   <input
                     type="date"
                     class="form-control"
-                    id="paymentDate"
-                    name="paymentDate"
-                    [(ngModel)]="addincomingpayment.paymentDate"
+                    id="expenseDate"
+                    name="expenseDate"
+                    [(ngModel)]="addoutgoingpayment.expenseDate"
                     placeholder="Choose date"
                   />
                 </div>
 
                 <div class="col-xl-3">
-                  <label for="bankName" class="form-label">Bank Name</label>
+                  <label for="partyName" class="form-label">Party Name</label>
                   <input
                     type="text"
                     class="form-control"
-                    id="bankName"
-                    name="bankName"
-                    [(ngModel)]="addincomingpayment.bankName"
-                    placeholder="Enter bank Name"
+                    id="partyName"
+                    name="partyName"
+                    [(ngModel)]="addoutgoingpayment.partyName"
+                    placeholder="Enter Party Name"
                   />
                 </div>
 
                 <div class="col-xl-3">
-                  <label for="branchName" class="form-label">Branch Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="branchName"
-                    name="branchName"
-                    [(ngModel)]="addincomingpayment.branchName"
-                    placeholder="Enter Branch Name"
-                  />
-                </div>
-
-                <div class="col-xl-3">
-                  <label for="remarks" class="form-label">Remark</label>
+                  <label for="paymentDate" class="form-label">Remark</label>
                   <input
                     type="text"
                     class="form-control"
                     id="remarks"
                     name="remarks"
-                    [(ngModel)]="addincomingpayment.remarks"
+                    [(ngModel)]="addoutgoingpayment.remarks"
                     placeholder="Enter remarks"
                   />
                 </div>
+
                 <div class="col-xl-3">
                   <label for="image" class="form-label">image</label>
                   <input
-                    class="form-control"
+                    style="height: 38px"
                     type="file"
                     name="image"
+                    class="form-control"
                     (change)="onFileSelected($event)"
                   />
                 </div>
 
                 <div class="col-xl-3">
-                  <div *ngIf="addincomingpayment.imageUrl" class="mt-2">
+                  <div *ngIf="addoutgoingpayment.imageUrl" class="mt-2">
                     <img
-                      [src]="addincomingpayment.imageUrl"
+                      [src]="addoutgoingpayment.imageUrl"
                       name="imageUrl"
                       alt="Image"
                       style="
@@ -171,7 +171,7 @@
             </div>
             <div class="card-footer text-end">
               <button
-                *ngIf="addincomingpayment.isDisabled != true"
+                *ngIf="addoutgoingpayment.isDisabled != true"
                 type="submit"
                 [disabled]="loading"
                 class="btn btn-success m-1"
@@ -181,14 +181,11 @@
                   class="spinner-border spinner-border-sm me-2"
                 ></span>
                 Submit
-                <i
-                  class="ri-file-pdf-line ms-1 align-middle d-inline-block"
-                ></i>
               </button>
               <button
                 type="button"
                 class="btn btn-warning m-1"
-                [routerLink]="['/incoming-payment']"
+                [routerLink]="['/outgoing-payment']"
               >
                 Cancel<i class="ri-cancel-2-line ms-1 d-inline-block"></i>
               </button>

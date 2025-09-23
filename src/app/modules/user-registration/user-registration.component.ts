@@ -130,7 +130,7 @@ fetchRoleList(){
       "SearchDDL":"Role"
     },
   };
-  this.dropdownData.getDropdownDataByParam<any>('DropDown/GetRoleListService', dropdownreqdto).subscribe({
+  this.dropdownData.getDropdownDataByParam<any>('DropDown/GetDropdownListService', dropdownreqdto).subscribe({
     next: res => {
       this.roleList = res.data;
       this.loadingroleList = false;

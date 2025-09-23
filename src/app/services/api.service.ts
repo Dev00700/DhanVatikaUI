@@ -6,11 +6,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ApiService {
-  private readonly baseUrl = "http://68.178.164.44:85/api"
-  
-  //"https://localhost:7266/api";
+  private readonly baseUrl = //"http://68.178.164.44:85/api"
 
-  constructor(private http: HttpClient) {}
+    "https://localhost:7266/api";
+
+  constructor(private http: HttpClient) { }
 
   get<T>(endpoint: string, params?: any): Observable<T> {
     return this.http.get<T>(`${this.baseUrl}/${endpoint}`, { params });

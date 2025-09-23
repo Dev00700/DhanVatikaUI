@@ -7,6 +7,9 @@ import { UserRegistrationListComponent } from './modules/user-registration-list/
 import { UserMenuListComponent } from './modules/user-menu-list/user-menu-list.component';
 import { CreateIncomingPaymentComponent } from './modules/create-incoming-payment/create-incoming-payment.component';
 import { IncomingPaymentComponent } from './modules/incoming-payment/incoming-payment.component';
+import { OutgoingPaymentComponent } from './modules/outgoing-payment/outgoing-payment.component';
+import { CreateOutgoingPaymentComponent } from './modules/create-outgoing-payment/create-outgoing-payment.component';
+import { CreatePlotComponent } from './modules/create-plot/create-plot.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -19,5 +22,9 @@ export const routes: Routes = [
     { path: 'incoming-payment',component: IncomingPaymentComponent,canActivate: [AuthGuard]  },
     { path: 'create-incoming-payment/:iPaymentGuid',component: CreateIncomingPaymentComponent,canActivate: [AuthGuard]  },
     { path: 'user-registration/:userGuid',component: UserRegistrationComponent,canActivate: [AuthGuard]  },
+     { path: 'outgoing-payment',component: OutgoingPaymentComponent,canActivate: [AuthGuard]  },
+    { path: 'create-outgoing-payment',component: CreateOutgoingPaymentComponent,canActivate: [AuthGuard]  },
+     { path: 'create-outgoing-payment/:oPaymentGuid',component: CreateOutgoingPaymentComponent,canActivate: [AuthGuard]  },
+     { path: 'create-plot',component: CreatePlotComponent,canActivate: [AuthGuard]  },
     
 ];

@@ -82,7 +82,7 @@
   --default-font-family: "Space Grotesk", sans-serif;
   --default-font-weight: 400;
   --default-text-color: #011a42;
-  --default-border: #e2e8ee;
+  --default-border: #f1f7fc;
   --default-background: #f9f7fc;
   --menu-bg: #fff;
   --menu-prime-color: #302d36;
@@ -3912,7 +3912,7 @@
 .btn {
   font-size: 0.8125rem;
   border-radius: 0.3rem;
-  padding: 0.5rem 1.375rem;
+  /* padding: 0.5rem 0.2rem; */
   box-shadow: none;
   font-weight: 400;
 }
@@ -5723,7 +5723,7 @@
   width: 100%;
 }
 .card.custom-card .card-header {
-  padding: 1.125rem 1.25rem;
+  /* padding: 1.125rem 1.25rem; */
   background-color: transparent !important;
   border-block-end: 1px solid var(--default-border);
   display: flex;
@@ -9837,10 +9837,10 @@ caption {
 }
 .table th,
 .table td {
-  padding: 1rem 1.25rem;
+  padding: .5rem 0.25rem;
   vertical-align: middle;
   line-height: 1.462;
-  font-size: 0.875rem;
+  font-size: smaller;
   font-weight: 400;
 }
 .table thead tr th {
@@ -17598,6 +17598,7 @@ table.gridjs-table {
   text-align: start !important;
   font-size: 0.813rem !important;
   font-weight: 500 !important;
+  border-color: #f6f9ff !important;
 }
 .gridjs-wrapper {
   box-shadow: none !important;
@@ -26516,3 +26517,34 @@ a.link-underline-dark {
 .focus-ring.focus-ring-dark:focus {
   --bs-focus-ring-color: rgba(var(--dark-rgb), var(--bs-focus-ring-opacity));
 }
+
+
+
+
+.full-page-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255,255,255,0.7);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-spinner {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #573299;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+

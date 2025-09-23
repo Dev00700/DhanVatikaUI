@@ -10,41 +10,14 @@
       <div class="col-xl-12">
         <div class="card custom-card">
           <div class="card-header justify-content-between">
-            <div *ngIf="selectedChips.length > 0">
-              <span
-                class="badge bg-primary"
-                style="margin-left: 1px"
-                *ngFor="let chip of selectedChips"
+            <div class="card-title">Outgoing Payment</div>
+            <div class="d-flex">
+              <a
+                [routerLink]="['/create-outgoing-payment']"
+                class="btn btn-sm btn-primary btn-wave waves-light waves-effect waves-light"
+                ><i class="ri-add-line fw-medium align-middle me-1"></i> Create
+                Outgoing Payment</a
               >
-                {{ chip.label }}
-                <button
-                  type="button"
-                  class="btn-close btn-close-white btn-sm ms-2"
-                  aria-label="Remove"
-                  (click)="removeChip(chip.key)"
-                ></button>
-              </span>
-            </div>
-
-            <!-- Search Bar -->
-
-            <!-- Filters Section -->
-
-            <!-- data-bs-toggle="modal"
-                data-bs-target="#filterModal" -->
-            <div
-              class="d-flex flex-wrap justify-content-end"
-              style="width: 100%"
-            >
-              <button
-                type="button"
-                class="btn btn-outline-primary"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#filtercanvas"
-                aria-controls="filtercanvas"
-              >
-                <i class="bi bi-funnel"></i> Filters
-              </button>
             </div>
           </div>
           <div class="card-body p-0">
@@ -53,6 +26,7 @@
                 <thead>
                   <tr>
                     <th scope="col">S.No.</th>
+                    <th scope="col">Expense</th>
                     <th scope="col">Payment Method</th>
                     <th scope="col">Amount</th>
                     <th scope="col">Date</th>
@@ -60,18 +34,19 @@
                     <th scope="col" *ngIf="issuperadmin == true">
                       Super Admin Approver
                     </th>
-                    <th scope="col">Action</th>
+                    <th scope="col">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr
                     class="invoice-list"
-                    *ngFor="let item of incomingpaymentlist; index as i"
+                    *ngFor="let item of outgoingpaymentlist; index as i"
                   >
                     <td class="text-primary">#{{ i + 1 }}</td>
+                    <td>{{ item.expenseCategoryName }}</td>
                     <td>{{ item.paymentMode }}</td>
                     <td>{{ item.amount | currency : "INR" : "symbol" }}</td>
-                    <td>{{ item.paymentDate | date : "dd-MM-yyyy" }}</td>
+                    <td>{{ item.expenseDate | date : "dd-MM-yyyy" }}</td>
                     <td *ngIf="issuperadmin == true || issuperadmin == false">
                       <span
                         ><a>
@@ -101,10 +76,10 @@
                                 >{{ item.adminApproveDate }}</span
                               >
 
-                              <span *ngIf="item.approveStatus == 0" &&
+                              <span *ngIf="item.approveStatus == 0"
                                 ><span
                                   (click)="
-                                    openapprovalmodel(item.iPaymentGuid, 1)
+                                    openapprovalmodel(item.oPaymentGuid, 1)
                                   "
                                   class="modal-effect badge bg-warning-transparent"
                                   data-bs-effect="effect-rotate-left"
@@ -151,7 +126,7 @@
                               <span *ngIf="item.approveStatusF == 0"
                                 ><span
                                   (click)="
-                                    openapprovalmodel(item.iPaymentGuid, 1)
+                                    openapprovalmodel(item.oPaymentGuid, 1)
                                   "
                                   class="modal-effect badge bg-warning-transparent"
                                   data-bs-effect="effect-rotate-left"
@@ -176,8 +151,8 @@
                         <a
                           class="btn btn-danger-light btn-icon ms-1 btn-sm invoice-btn"
                           [routerLink]="[
-                            '/create-incoming-payment',
-                            item.iPaymentGuid
+                            '/create-outgoing-payment',
+                            item.oPaymentGuid
                           ]"
                         >
                           <i class="ri-edit-line"></i>
@@ -192,8 +167,8 @@
                         <a
                           class="btn btn-danger-light btn-icon ms-1 btn-sm invoice-btn"
                           [routerLink]="[
-                            '/create-incoming-payment',
-                            item.iPaymentGuid
+                            '/create-outgoing-payment',
+                            item.oPaymentGuid
                           ]"
                         >
                           <i class="ri-eye-line"></i>
@@ -207,7 +182,7 @@
                       >
                         <a
                           class="modal-effect btn btn-danger-light btn-icon ms-1 btn-sm invoice-btn"
-                          (click)="openCancelModel(item.iPaymentGuid)"
+                          (click)="openCancelModel(item.oPaymentGuid)"
                           data-bs-effect="effect-rotate-left"
                           data-bs-toggle="modal"
                           href="#cancelModal"
@@ -256,7 +231,7 @@
             name="approveStatus"
             id="approveStatus"
             required
-            [(ngModel)]="approveincommingpayment.approveStatus"
+            [(ngModel)]="approveoutgoignpayment.approveStatus"
           >
             <option value="0">Select</option>
             <option value="1">Approve</option>
@@ -270,7 +245,7 @@
             required
             placeholder="Enter Remarks"
             rows="6"
-            [(ngModel)]="approveincommingpayment.approveRemarks"
+            [(ngModel)]="approveoutgoignpayment.approveRemarks"
           ></textarea>
         </div>
       </div>
@@ -278,7 +253,7 @@
         <button
           class="btn btn-primary"
           type="button"
-          (click)="incommingpaymentapprove()"
+          (click)="outgoingpaymentapprove()"
           [disabled]="loading"
         >
           <span
@@ -304,7 +279,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="cancelModalLabel">
-          Cancel Incoming Payment
+          Cancel Outgoing Payment
         </h5>
         <button
           type="button"
@@ -320,7 +295,7 @@
           required
           placeholder="Enter Remarks"
           rows="6"
-          [(ngModel)]="cancelincommingpayment.remarks"
+          [(ngModel)]="canceloutgoingpayment.remarks"
         ></textarea>
       </div>
       <div class="modal-footer">
@@ -332,124 +307,6 @@
         </button>
       </div>
     </div>
-  </div>
-</div>
-
-<!-- Filter Modal -->
-<div class="modal fade" id="filterModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content rounded-3 shadow">
-      <div class="modal-header">
-        <h5 class="modal-title">Filter Options</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-        ></button>
-      </div>
-
-      <div class="modal-body"></div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div
-  class="offcanvas offcanvas-start"
-  data-bs-scroll="true"
-  tabindex="-1"
-  id="filtercanvas"
-  aria-labelledby="filtercanvasLabel"
->
-  <div class="offcanvas-header border-bottom border-block-end-dashed">
-    <h5 class="offcanvas-title" id="filtercanvasLabel">Notifications</h5>
-    <button
-      type="button"
-      class="btn-close"
-      data-bs-dismiss="offcanvas"
-      aria-label="Close"
-    ></button>
-  </div>
-  <div class="offcanvas-body">
-    <form class="row">
-      <!-- Year -->
-      <div class="col-md-12">
-        <label class="form-label fw-bold">Year</label>
-        <select
-          class="form-select"
-          [(ngModel)]="filters.year"
-          name="year"
-          (change)="GetMonthDataOnYearchange()"
-        >
-          <option *ngFor="let y of this.yearlist" [value]="y.value">
-            {{ y.text }}
-          </option>
-        </select>
-      </div>
-
-      <!-- Month -->
-      <div class="col-md-12">
-        <label class="form-label fw-bold">Month</label>
-        <select class="form-select" [(ngModel)]="filters.month" name="month">
-          <option *ngFor="let m of this.monthlist" [value]="m.value">
-            {{ m.text }}
-          </option>
-        </select>
-      </div>
-
-      <!-- Customer -->
-      <div class="col-md-12">
-        <label class="form-label fw-bold">Payment Type</label>
-        <input
-          type="text"
-          class="form-control"
-          [(ngModel)]="filters.paymentType"
-          name="paymentType"
-          placeholder="Search by Payment Type"
-        />
-      </div>
-
-      <div class="col-md-12">
-        <label class="form-label fw-bold">Payment Source</label>
-        <select
-          class="form-select"
-          [(ngModel)]="filters.paymentsource"
-          name="paymentsource"
-        >
-          <option *ngFor="let m of this.paymentSourceList" [value]="m.value">
-            {{ m.text }}
-          </option>
-        </select>
-      </div>
-
-      <div class="col-md-12">
-        <label class="form-label fw-bold">Payment Mode</label>
-        <select
-          class="form-select"
-          [(ngModel)]="filters.paymentmode"
-          name="paymentmode"
-        >
-          <option *ngFor="let m of this.paymentModeList" [value]="m.value">
-            {{ m.text }}
-          </option>
-        </select>
-      </div>
-      <div class="col-md-12" style="margin-top: 2%; text-align: end">
-        <button
-          type="button"
-          class="btn btn-primary"
-          (click)="applyFilters()"
-          data-bs-dismiss="offcanvas"
-        >
-          Apply Filters
-        </button>
-      </div>
-    </form>
   </div>
 </div>
 

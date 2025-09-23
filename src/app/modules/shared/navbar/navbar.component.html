@@ -1,14 +1,3 @@
-<div class="progress-top-bar"></div>
-
-<!-- Loader -->
-<div id="loader">
-  <img
-    src="https://sprukomarket.com/products/html/bootstrap/vyzor/dist/assets/images/media/loader.svg"
-    alt=""
-  />
-</div>
-<!-- Loader -->
-
 <div class="page">
   <!-- app-header -->
   <header class="app-header sticky" id="header">
@@ -27,15 +16,16 @@
         <!-- End::header-element -->
 
         <!-- Start::header-element -->
-        <!-- <div class="header-element mx-lg-0 mx-2">
+        <div class="header-element mx-lg-0 mx-2 d-md-none">
           <a
             aria-label="Hide Sidebar"
             class="sidemenu-toggle header-link animated-arrow hor-toggle horizontal-navtoggle"
             data-bs-toggle="sidebar"
             href="javascript:void(0);"
+            (click)="toggleSidebar()"
             ><span></span
           ></a>
-        </div> -->
+        </div>
         <!-- End::header-element -->
       </div>
       <!-- End::header-content-left -->
@@ -254,7 +244,14 @@
     </div>
   </header>
 
-  <aside class="app-sidebar sticky" id="sidebar">
+  <aside class="app-sidebar sticky" id="sidebar" [class.open]="isSidebarOpen">
+    <div class="sidebar-close-icon d-md-none" *ngIf="isSidebarOpen">
+      <button (click)="toggleSidebar()" class="close-btn">
+        &#10005;
+        <!-- Unicode for X (close) -->
+      </button>
+    </div>
+
     <div class="main-sidebar-header">
       <a
         href="javascript:void(0)"

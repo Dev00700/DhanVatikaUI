@@ -6,6 +6,7 @@ export interface MenuItem {
   icon: string;
   menuCode: string;
   parentId: number;
+  checked?:boolean;
   children?: MenuItem[]; // For nested menu structure
 }
 
