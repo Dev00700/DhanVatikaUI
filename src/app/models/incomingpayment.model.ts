@@ -14,6 +14,10 @@ export interface AddIncomingPaymentDto extends BaseDto {
     image?: string | null;
     imageUrl?: string | null;
     isDisabled?: boolean | false;
+    paymentSourceName?: string | null;
+    paymentMode?: string | null;
+    approveStatus: number | 0;
+    approveStatusF: number | 0;
 }
 
 

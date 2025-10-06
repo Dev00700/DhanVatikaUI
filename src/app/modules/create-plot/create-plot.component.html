@@ -6,7 +6,7 @@
       <div class="col-xl-12">
         <div class="card custom-card">
           <div class="card-header">
-            <div class="card-title">Create Project</div>
+            <div class="card-title">Create Plot</div>
           </div>
           <form (ngSubmit)="onSubmit()" #plotForm="ngForm">
             <div class="card-body">
@@ -17,6 +17,7 @@
                     type="text"
                     class="form-control"
                     id="plotCode"
+                    name="plotCode"
                     [(ngModel)]="addplot.plotCode"
                     disabled
                   />
@@ -27,6 +28,7 @@
                     type="text"
                     class="form-control"
                     id="plotName"
+                    name="plotName"
                     [(ngModel)]="addplot.plotName"
                     placeholder="Plot Name"
                   />
@@ -37,6 +39,7 @@
                     type="text"
                     class="form-control"
                     id="plotType"
+                    name="plotType"
                     [(ngModel)]="addplot.plotType"
                     placeholder="Enter Plot Type"
                   />
@@ -50,6 +53,7 @@
                     rows="3"
                     placeholder="Enter Description"
                     id="description"
+                    name="description"
                     [(ngModel)]="addplot.description"
                     style="margin: 0"
                   >
@@ -65,6 +69,7 @@
                     class="form-control"
                     id="locationId"
                     placeholder="Enter Location"
+                    name="locationId"
                     [(ngModel)]="addplot.locationId"
                   >
                     <option *ngFor="let c of locationList" [value]="c.value">
@@ -79,6 +84,7 @@
                     type="text"
                     class="form-control"
                     id="address"
+                    name="Address"
                     placeholder="Address"
                     [(ngModel)]="addplot.address"
                   />
@@ -90,8 +96,33 @@
                     type="number"
                     class="form-control"
                     id="areaSize"
+                    name="areaSize"
                     placeholder="Enter Area Size"
                     [(ngModel)]="addplot.areaSize"
+                  />
+                </div>
+
+                <div class="col-xl-4">
+                  <label for="latitude" class="form-label">Latitude :</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="latitude"
+                    name="latitude"
+                    placeholder="Enter Latitude"
+                    [(ngModel)]="addplot.latitude"
+                  />
+                </div>
+
+                <div class="col-xl-4">
+                  <label for="longitude" class="form-label">Longtitude :</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="longitude"
+                    name="longitude"
+                    placeholder="Enter Longtitude"
+                    [(ngModel)]="addplot.longitude"
                   />
                 </div>
 
@@ -103,6 +134,7 @@
                   <select
                     class="form-control"
                     id="unitTypeId"
+                    name="unitTypeId"
                     placeholder="Enter Unit Type"
                     [(ngModel)]="addplot.unitTypeId"
                   >
@@ -118,6 +150,7 @@
                     type="number"
                     class="form-control"
                     id="price"
+                    name="price"
                     placeholder="Enter Price"
                     [(ngModel)]="addplot.price"
                   />
@@ -129,6 +162,7 @@
                     type="text"
                     class="form-control"
                     id="facing"
+                    name="facing"
                     placeholder="Enter Facing"
                     [(ngModel)]="addplot.facing"
                   />
@@ -142,6 +176,7 @@
                     type="text"
                     class="form-control"
                     id="nearbyLandmarks"
+                    name="nearbyLandmarks"
                     placeholder="Enter Landmark"
                     [(ngModel)]="addplot.nearbyLandmarks"
                   />
@@ -153,30 +188,9 @@
                     type="text"
                     class="form-control"
                     id="remarks"
+                    name="remarks"
                     placeholder="Enter Remarks"
                     [(ngModel)]="addplot.remarks"
-                  />
-                </div>
-
-                <div class="col-xl-4">
-                  <label for="latitude" class="form-label">Latitude :</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="latitude"
-                    placeholder="Enter Latitude"
-                    [(ngModel)]="addplot.latitude"
-                  />
-                </div>
-
-                <div class="col-xl-4">
-                  <label for="longitude" class="form-label">Longtitude :</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="longitude"
-                    placeholder="Enter Longtitude"
-                    [(ngModel)]="addplot.longitude"
                   />
                 </div>
 
@@ -187,14 +201,45 @@
                     style="height: 38px"
                     class="form-control"
                     name="filepond"
+                    (change)="onFileSelected($event)"
                     multiple
                   />
                 </div>
+
+                <div class="col-xl-12" style="display: inline-flex">
+                  <div *ngFor="let img of imagePreviews">
+                    <img
+                      [src]="img"
+                      alt="Preview"
+                      width="100"
+                      height="100"
+                      style="margin: 5px; border-radius: 8px"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="card-footer">
-              <button class="btn btn-primary-light btn-wave ms-auto float-end">
-                Create Project
+            <div class="card-footer text-end">
+              <button
+                type="submit"
+                [disabled]="loading"
+                class="btn btn-success m-1"
+              >
+                <span
+                  *ngIf="loading"
+                  class="spinner-border spinner-border-sm me-2"
+                ></span>
+                Submit
+                <i
+                  class="ri-file-pdf-line ms-1 align-middle d-inline-block"
+                ></i>
+              </button>
+              <button
+                type="button"
+                class="btn btn-warning m-1"
+                [routerLink]="['/plot']"
+              >
+                Cancel<i class="ri-cancel-2-line ms-1 d-inline-block"></i>
               </button>
             </div>
           </form>

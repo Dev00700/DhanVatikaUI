@@ -32,7 +32,6 @@ export class CreateIncomingPaymentComponent {
   loadingPaymentSouceList = false;
   paymentSourceList: any[] = [];
   isActiveDisabled = true;
-
   selectedFile: File | null = null;
 
   constructor(
@@ -44,6 +43,8 @@ export class CreateIncomingPaymentComponent {
   ) { }
 
   ngOnInit() {
+    this.addincomingpayment.approveStatus = 0;
+    this.addincomingpayment.approveStatusF = 0;
     this.fetchPaymentModeList();
     this.fetchPaymentSourceList();
     this.fetchincomingPaymentGuidFromRoute();

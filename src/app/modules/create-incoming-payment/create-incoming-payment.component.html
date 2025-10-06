@@ -171,7 +171,10 @@
             </div>
             <div class="card-footer text-end">
               <button
-                *ngIf="addincomingpayment.isDisabled != true"
+                *ngIf="
+                  addincomingpayment.approveStatus == 0 &&
+                  addincomingpayment.approveStatusF == 0
+                "
                 type="submit"
                 [disabled]="loading"
                 class="btn btn-success m-1"

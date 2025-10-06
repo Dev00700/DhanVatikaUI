@@ -42,6 +42,8 @@ export class CreateOutgoingPaymentComponent {
   ) { }
 
   ngOnInit() {
+    this.addoutgoingpayment.approveStatus = 0;
+    this.addoutgoingpayment.approveStatusF = 0;
     this.fetchPaymentModeList();
     this.fetchExpenseCatList();
     this.fetchoutgoingPaymentGuidFromRoute();
@@ -138,14 +140,6 @@ export class CreateOutgoingPaymentComponent {
       // Agar image select nahi kiya, to pehle se image bheje ya blank
       this.saveOutgoingPayment(this.addoutgoingpayment.image || "");
     }
-
-
-
-
-
-
-
-
   }
 
   saveOutgoingPayment(imageName: string) {

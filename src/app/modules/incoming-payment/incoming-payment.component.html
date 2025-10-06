@@ -26,12 +26,6 @@
               </span>
             </div>
 
-            <!-- Search Bar -->
-
-            <!-- Filters Section -->
-
-            <!-- data-bs-toggle="modal"
-                data-bs-target="#filterModal" -->
             <div
               class="d-flex flex-wrap justify-content-end"
               style="width: 100%"
@@ -42,9 +36,17 @@
                 data-bs-toggle="offcanvas"
                 data-bs-target="#filtercanvas"
                 aria-controls="filtercanvas"
+                style="margin-right: 1%"
               >
                 <i class="bi bi-funnel"></i> Filters
               </button>
+
+              <a
+                [routerLink]="['/create-incoming-payment']"
+                class="btn btn-sm btn-primary btn-wave waves-light waves-effect waves-light"
+                ><i class="ri-add-line fw-medium align-middle me-1"></i> Create
+                Incoming Payment</a
+              >
             </div>
           </div>
           <div class="card-body p-0">
@@ -72,7 +74,7 @@
                     <td>{{ item.paymentMode }}</td>
                     <td>{{ item.amount | currency : "INR" : "symbol" }}</td>
                     <td>{{ item.paymentDate | date : "dd-MM-yyyy" }}</td>
-                    <td *ngIf="issuperadmin == true || issuperadmin == false">
+                    <td>
                       <span
                         ><a>
                           <div
@@ -101,7 +103,11 @@
                                 >{{ item.adminApproveDate }}</span
                               >
 
-                              <span *ngIf="item.approveStatus == 0" &&
+                              <span
+                                *ngIf="
+                                  item.approveStatus == 0 &&
+                                  this.isAdmin == true
+                                "
                                 ><span
                                   (click)="
                                     openapprovalmodel(item.iPaymentGuid, 1)
@@ -111,8 +117,17 @@
                                   data-bs-toggle="modal"
                                   href="#approvalModal"
                                   style="cursor: pointer"
-                                  >Pending</span
+                                  >Pending Approval</span
                                 ></span
+                              >
+
+                              <span
+                                *ngIf="
+                                  item.approveStatus == 0 &&
+                                  this.isAdmin == false
+                                "
+                                class="fw-medium text-orange"
+                                >Not Yet Approved</span
                               >
                             </div>
                           </div>
@@ -174,7 +189,7 @@
                         "
                       >
                         <a
-                          class="btn btn-danger-light btn-icon ms-1 btn-sm invoice-btn"
+                          class="btn btn-success-light btn-icon ms-1 btn-sm invoice-btn"
                           [routerLink]="[
                             '/create-incoming-payment',
                             item.iPaymentGuid
@@ -190,7 +205,7 @@
                         "
                       >
                         <a
-                          class="btn btn-danger-light btn-icon ms-1 btn-sm invoice-btn"
+                          class="btn btn-secondary-light btn-icon ms-1 btn-sm invoice-btn"
                           [routerLink]="[
                             '/create-incoming-payment',
                             item.iPaymentGuid
@@ -215,6 +230,43 @@
                           <i class="ri-close-line"></i>
                         </a>
                       </span>
+
+                      <span>
+                        <a
+                          (click)="generatePDF(item.iPaymentGuid)"
+                          class="btn btn-primary-light btn-icon btn-sm btn-icon ms-1 btn-sm invoice-btn"
+                        >
+                          <i class="ri-file-pdf-2-fill"></i>
+                        </a>
+                      </span>
+
+                      <span
+                        title="Download Image"
+                        class="btn btn-warning-light btn-icon btn-sm btn-icon ms-1 btn-sm invoice-btn"
+                        *ngIf="item.image"
+                        (click)="downloadImage(item.image)"
+                      >
+                        <i class="ri-download-line"></i>
+                      </span>
+
+                      <!-- <button
+                        class="btn btn-success mt-3"
+                        (click)="generatePDF()"
+                      >
+                        Download PDF
+                      </button> -->
+
+                      <!-- <span *ngIf="item.imageUrl">
+  <a
+    [href]="item.imageUrl"
+    download
+    class="btn btn-primary btn-icon ms-1 btn-sm"
+    title="Download Image"
+    target="_blank"
+  >
+    <i class="ri-download-2-line"></i>
+  </a>
+</span> -->
                     </td>
                   </tr>
                 </tbody>
@@ -452,6 +504,8 @@
     </form>
   </div>
 </div>
+
+<!-- Button -->
 
 <!-- End::app-content -->
 <app-footer></app-footer>

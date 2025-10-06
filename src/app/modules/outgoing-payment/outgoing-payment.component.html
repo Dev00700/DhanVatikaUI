@@ -10,8 +10,37 @@
       <div class="col-xl-12">
         <div class="card custom-card">
           <div class="card-header justify-content-between">
-            <div class="card-title">Outgoing Payment</div>
-            <div class="d-flex">
+            <div *ngIf="selectedChips.length > 0">
+              <span
+                class="badge bg-primary"
+                style="margin-left: 1px"
+                *ngFor="let chip of selectedChips"
+              >
+                {{ chip.label }}
+                <button
+                  type="button"
+                  class="btn-close btn-close-white btn-sm ms-2"
+                  aria-label="Remove"
+                  (click)="removeChip(chip.key)"
+                ></button>
+              </span>
+            </div>
+
+            <div
+              class="d-flex flex-wrap justify-content-end"
+              style="width: 100%"
+            >
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#filtercanvas"
+                aria-controls="filtercanvas"
+                style="margin-right: 1%"
+              >
+                <i class="bi bi-funnel"></i> Filters
+              </button>
+
               <a
                 [routerLink]="['/create-outgoing-payment']"
                 class="btn btn-sm btn-primary btn-wave waves-light waves-effect waves-light"
@@ -47,7 +76,7 @@
                     <td>{{ item.paymentMode }}</td>
                     <td>{{ item.amount | currency : "INR" : "symbol" }}</td>
                     <td>{{ item.expenseDate | date : "dd-MM-yyyy" }}</td>
-                    <td *ngIf="issuperadmin == true || issuperadmin == false">
+                    <td>
                       <span
                         ><a>
                           <div
@@ -76,7 +105,11 @@
                                 >{{ item.adminApproveDate }}</span
                               >
 
-                              <span *ngIf="item.approveStatus == 0"
+                              <span
+                                *ngIf="
+                                  item.approveStatus == 0 &&
+                                  this.isAdmin == true
+                                "
                                 ><span
                                   (click)="
                                     openapprovalmodel(item.oPaymentGuid, 1)
@@ -86,8 +119,17 @@
                                   data-bs-toggle="modal"
                                   href="#approvalModal"
                                   style="cursor: pointer"
-                                  >Pending</span
+                                  >Pending Approval</span
                                 ></span
+                              >
+
+                              <span
+                                *ngIf="
+                                  item.approveStatus == 0 &&
+                                  this.isAdmin == false
+                                "
+                                class="fw-medium text-orange"
+                                >Not Yet Approved</span
                               >
                             </div>
                           </div>
@@ -149,7 +191,7 @@
                         "
                       >
                         <a
-                          class="btn btn-danger-light btn-icon ms-1 btn-sm invoice-btn"
+                          class="btn btn-success-light btn-icon ms-1 btn-sm invoice-btn"
                           [routerLink]="[
                             '/create-outgoing-payment',
                             item.oPaymentGuid
@@ -165,7 +207,7 @@
                         "
                       >
                         <a
-                          class="btn btn-danger-light btn-icon ms-1 btn-sm invoice-btn"
+                          class="btn btn-secondary-light btn-icon ms-1 btn-sm invoice-btn"
                           [routerLink]="[
                             '/create-outgoing-payment',
                             item.oPaymentGuid
@@ -189,6 +231,24 @@
                         >
                           <i class="ri-close-line"></i>
                         </a>
+                      </span>
+
+                      <span>
+                        <a
+                          (click)="generatePDF(item.oPaymentGuid)"
+                          class="btn btn-primary-light btn-icon btn-sm btn-icon ms-1 btn-sm invoice-btn"
+                        >
+                          <i class="ri-file-pdf-2-fill"></i>
+                        </a>
+                      </span>
+
+                      <span
+                        title="Download Image"
+                        class="btn btn-warning-light btn-icon btn-sm btn-icon ms-1 btn-sm invoice-btn"
+                        *ngIf="item.image"
+                        (click)="downloadImage(item.image)"
+                      >
+                        <i class="ri-download-line"></i>
                       </span>
                     </td>
                   </tr>
@@ -309,6 +369,112 @@
     </div>
   </div>
 </div>
+
+<!-- Filter Modal -->
+<div class="modal fade" id="filterModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-3 shadow">
+      <div class="modal-header">
+        <h5 class="modal-title">Filter Options</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+
+      <div class="modal-body"></div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="offcanvas offcanvas-start"
+  data-bs-scroll="true"
+  tabindex="-1"
+  id="filtercanvas"
+  aria-labelledby="filtercanvasLabel"
+>
+  <div class="offcanvas-header border-bottom border-block-end-dashed">
+    <h5 class="offcanvas-title" id="filtercanvasLabel">Notifications</h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body">
+    <form class="row">
+      <!-- Year -->
+      <div class="col-md-12">
+        <label class="form-label fw-bold">Year</label>
+        <select
+          class="form-select"
+          [(ngModel)]="filters.year"
+          name="year"
+          (change)="GetMonthDataOnYearchange()"
+        >
+          <option *ngFor="let y of this.yearlist" [value]="y.value">
+            {{ y.text }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Month -->
+      <div class="col-md-12">
+        <label class="form-label fw-bold">Month</label>
+        <select class="form-select" [(ngModel)]="filters.month" name="month">
+          <option *ngFor="let m of this.monthlist" [value]="m.value">
+            {{ m.text }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-md-12">
+        <label class="form-label fw-bold">Expense Title</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="filters.ExpenseTitle"
+          name="ExpenseTitle"
+          placeholder="Search by Expense Title"
+        />
+      </div>
+
+      <div class="col-md-12">
+        <label class="form-label fw-bold">Payment Mode</label>
+        <select
+          class="form-select"
+          [(ngModel)]="filters.paymentmode"
+          name="paymentmode"
+        >
+          <option *ngFor="let m of this.paymentModeList" [value]="m.value">
+            {{ m.text }}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-12" style="margin-top: 2%; text-align: end">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="applyFilters()"
+          data-bs-dismiss="offcanvas"
+        >
+          Apply Filters
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Button -->
 
 <!-- End::app-content -->
 <app-footer></app-footer>

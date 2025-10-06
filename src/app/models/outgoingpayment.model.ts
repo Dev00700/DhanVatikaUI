@@ -12,6 +12,10 @@ export interface AddOutgoingPaymentDto extends BaseDto {
     image?: string | null;
     imageUrl?: string | null;
     isDisabled?: boolean | false;
+    expenseCategoryName?: string | null;
+    paymentMode?: string | null;
+    approveStatus: number | 0;
+    approveStatusF: number | 0;
 }
 
 
@@ -46,4 +50,14 @@ export interface ApproveOutgoingPaymentReqDto {
 export interface CancelOutgoingPaymentReqDto {
     OPaymentGuid: string
     remarks: string
+}
+
+export interface OutgoingPaymentReqDto {
+    IPaymentGuid: string,
+    PaymentType?: string,
+    PaymentModeId?: number,
+    PaymentSource?: number,
+    PaymentDate?: Date,
+    Year?: number | 0,
+    Month?: number
 }
