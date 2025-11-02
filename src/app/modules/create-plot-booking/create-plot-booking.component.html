@@ -1,0 +1,1121 @@
+<app-navbar></app-navbar>
+<div class="main-content app-content">
+  <div class="container-fluid page-container main-body-container">
+    <!-- Start::page-header -->
+    <div class="page-header-breadcrumb mb-3">
+      <div class="d-flex align-center justify-content-between flex-wrap">
+        <h1 class="page-title fw-medium fs-18 mb-0">Create Plot Booking</h1>
+      </div>
+    </div>
+    <!-- End::page-header -->
+
+    <!-- Start::row-1 -->
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card custom-card !border-0">
+            <form (ngSubmit)="onSubmit()" #plotbookingForm="ngForm">
+              <div
+                class="accordion accordion-primary"
+                id="accordionPrimaryExample"
+              >
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingPrimaryOne">
+                    <button
+                      class="accordion-button"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapsePrimaryOne"
+                      aria-expanded="true"
+                      aria-controls="collapsePrimaryOne"
+                    >
+                      Personal Info
+                    </button>
+                  </h2>
+                  <div
+                    id="collapsePrimaryOne"
+                    class="accordion-collapse collapse show"
+                    aria-labelledby="headingPrimaryOne"
+                    data-bs-parent="#accordionPrimaryExample"
+                  >
+                    <div class="accordion-body">
+                      <div class="row gy-4">
+                        <div class="col-xl-3">
+                          <label for="customerName" class="form-label"
+                            >Customer Name :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="customerName"
+                            name="customerName"
+                            [(ngModel)]="addplotbookingreq.customerName"
+                          />
+                        </div>
+                        <div class="col-xl-3">
+                          <label for="bookingDate" class="form-label"
+                            >Booking Date :</label
+                          >
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="bookingDate"
+                            name="bookingDate"
+                            [(ngModel)]="addplotbookingreq.bookingDate"
+                          />
+                        </div>
+                        <div class="col-xl-3">
+                          <label for="occupation" class="form-label"
+                            >Occupation :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="occupation"
+                            name="occupation"
+                            [(ngModel)]="addplotbookingreq.occupation"
+                          />
+                        </div>
+                        <div class="col-xl-3">
+                          <label for="dateOfBirth" class="form-label">
+                            Date Of Birth :</label
+                          >
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="dateOfBirth"
+                            name="dateOfBirth"
+                            [(ngModel)]="addplotbookingreq.dateOfBirth"
+                          />
+                        </div>
+
+                        <div class="col-xl-3">
+                          <label for="anniversary" class="form-label"
+                            >Anniversary :</label
+                          >
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="anniversary"
+                            name="anniversary"
+                            [(ngModel)]="addplotbookingreq.anniversary"
+                          />
+                        </div>
+
+                        <div class="col-xl-3">
+                          <label for="contactNo1" class="form-label"
+                            >Mobile No :</label
+                          >
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="contactNo1"
+                            name="contactNo1"
+                            [(ngModel)]="addplotbookingreq.contactNo1"
+                          />
+                        </div>
+
+                        <div class="col-xl-3">
+                          <label for="contactNo2" class="form-label"
+                            >Alternate Mobile No :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="contactNo2"
+                            name="contactNo2"
+                            [(ngModel)]="addplotbookingreq.contactNo2"
+                          />
+                        </div>
+
+                        <div class="col-xl-3">
+                          <label for="postalAddress" class="form-label"
+                            >Postal Address :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="postalAddress"
+                            name="postalAddress"
+                            [(ngModel)]="addplotbookingreq.postalAddress"
+                          />
+                        </div>
+
+                        <div class="col-xl-3">
+                          <label for="emailAddress" class="form-label"
+                            >Email Address :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="emailAddress"
+                            name="emailAddress"
+                            [(ngModel)]="addplotbookingreq.emailAddress"
+                          />
+                        </div>
+
+                        <div class="col-xl-3">
+                          <label for="city" class="form-label">City :</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="city"
+                            name="city"
+                            [(ngModel)]="addplotbookingreq.city"
+                          />
+                        </div>
+
+                        <div class="col-xl-3">
+                          <label for="pinCode" class="form-label"
+                            >PinCode :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="pinCode"
+                            name="pinCode"
+                            [(ngModel)]="addplotbookingreq.pinCode"
+                          />
+                        </div>
+
+                        <div class="col-xl-3">
+                          <label for="state" class="form-label">State :</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="state"
+                            name="state"
+                            [(ngModel)]="addplotbookingreq.state"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingPrimaryTwo">
+                    <button
+                      class="accordion-button collapsed"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapsePrimaryTwo"
+                      aria-expanded="false"
+                      aria-controls="collapsePrimaryTwo"
+                    >
+                      Reference Details
+                    </button>
+                  </h2>
+                  <div
+                    id="collapsePrimaryTwo"
+                    class="accordion-collapse collapse"
+                    aria-labelledby="headingPrimaryTwo"
+                    data-bs-parent="#accordionPrimaryExample"
+                  >
+                    <div class="accordion-body">
+                      <div class="row mb-4">
+                        <div class="col-xl-4">
+                          <label for="referenceName1" class="form-label"
+                            >Name 1 :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="referenceName1"
+                            name="referenceName1"
+                            [(ngModel)]="addplotbookingreq.referenceName1"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="referenceContact1" class="form-label"
+                            >Contact No 1 :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="referenceContact1"
+                            name="referenceContact1"
+                            [(ngModel)]="addplotbookingreq.referenceContact1"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="referenceName2" class="form-label"
+                            >Name 2 :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="referenceName2"
+                            name="referenceName2"
+                            [(ngModel)]="addplotbookingreq.referenceName2"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="referenceContact2" class="form-label"
+                            >Contact No. 2 :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="referenceContact2"
+                            name="referenceContact2"
+                            [(ngModel)]="addplotbookingreq.referenceContact2"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingPrimaryThree">
+                    <button
+                      class="accordion-button collapsed"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapsePrimaryThree"
+                      aria-expanded="false"
+                      aria-controls="collapsePrimaryThree"
+                    >
+                      Nominee Details
+                    </button>
+                  </h2>
+                  <div
+                    id="collapsePrimaryThree"
+                    class="accordion-collapse collapse"
+                    aria-labelledby="headingPrimaryThree"
+                    data-bs-parent="#accordionPrimaryExample"
+                  >
+                    <div class="accordion-body">
+                      <div class="row mb-4">
+                        <div class="col-xl-4">
+                          <label for="nomineeName" class="form-label"
+                            >Nominee's Name :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="nomineeName"
+                            name="nomineeName"
+                            [(ngModel)]="addplotbookingreq.nomineeName"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="nomineeAddress" class="form-label"
+                            >Address :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="nomineeAddress"
+                            name="nomineeAddress"
+                            [(ngModel)]="addplotbookingreq.nomineeAddress"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="nomineePhoneNo" class="form-label"
+                            >Phone No. :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="nomineePhoneNo"
+                            name="nomineePhoneNo"
+                            [(ngModel)]="addplotbookingreq.nomineePhoneNo"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="nomineeRelation" class="form-label"
+                            >Relation :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="nomineeRelation"
+                            name="nomineeRelation"
+                            [(ngModel)]="addplotbookingreq.nomineeRelation"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="nomineeAge" class="form-label"
+                            >Age :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="nomineeAge"
+                            name="nomineeAge"
+                            [(ngModel)]="addplotbookingreq.nomineeAge"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingPrimaryFour">
+                    <button
+                      class="accordion-button collapsed"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapsePrimaryFour"
+                      aria-expanded="false"
+                      aria-controls="collapsePrimaryFour"
+                    >
+                      Project Details
+                    </button>
+                  </h2>
+                  <div
+                    id="collapsePrimaryFour"
+                    class="accordion-collapse collapse"
+                    aria-labelledby="headingPrimaryFour"
+                    data-bs-parent="#accordionPrimaryExample"
+                  >
+                    <div class="accordion-body">
+                      <div class="row mb-4">
+                        <div class="col-xl-4">
+                          <label for="nomineeName" class="form-label"
+                            >Project Name :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="projectName"
+                            name="projectName"
+                            [(ngModel)]="addplotbookingreq.projectName"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="block" class="form-label">Block :</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="block"
+                            name="block"
+                            [(ngModel)]="addplotbookingreq.block"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="plotCity" class="form-label"
+                            >City :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="plotCity"
+                            name="plotCity"
+                            [(ngModel)]="addplotbookingreq.plotCity"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="khasraNo" class="form-label"
+                            >Khasra No. :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="khasraNo"
+                            name="khasraNo"
+                            [(ngModel)]="addplotbookingreq.khasraNo"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="plotNo" class="form-label"
+                            >Plot No.(s) :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="plotNo"
+                            name="plotNo"
+                            [(ngModel)]="addplotbookingreq.plotNo"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="plotSize" class="form-label"
+                            >Size :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="plotSize"
+                            name="plotSize"
+                            [(ngModel)]="addplotbookingreq.plotSize"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="areaSqFt" class="form-label"
+                            >Area (in square feet) :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="areaSqFt"
+                            name="areaSqFt"
+                            [(ngModel)]="addplotbookingreq.areaSqFt"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="ratePerSqFt" class="form-label"
+                            >Rate (Per Square Feet) :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="ratePerSqFt"
+                            name="ratePerSqFt"
+                            [(ngModel)]="addplotbookingreq.ratePerSqFt"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="totalCost" class="form-label"
+                            >Total Cost (In Rupees) :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="totalCost"
+                            name="totalCost"
+                            [(ngModel)]="addplotbookingreq.totalCost"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingPrimaryFive">
+                    <button
+                      class="accordion-button collapsed"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapsePrimaryFive"
+                      aria-expanded="false"
+                      aria-controls="collapsePrimaryFive"
+                    >
+                      Booking Details
+                    </button>
+                  </h2>
+                  <div
+                    id="collapsePrimaryFive"
+                    class="accordion-collapse collapse"
+                    aria-labelledby="headingPrimaryFive"
+                    data-bs-parent="#accordionPrimaryExample"
+                  >
+                    <div class="accordion-body">
+                      <div class="row mb-4">
+                        <div class="col-xl-4">
+                          <label for="bookingDate" class="form-label"
+                            >Booking Date :</label
+                          >
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="bookingDate"
+                            name="bookingDate"
+                            [(ngModel)]="addplotbookingreq.bookingDate"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="tokenAmount" class="form-label"
+                            >Token Amount :</label
+                          >
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="tokenAmount"
+                            name="tokenAmount"
+                            [(ngModel)]="addplotbookingreq.tokenAmount"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="downPaymentDate" class="form-label"
+                            >Down Payment Date :</label
+                          >
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="downPaymentDate"
+                            name="downPaymentDate"
+                            [(ngModel)]="addplotbookingreq.downPaymentDate"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="khasraNo" class="form-label"
+                            >Down Payment Amount :</label
+                          >
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="downPaymentAmount"
+                            name="downPaymentAmount"
+                            [(ngModel)]="addplotbookingreq.downPaymentAmount"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="numberOfInstallments" class="form-label"
+                            >Number of Installments :</label
+                          >
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="numberOfInstallments"
+                            name="numberOfInstallments"
+                            [(ngModel)]="addplotbookingreq.numberOfInstallments"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="emiAmount" class="form-label"
+                            >EMI Amount :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="emiAmount"
+                            name="emiAmount"
+                            [(ngModel)]="addplotbookingreq.emiAmount"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="remarks" class="form-label"
+                            >Remarks (if any) :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="remarks"
+                            name="remarks"
+                            [(ngModel)]="addplotbookingreq.remarks"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingPrimarySix">
+                    <button
+                      class="accordion-button collapsed"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapsePrimarySix"
+                      aria-expanded="false"
+                      aria-controls="collapsePrimarySix"
+                    >
+                      Other Details
+                    </button>
+                  </h2>
+                  <div
+                    id="collapsePrimarySix"
+                    class="accordion-collapse collapse"
+                    aria-labelledby="headingPrimarySix"
+                    data-bs-parent="#accordionPrimaryExample"
+                  >
+                    <div class="accordion-body">
+                      <div class="row mb-4">
+                        <div class="col-xl-4">
+                          <label for="executiveId" class="form-label"
+                            >Executive's Id :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="executiveId"
+                            name="executiveId"
+                            [(ngModel)]="addplotbookingreq.executiveId"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="executiveName" class="form-label"
+                            >Executive Name :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="executiveName"
+                            name="executiveName"
+                            [(ngModel)]="addplotbookingreq.executiveName"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="executiveName" class="form-label"
+                            >Executive Signature :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="executiveSignature"
+                            name="executiveSignature"
+                            [(ngModel)]="addplotbookingreq.executiveSignature"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="purchaserName" class="form-label"
+                            >Purchase Name :</label
+                          >
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="purchaserName"
+                            name="purchaserName"
+                            [(ngModel)]="addplotbookingreq.purchaserName"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="purchaserSign" class="form-label"
+                            >Sign :</label
+                          >
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="purchaserSign"
+                            name="purchaserSign"
+                            [(ngModel)]="addplotbookingreq.purchaserSign"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="authorizedSignatory" class="form-label"
+                            >Authorized Signatory :</label
+                          >
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="authorizedSignatory"
+                            name="authorizedSignatory"
+                            [(ngModel)]="addplotbookingreq.authorizedSignatory"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="directorSalesDate" class="form-label"
+                            >Directory Sales Date :</label
+                          >
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="directorSalesDate"
+                            name="directorSalesDate"
+                            [(ngModel)]="addplotbookingreq.directorSalesDate"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="directorName" class="form-label"
+                            >Director Name :</label
+                          >
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="directorName"
+                            name="directorName"
+                            [(ngModel)]="addplotbookingreq.directorName"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="directorSign" class="form-label"
+                            >Directory Sign :</label
+                          >
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="directorSign"
+                            name="directorSign"
+                            [(ngModel)]="addplotbookingreq.directorSign"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingPrimarySeven">
+                    <button
+                      class="accordion-button collapsed"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapsePrimarySeven"
+                      aria-expanded="false"
+                      aria-controls="collapsePrimarySeven"
+                    >
+                      Document Details
+                    </button>
+                  </h2>
+                  <div
+                    id="collapsePrimarySeven"
+                    class="accordion-collapse collapse"
+                    aria-labelledby="headingPrimarySeven"
+                    data-bs-parent="#accordionPrimaryExample"
+                  >
+                    <div class="accordion-body">
+                      <div class="row mb-4">
+                        <div class="col-xl-12">
+                          <table class="table table-bordered table-responsive">
+                            <thead>
+                              <tr>
+                                <th>S.No.</th>
+                                <th>Document Name</th>
+                                <th>Document Number</th>
+                                <th>Upload Image</th>
+                                <th>Image Preview</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td style="width: 50px">1</td>
+                                <td>
+                                  <b style="font-size: 14px">PAN Card Number</b>
+                                </td>
+                                <td style="width: 200px">
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    id="panCardNumber"
+                                    name="panCardNumber"
+                                    [(ngModel)]="
+                                      addplotbookingreq.panCardNumber
+                                    "
+                                  />
+                                </td>
+                                <td style="width: 200px">
+                                  <input
+                                    type="file"
+                                    class="form-control"
+                                    id="panCardImage"
+                                    name="panCardImage"
+                                  />
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td style="width: 50px">2</td>
+                                <td>
+                                  <b style="font-size: 14px"
+                                    >Driving Licence Number</b
+                                  >
+                                </td>
+                                <td style="width: 200px">
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    id="drivingLicenseNumber"
+                                    name="drivingLicenseNumber"
+                                    [(ngModel)]="
+                                      addplotbookingreq.drivingLicenseNumber
+                                    "
+                                  />
+                                </td>
+                                <td style="width: 200px">
+                                  <input
+                                    type="file"
+                                    class="form-control"
+                                    id="drivinglicenceImage"
+                                    name="drivinglicenceImage"
+                                  />
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td style="width: 50px">3</td>
+                                <td>
+                                  <b style="font-size: 14px">PassPort Number</b>
+                                </td>
+                                <td style="width: 200px">
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    id="passportNumber"
+                                    name="passportNumber"
+                                    [(ngModel)]="
+                                      addplotbookingreq.passportNumber
+                                    "
+                                  />
+                                </td>
+                                <td style="width: 200px">
+                                  <input
+                                    type="file"
+                                    class="form-control"
+                                    id="passportimage"
+                                    name="passportimage"
+                                  />
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td style="width: 50px">4</td>
+                                <td>
+                                  <b style="font-size: 14px"
+                                    >Voter Id Card Number</b
+                                  >
+                                </td>
+                                <td style="width: 200px">
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    id="voterIdNumber"
+                                    name="voterIdNumber"
+                                    [(ngModel)]="
+                                      addplotbookingreq.voterIdNumber
+                                    "
+                                  />
+                                </td>
+                                <td style="width: 200px">
+                                  <input
+                                    type="file"
+                                    class="form-control"
+                                    id="voterIdImage"
+                                    name="voterIdImage"
+                                  />
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td style="width: 50px">5</td>
+                                <td>
+                                  <b style="font-size: 14px"
+                                    >Adhar Card Number</b
+                                  >
+                                </td>
+                                <td style="width: 200px">
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    id="aadhaarNumber"
+                                    name="aadhaarNumber"
+                                    [(ngModel)]="
+                                      addplotbookingreq.aadhaarNumber
+                                    "
+                                  />
+                                </td>
+                                <td style="width: 200px">
+                                  <input
+                                    type="file"
+                                    class="form-control"
+                                    id="adharImage"
+                                    name="adharImage"
+                                  />
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td style="width: 50px">5</td>
+                                <td>
+                                  <b style="font-size: 14px"
+                                    >Ration Card Number</b
+                                  >
+                                </td>
+                                <td style="width: 200px">
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    id="rationCardNumber"
+                                    name="rationCardNumber"
+                                    [(ngModel)]="
+                                      addplotbookingreq.rationCardNumber
+                                    "
+                                  />
+                                </td>
+                                <td style="width: 200px">
+                                  <input
+                                    type="file"
+                                    class="form-control"
+                                    id="rationcardImage"
+                                    name="rationcardImage"
+                                  />
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-footer text-end">
+                <button
+                  type="submit"
+                  [disabled]="loading"
+                  class="btn btn-success m-1"
+                >
+                  <span
+                    *ngIf="loading"
+                    class="spinner-border spinner-border-sm me-2"
+                  ></span>
+                  Submit
+                  <i
+                    class="ri-file-pdf-line ms-1 align-middle d-inline-block"
+                  ></i>
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-warning m-1"
+                  [routerLink]="['/plot']"
+                >
+                  Cancel<i class="ri-cancel-2-line ms-1 d-inline-block"></i>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--End::row-1 -->
+  </div>
+</div>
+<!-- End::app-content -->
+
+<!-- Start:: select address modal -->
+<div
+  class="modal fade modal-style-1 modal-3"
+  id="select-address"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="d-flex align-items-start justify-content-between mb-4">
+          <h6 class="fs-18 mb-0">Select Address</h6>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card custom-card checkout-address-card">
+              <div class="card-body">
+                <!-- form-check -->
+                <input
+                  class="form-check-input d-none"
+                  type="radio"
+                  id="address1_select"
+                  name="select-address"
+                  checked=""
+                />
+                <label
+                  class="position-absolute all-0 cursor-pointer"
+                  for="address1_select"
+                ></label>
+                <!-- form-check -->
+
+                <span class="badge bg-secondary rounded-pill custom-badge-3"
+                  >Default</span
+                >
+
+                <div class="d-flex align-items-center gap-2 mb-3">
+                  <div class="lh-1">
+                    <span class="avatar avatar-md avatar-rounded border"
+                      ><i class="ti ti-home fs-5"></i
+                    ></span>
+                  </div>
+                  <h6 class="fs-16 mb-0">Home</h6>
+                </div>
+                <p class="mb-1 fw-medium">Ruby Disousa</p>
+                <p class="mb-1 fw-medium text-muted fs-13">
+                  <a
+                    href="https://sprukomarket.com/cdn-cgi/l/email-protection"
+                    class="__cf_email__"
+                    data-cfemail="9fedeafde6fef4eaf1faeddff8f6f1f1feb1f2fef6f3"
+                    >[email&#160;protected]</a
+                  >
+                </p>
+                <p class="mb-2 fw-medium text-muted fs-13">+11-23-1116773</p>
+                <p class="mb-0 fs-13 text-muted">
+                  H.No: 3-116/458, Golden Park, Marias St., Near 12Amet
+                  Residency, 14756, United States Of America
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="card custom-card checkout-address-card">
+              <div class="card-body">
+                <!-- form-check -->
+                <input
+                  class="form-check-input d-none"
+                  type="radio"
+                  id="address2_select"
+                  name="select-address"
+                />
+                <label
+                  class="position-absolute all-0 cursor-pointer"
+                  for="address2_select"
+                ></label>
+                <!-- form-check -->
+
+                <div class="d-flex align-items-center gap-2 mb-3">
+                  <div class="lh-1">
+                    <span class="avatar avatar-md avatar-rounded border"
+                      ><i class="ti ti-briefcase fs-16"></i
+                    ></span>
+                  </div>
+                  <h6 class="fs-16 mb-0">Work</h6>
+                </div>
+                <p class="mb-1 fw-medium">Ruby Disousa</p>
+                <p class="mb-1 fw-medium text-muted fs-13">
+                  <a
+                    href="https://sprukomarket.com/cdn-cgi/l/email-protection"
+                    class="__cf_email__"
+                    data-cfemail="6f1d1a0d160e041a010a1d2f080601010e41020e0603"
+                    >[email&#160;protected]</a
+                  >
+                </p>
+                <p class="mb-2 fw-medium text-muted fs-13">+11-23-1116773</p>
+                <p class="mb-0 fs-13 text-muted">
+                  Taj Building, 3rd Floor, Room No: 3, Silver St., Adugiahsuk,
+                  LICE, 14756, United States Of America
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex align-items-center gap-2 justify-content-end">
+          <a
+            href="javascript:void(0);"
+            class="btn btn-light"
+            data-bs-dismiss="modal"
+            >Cancel</a
+          >
+          <a href="javascript:void(0);" class="btn btn-primary"
+            >Select address</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Flat Picker JS -->
+<app-footer></app-footer>

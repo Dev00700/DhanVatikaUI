@@ -1,0 +1,90 @@
+<app-navbar></app-navbar>
+
+<div class="main-content app-content">
+  <div *ngIf="fullpageloader" class="full-page-loader">
+    <div class="loader-spinner"></div>
+  </div>
+  <div class="">
+    <!-- Start::page-header -->
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card custom-card">
+          <div class="card-header justify-content-between">
+            <div
+              class="d-flex flex-wrap justify-content-end"
+              style="width: 100%"
+            >
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#filtercanvas"
+                aria-controls="filtercanvas"
+                style="margin-right: 1%"
+                ngClass=""
+              >
+                <i class="bi bi-funnel"></i> Filters
+              </button>
+
+              <a
+                [routerLink]="['/create-location']"
+                class="btn btn-sm btn-primary btn-wave waves-light waves-effect waves-light"
+                ><i class="ri-add-line fw-medium align-middle me-1"></i> Create
+                Location</a
+              >
+            </div>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table text-nowrap">
+                <thead>
+                  <tr>
+                    <th scope="col">S.No.</th>
+                    <th scope="col">Location Name</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    class="invoice-list"
+                    *ngFor="let item of locationlist; index as i"
+                  >
+                    <td class="text-primary">#{{ i + 1 }}</td>
+                    <td>{{ item.locationName }}</td>
+                    <td><img src="{{ item.image }}" style="height: 50px" /></td>
+                    <td>
+                      <span>
+                        <a
+                          class="btn btn-success-light btn-icon ms-1 btn-sm invoice-btn"
+                          [routerLink]="['/create-location', item.locationGuid]"
+                        >
+                          <i class="ri-edit-line"></i>
+                        </a>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <app-pagination
+            [totalItems]="totalRecords"
+            [pageSize]="pageSize"
+            [currentPage]="currentPage"
+            (pageChange)="onPageChange($event)"
+            (pageSizeChange)="onPageSizeChange($event)"
+          >
+          </app-pagination>
+        </div>
+      </div>
+    </div>
+    <!--End::row-1 -->
+  </div>
+</div>
+
+<!-- Button -->
+
+<!-- End::app-content -->
+<app-footer></app-footer>
