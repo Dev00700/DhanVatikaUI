@@ -23,7 +23,9 @@ export class PlotComponent {
   pageSize = 5;
   plotlist: PlotResponseDto[] = [];
   filters = {
-    plotName: null,
+    plotName: "",
+    plotType: "",
+    locationId: 0
   };
   constructor(
     private apiService: ApiService,
@@ -38,7 +40,11 @@ export class PlotComponent {
   getplotslist() {
     this.fullpageloader = true;
     const UserId = parseInt(localStorage.getItem("userId") || '0', 10);
-    const Data = null;
+    const Data = {
+      "PlotName": this.filters.plotName,
+      "PlotType": this.filters.plotType,
+      "PaymentModeId": this.filters.locationId == 0 ? null : this.filters.locationId,
+    };
     this.plotdata.getplotlist(1, this.currentPage, this.pageSize, UserId, Data)
       .subscribe({
         next: (response) => {

@@ -11,6 +11,9 @@ import { OutgoingPaymentComponent } from './modules/outgoing-payment/outgoing-pa
 import { CreateOutgoingPaymentComponent } from './modules/create-outgoing-payment/create-outgoing-payment.component';
 import { CreatePlotComponent } from './modules/create-plot/create-plot.component';
 import { PlotComponent } from './modules/plot/plot.component';
+import { CreatePlotBookingComponent } from './modules/create-plot-booking/create-plot-booking.component';
+import { LocationComponent } from './modules/location/location.component';
+import { CreateLocationComponent } from './modules/create-location/create-location.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -29,5 +32,9 @@ export const routes: Routes = [
     { path: 'create-plot', component: CreatePlotComponent, canActivate: [AuthGuard] },
     { path: 'plot', component: PlotComponent, canActivate: [AuthGuard] },
     { path: 'create-plot/:plotGuid', component: CreatePlotComponent, canActivate: [AuthGuard] },
-
+    { path: 'create-plot-booking', component: CreatePlotBookingComponent, canActivate: [AuthGuard] },
+    { path: 'create-plot-booking/:plotbookingGuid', component: CreatePlotBookingComponent, canActivate: [AuthGuard] },
+    { path: 'location', component: LocationComponent, canActivate: [AuthGuard] },
+    { path: 'create-location', component: CreateLocationComponent, canActivate: [AuthGuard] },
+    { path: 'create-location/:locationGuid', component: CreateLocationComponent, canActivate: [AuthGuard] },
 ];

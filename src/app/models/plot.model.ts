@@ -34,7 +34,26 @@ export interface PlotRequestDto extends BaseDto {
     unitTypeId: number;
     price: number;
     status: number;
-    facing: string;
+    facing: string | null;
     plotType: string;
     nearbyLandmarks: string;
+    IsShowONWeb: boolean | null;
+    Amenities: string | null;
+    amentieslist: Amenity[];
+    plotImage?: PlotImageDto[];
+}
+
+export interface PlotImageDto {
+    PlotId: number;
+    image: string;
+}
+
+export interface PlotImageDeleteDto {
+    plotId: number;
+    plotImageGuid: string;
+}
+
+export interface Amenity {
+    amentyname: string;
+    amentydescr: string;
 }

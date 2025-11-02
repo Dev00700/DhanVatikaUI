@@ -11,210 +11,475 @@
           <form (ngSubmit)="onSubmit()" #plotForm="ngForm">
             <div class="card-body">
               <div class="row gy-3">
-                <div class="col-xl-4">
-                  <label for="plotCode" class="form-label">Plot Code :</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="plotCode"
-                    name="plotCode"
-                    [(ngModel)]="addplot.plotCode"
-                    disabled
-                  />
-                </div>
-                <div class="col-xl-4">
-                  <label for="plotName" class="form-label">Plot Name :</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="plotName"
-                    name="plotName"
-                    [(ngModel)]="addplot.plotName"
-                    placeholder="Plot Name"
-                  />
-                </div>
-                <div class="col-xl-4">
-                  <label for="plotType" class="form-label">Plot Type :</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="plotType"
-                    name="plotType"
-                    [(ngModel)]="addplot.plotType"
-                    placeholder="Enter Plot Type"
-                  />
-                </div>
-                <div class="col-xl-12">
-                  <label for="description" class="form-label">
-                    Description :</label
-                  >
-                  <textarea
-                    class="form-control"
-                    rows="3"
-                    placeholder="Enter Description"
-                    id="description"
-                    name="description"
-                    [(ngModel)]="addplot.description"
-                    style="margin: 0"
-                  >
-                  </textarea>
-                </div>
+                <div class="container mt-4">
+                  <!-- Tabs -->
+                  <ul class="nav nav-tabs" id="propertyTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button
+                        class="nav-link active"
+                        id="overview-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#overview"
+                        type="button"
+                      >
+                        Details
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button
+                        class="nav-link"
+                        id="location-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#location"
+                        type="button"
+                      >
+                        Location
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button
+                        class="nav-link"
+                        id="amenities-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#amenities"
+                        type="button"
+                      >
+                        Amenities
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button
+                        class="nav-link"
+                        id="gallery-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#gallery"
+                        type="button"
+                      >
+                        Attachments
+                      </button>
+                    </li>
+                  </ul>
 
-                <div class="col-xl-4">
-                  <label for="locationId" class="form-label">
-                    Location :
-                  </label>
+                  <!-- Tab Content -->
+                  <div class="tab-content mt-3" id="propertyTabContent">
+                    <div
+                      class="tab-pane fade show active"
+                      id="overview"
+                      role="tabpanel"
+                    >
+                      <div class="row">
+                        <div class="col-xl-4">
+                          <label for="plotCode" class="form-label"
+                            >Plot Code :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="plotCode"
+                            name="plotCode"
+                            [(ngModel)]="addplot.plotCode"
+                            disabled
+                          />
+                        </div>
+                        <div class="col-xl-4">
+                          <label for="plotName" class="form-label"
+                            >Plot Name : <span class="red">*</span></label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="plotName"
+                            name="plotName"
+                            [(ngModel)]="addplot.plotName"
+                            placeholder="Plot Name"
+                          />
+                        </div>
+                        <div class="col-xl-4">
+                          <label for="plotType" class="form-label"
+                            >Plot Type :</label
+                          ><span class="red">*</span>
+                          <select
+                            name="plotType"
+                            class="form-control"
+                            [(ngModel)]="addplot.plotType"
+                          >
+                            <option value="1" selected>Select Plot Type</option>
+                            <option value="Residential Plot">
+                              Residential Plot
+                            </option>
+                            <option value="Commercial Plot">
+                              Commercial Plot
+                            </option>
+                            <option value="Industrial Plot">
+                              Industrial Plot
+                            </option>
+                            <option value="North-Facing Plot">
+                              North-Facing Plot
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="row mt-3">
+                        <div class="col-xl-4">
+                          <label for="price" class="form-label"
+                            >Price :<span class="red">*</span></label
+                          >
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="price"
+                            name="price"
+                            placeholder="Enter Price"
+                            [(ngModel)]="addplot.price"
+                          />
+                        </div>
 
-                  <select
-                    class="form-control"
-                    id="locationId"
-                    placeholder="Enter Location"
-                    name="locationId"
-                    [(ngModel)]="addplot.locationId"
-                  >
-                    <option *ngFor="let c of locationList" [value]="c.value">
-                      {{ c.text }}
-                    </option>
-                  </select>
-                </div>
+                        <div class="col-xl-4">
+                          <label for="facing" class="form-label"
+                            >Facing :<span class="red">*</span></label
+                          >
+                          <select
+                            class="form-control"
+                            [(ngModel)]="addplot.facing"
+                            name="facing"
+                          >
+                            <option value="" disabled selected>
+                              Select Facing
+                            </option>
+                            <option value="North">North</option>
+                            <option value="South">South</option>
+                            <option value="East">East</option>
+                            <option value="West">West</option>
+                            <option value="Northeast">Northeast</option>
+                            <option value="Northwest">Northwest</option>
+                            <option value="Southeast">Southeast</option>
+                            <option value="Southwest">Southwest</option>
+                          </select>
+                        </div>
 
-                <div class="col-xl-4">
-                  <label for="address" class="form-label">Address :</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="address"
-                    name="Address"
-                    placeholder="Address"
-                    [(ngModel)]="addplot.address"
-                  />
-                </div>
+                        <div class="col-xl-4">
+                          <label for="remarks" class="form-label"
+                            >Remarks :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="remarks"
+                            name="remarks"
+                            placeholder="Enter Remarks"
+                            [(ngModel)]="addplot.remarks"
+                          />
+                        </div>
+                      </div>
 
-                <div class="col-xl-4">
-                  <label for="areaSize" class="form-label">Area Size :</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="areaSize"
-                    name="areaSize"
-                    placeholder="Enter Area Size"
-                    [(ngModel)]="addplot.areaSize"
-                  />
-                </div>
+                      <div class="row mt-3">
+                        <div class="col-xl-12">
+                          <label for="description" class="form-label">
+                            Description :<span class="red">*</span></label
+                          >
+                          <textarea
+                            class="form-control"
+                            rows="3"
+                            placeholder="Enter Description"
+                            id="description"
+                            name="description"
+                            [(ngModel)]="addplot.description"
+                            style="margin: 0"
+                          >
+                          </textarea>
+                        </div>
+                      </div>
 
-                <div class="col-xl-4">
-                  <label for="latitude" class="form-label">Latitude :</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="latitude"
-                    name="latitude"
-                    placeholder="Enter Latitude"
-                    [(ngModel)]="addplot.latitude"
-                  />
-                </div>
+                      <div class="row mt-3">
+                        <div class="col-xl-2">
+                          <label for="remarks" class="form-label"
+                            >Is Show On Web :</label
+                          >
 
-                <div class="col-xl-4">
-                  <label for="longitude" class="form-label">Longtitude :</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="longitude"
-                    name="longitude"
-                    placeholder="Enter Longtitude"
-                    [(ngModel)]="addplot.longitude"
-                  />
-                </div>
+                          <br />
 
-                <div class="col-xl-4">
-                  <label for="unitTypeId" class="form-label">
-                    Unit Type :
-                  </label>
+                          <input
+                            style="margin-top: 1%"
+                            class="form-check-input"
+                            type="checkbox"
+                            id="IsShowONWeb"
+                            name="IsShowONWeb"
+                            placeholder="Enter IsShowONWeb"
+                            [(ngModel)]="addplot.IsShowONWeb"
+                          />
+                        </div>
+                      </div>
+                    </div>
 
-                  <select
-                    class="form-control"
-                    id="unitTypeId"
-                    name="unitTypeId"
-                    placeholder="Enter Unit Type"
-                    [(ngModel)]="addplot.unitTypeId"
-                  >
-                    <option *ngFor="let c of unittypeList" [value]="c.value">
-                      {{ c.text }}
-                    </option>
-                  </select>
-                </div>
+                    <div class="tab-pane fade" id="location" role="tabpanel">
+                      <div class="row">
+                        <div class="col-xl-4">
+                          <label for="locationId" class="form-label">
+                            Location :<span class="red">*</span>
+                          </label>
 
-                <div class="col-xl-4">
-                  <label for="price" class="form-label">Price :</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="price"
-                    name="price"
-                    placeholder="Enter Price"
-                    [(ngModel)]="addplot.price"
-                  />
-                </div>
+                          <select
+                            class="form-control"
+                            id="locationId"
+                            placeholder="Enter Location"
+                            name="locationId"
+                            [(ngModel)]="addplot.locationId"
+                          >
+                            <option
+                              *ngFor="let c of locationList"
+                              [value]="c.value"
+                            >
+                              {{ c.text }}
+                            </option>
+                          </select>
+                        </div>
 
-                <div class="col-xl-4">
-                  <label for="facing" class="form-label">Facing :</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="facing"
-                    name="facing"
-                    placeholder="Enter Facing"
-                    [(ngModel)]="addplot.facing"
-                  />
-                </div>
+                        <div class="col-xl-4">
+                          <label for="address" class="form-label"
+                            >Address :<span class="red">*</span></label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="address"
+                            name="Address"
+                            placeholder="Address"
+                            [(ngModel)]="addplot.address"
+                          />
+                        </div>
 
-                <div class="col-xl-4">
-                  <label for="nearbyLandmarks" class="form-label"
-                    >LandMark :</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="nearbyLandmarks"
-                    name="nearbyLandmarks"
-                    placeholder="Enter Landmark"
-                    [(ngModel)]="addplot.nearbyLandmarks"
-                  />
-                </div>
+                        <div class="col-xl-4">
+                          <label for="areaSize" class="form-label"
+                            >Area Size :<span class="red">*</span></label
+                          >
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="areaSize"
+                            name="areaSize"
+                            placeholder="Enter Area Size"
+                            [(ngModel)]="addplot.areaSize"
+                          />
+                        </div>
+                      </div>
+                      <div class="row mt-3">
+                        <div class="col-xl-4">
+                          <label for="unitTypeId" class="form-label">
+                            Unit Type :<span class="red">*</span>
+                          </label>
 
-                <div class="col-xl-4">
-                  <label for="remarks" class="form-label">Remarks :</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="remarks"
-                    name="remarks"
-                    placeholder="Enter Remarks"
-                    [(ngModel)]="addplot.remarks"
-                  />
-                </div>
+                          <select
+                            class="form-control"
+                            id="unitTypeId"
+                            name="unitTypeId"
+                            placeholder="Enter Unit Type"
+                            [(ngModel)]="addplot.unitTypeId"
+                          >
+                            <option
+                              *ngFor="let c of unittypeList"
+                              [value]="c.value"
+                            >
+                              {{ c.text }}
+                            </option>
+                          </select>
+                        </div>
+                        <div class="col-xl-4">
+                          <label for="latitude" class="form-label"
+                            >Latitude :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="latitude"
+                            name="latitude"
+                            placeholder="Enter Latitude"
+                            [(ngModel)]="addplot.latitude"
+                          />
+                        </div>
 
-                <div class="col-xl-4">
-                  <label class="form-label">Attachments</label>
-                  <input
-                    type="file"
-                    style="height: 38px"
-                    class="form-control"
-                    name="filepond"
-                    (change)="onFileSelected($event)"
-                    multiple
-                  />
-                </div>
+                        <div class="col-xl-4">
+                          <label for="longitude" class="form-label"
+                            >Longtitude :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="longitude"
+                            name="longitude"
+                            placeholder="Enter Longtitude"
+                            [(ngModel)]="addplot.longitude"
+                          />
+                        </div>
+                      </div>
+                      <div class="row mt-3">
+                        <div class="col-xl-4">
+                          <label for="nearbyLandmarks" class="form-label"
+                            >LandMark :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="nearbyLandmarks"
+                            name="nearbyLandmarks"
+                            placeholder="Enter Landmark"
+                            [(ngModel)]="addplot.nearbyLandmarks"
+                          />
+                        </div>
+                      </div>
+                    </div>
 
-                <div class="col-xl-12" style="display: inline-flex">
-                  <div *ngFor="let img of imagePreviews">
-                    <img
-                      [src]="img"
-                      alt="Preview"
-                      width="100"
-                      height="100"
-                      style="margin: 5px; border-radius: 8px"
-                    />
+                    <div class="tab-pane fade" id="amenities" role="tabpanel">
+                      <div class="row">
+                        <div class="col-xl-4">
+                          <label for="amentyname" class="form-label"
+                            >Name :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="amentyname"
+                            name="amentyname"
+                            placeholder="Enter Amenity Name"
+                            [(ngModel)]="newAmenity.amentyname"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="amentydescr" class="form-label"
+                            >Description :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="amentydescr"
+                            name="amentydescr"
+                            placeholder="Enter Description"
+                            [(ngModel)]="newAmenity.amentydescr"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <button
+                            style="margin-top: 10%"
+                            type="button"
+                            class="btn-primary"
+                            (click)="
+                              editIndex === null
+                                ? addAmenity()
+                                : updateAmenity()
+                            "
+                          >
+                            {{ editIndex == null ? "Add " : "Update " }}
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="row mt-3">
+                        <table class="table table-bordered table-responsive">
+                          <thead>
+                            <tr>
+                              <th>#</th>
+                              <th>Amenity</th>
+                              <th>Description</th>
+                              <th>Actions</th>
+                            </tr>
+                          </thead>
+
+                          <tbody>
+                            <tr
+                              *ngFor="
+                                let amenity of addplot.amentieslist;
+                                let i = index
+                              "
+                            >
+                              <td>{{ i + 1 }}</td>
+                              <td>{{ amenity.amentyname }}</td>
+                              <td>{{ amenity.amentydescr }}</td>
+                              <td>
+                                <button
+                                  type="button"
+                                  class="btn btn-sm btn-info me-2"
+                                  (click)="editAmenity(i)"
+                                >
+                                  Edit
+                                </button>
+                                <button
+                                  type="button"
+                                  class="btn btn-sm btn-danger"
+                                  (click)="deleteAmenity(i)"
+                                >
+                                  Delete
+                                </button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="gallery" role="tabpanel">
+                      <div class="row">
+                        <div class="col-xl-4">
+                          <label class="form-label"
+                            >Attachments<span class="red">*</span></label
+                          >
+                          <input
+                            type="file"
+                            style="height: 38px"
+                            class="form-control"
+                            name="filepond"
+                            (change)="onFileSelected($event)"
+                            multiple
+                          />
+                        </div>
+
+                        <div class="col-xl-12 mt-4">
+                          <table class="table table-bordered table-responsive">
+                            <thead>
+                              <tr>
+                                <th>S.No.</th>
+                                <th>Image Preview</th>
+                                <th>Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr
+                                *ngFor="let img of imagePreviews; let i = index"
+                              >
+                                <td style="width: 10px">{{ i + 1 }}</td>
+                                <td style="width: 200px">
+                                  <img
+                                    [src]="img"
+                                    alt="Preview"
+                                    width="50"
+                                    height="50"
+                                    style="margin: 5px; border-radius: 8px"
+                                  />
+                                </td>
+
+                                <td>
+                                  <button
+                                    (click)="deleteImage(i)"
+                                    type="button"
+                                    title="Delete"
+                                    style="
+                                      background: transparent;
+                                      border: none;
+                                      cursor: pointer;
+                                    "
+                                  >
+                                    <i
+                                      class="ri-close-circle-line text-danger"
+                                      style="font-size: 26px"
+                                    ></i>
+                                  </button>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
