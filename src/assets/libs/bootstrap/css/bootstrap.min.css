@@ -4014,7 +4014,7 @@ textarea.form-control-lg {
 }
 
 .nav {
-    --bs-nav-link-padding-x: 1rem;
+    --bs-nav-link-padding-x: .5rem;
     --bs-nav-link-padding-y: 0.5rem;
     --bs-nav-link-font-weight: ;
     --bs-nav-link-color: var(--bs-link-color);
@@ -6690,7 +6690,7 @@ textarea.form-control-lg {
 
 .offcanvas,.offcanvas-lg,.offcanvas-md,.offcanvas-sm,.offcanvas-xl,.offcanvas-xxl {
     --bs-offcanvas-zindex: 1045;
-    --bs-offcanvas-width: 400px;
+    --bs-offcanvas-width: 277px;
     --bs-offcanvas-height: 30vh;
     --bs-offcanvas-padding-x: 1rem;
     --bs-offcanvas-padding-y: 1rem;

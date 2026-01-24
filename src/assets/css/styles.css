@@ -82,7 +82,7 @@
   --default-font-family: "Space Grotesk", sans-serif;
   --default-font-weight: 400;
   --default-text-color: #011a42;
-  --default-border: #f1f7fc;
+  --default-border: #dfe3e859;
   --default-background: #f9f7fc;
   --menu-bg: #fff;
   --menu-prime-color: #302d36;
@@ -7479,7 +7479,7 @@ input[type=range]::-webkit-slider-runnable-track {
   color: var(--default-text-color);
   background-color: var(--custom-white);
   border: 1px solid var(--default-border);
-  padding: 1rem 1.25rem;
+  padding: .3rem .90rem;
 }
 .list-group-item.active {
   color: #fff !important;

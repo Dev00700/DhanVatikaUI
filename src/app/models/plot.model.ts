@@ -1,8 +1,11 @@
 import { BaseDto } from "./base.model";
 
 export interface PlotResponseDto {
+    plotId: number;
     plotGuid: string;
     plotCode: string;
+    plot_Code: string | null;
+    subPlotCode: string | null;
     plotName: string;
     description: string;
     locationId: number;
@@ -24,6 +27,8 @@ export interface PlotResponseDto {
 export interface PlotRequestDto extends BaseDto {
     plotGuid: string | null;
     plotCode: string | null;
+    plot_Code: string | null;
+    subPlotCode: string | null;
     plotName: string;
     description: string;
     locationId: number;
@@ -37,8 +42,8 @@ export interface PlotRequestDto extends BaseDto {
     facing: string | null;
     plotType: string;
     nearbyLandmarks: string;
-    IsShowONWeb: boolean | null;
-    Amenities: string | null;
+    isShowONWeb: boolean | null;
+    amenities: string | null;
     amentieslist: Amenity[];
     plotImage?: PlotImageDto[];
 }
@@ -56,4 +61,9 @@ export interface PlotImageDeleteDto {
 export interface Amenity {
     amentyname: string;
     amentydescr: string;
+}
+
+export interface PlotStatusReqDto {
+    PlotId: number,
+    PlotStatus: number
 }

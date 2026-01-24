@@ -1,0 +1,255 @@
+<app-navbar></app-navbar>
+
+<div class="main-content app-content">
+  <div *ngIf="fullpageloader" class="full-page-loader">
+    <div class="loader-spinner"></div>
+  </div>
+  <div class="">
+    <!-- Start::page-header -->
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card custom-card">
+          <div class="card-header justify-content-between">
+            <div *ngIf="selectedChips.length > 0">
+              <span
+                class="badge bg-primary"
+                style="margin-left: 1px"
+                *ngFor="let chip of selectedChips"
+              >
+                {{ chip.label }}
+                <button
+                  type="button"
+                  class="btn-close btn-close-white btn-sm ms-2"
+                  aria-label="Remove"
+                  (click)="removeChip(chip.key)"
+                ></button>
+              </span>
+            </div>
+
+            <div
+              class="d-flex flex-wrap justify-content-end"
+              style="width: 100%"
+            >
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#filtercanvas"
+                aria-controls="filtercanvas"
+                style="margin-right: 1%"
+                ngClass=""
+              >
+                <i class="bi bi-funnel"></i> Filters
+              </button>
+            </div>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table text-nowrap">
+                <thead>
+                  <tr>
+                    <th scope="col">S.No.</th>
+                    <th hidden scope="col">Plot Code</th>
+                    <th scope="col">Plot Code</th>
+                    <th scope="col">Sub Plot Code</th>
+                    <th scope="col">Plot Name</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Mobile No</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    class="invoice-list"
+                    *ngFor="let item of enquiryslist; index as i"
+                  >
+                    <td class="text-primary">#{{ i + 1 }}</td>
+                    <td hidden>{{ item.plotCode }}</td>
+                    <td>{{ item.plot_Code }}</td>
+                    <td>{{ item.subPlotCode }}</td>
+                    <td>{{ item.plotName }}</td>
+                    <td>{{ item.locationName }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.email }}</td>
+                    <td>{{ item.mobile }}</td>
+                    <td>
+                      <span title="close enquiry">
+                        <a
+                          (click)="ClosedEnquiryModel(item.enquiryGuid)"
+                          data-bs-effect="effect-rotate-left"
+                          data-bs-toggle="modal"
+                          href="#closeenquirymodal"
+                          class="btn btn-success-light btn-icon ms-1 btn-sm invoice-btn"
+                        >
+                          <i class="ri-close-line"></i>
+                        </a>
+                      </span>
+
+                      <span
+                        *ngIf="item.isCustomer == 0"
+                        title="add to customer"
+                      >
+                        <a
+                          (click)="AddCustomer(item.enquiryId)"
+                          title="add to customer"
+                          class="btn btn-warning-light btn-icon ms-1 btn-sm invoice-btn"
+                        >
+                          <i class="ri-add-line"></i>
+                        </a>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <app-pagination
+            [totalItems]="totalRecords"
+            [pageSize]="pageSize"
+            [currentPage]="currentPage"
+            (pageChange)="onPageChange($event)"
+            (pageSizeChange)="onPageSizeChange($event)"
+          >
+          </app-pagination>
+        </div>
+      </div>
+    </div>
+    <!--End::row-1 -->
+  </div>
+</div>
+
+<div
+  class="offcanvas offcanvas-start"
+  data-bs-scroll="true"
+  tabindex="-1"
+  id="filtercanvas"
+  aria-labelledby="filtercanvasLabel"
+>
+  <div class="offcanvas-header border-bottom border-block-end-dashed">
+    <h5 class="offcanvas-title" id="filtercanvasLabel">Fiters</h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body">
+    <form class="row">
+      <div class="col-md-12">
+        <label class="form-label fw-bold">Location Name</label>
+        <input
+          class="form-control"
+          [(ngModel)]="filters.locationName"
+          name="locationName"
+        />
+      </div>
+
+      <div class="col-md-12">
+        <label class="form-label fw-bold">Plot Code </label>
+        <input
+          class="form-control"
+          [(ngModel)]="filters.plotCode"
+          name="plotCode"
+        />
+      </div>
+
+      <div class="col-md-12">
+        <label class="form-label fw-bold">Plot Name</label>
+        <input
+          class="form-control"
+          [(ngModel)]="filters.plotName"
+          name="plotName"
+        />
+      </div>
+
+      <div class="col-md-12">
+        <label class="form-label fw-bold"> Name</label>
+        <input class="form-control" [(ngModel)]="filters.name" name="name" />
+      </div>
+
+      <div class="col-md-12">
+        <label class="form-label fw-bold"> Mobile</label>
+        <input
+          class="form-control"
+          [(ngModel)]="filters.mobile"
+          name="mobile"
+        />
+      </div>
+
+      <div class="col-md-12">
+        <label class="form-label fw-bold"> Email</label>
+        <input class="form-control" [(ngModel)]="filters.email" name="email" />
+      </div>
+
+      <div class="col-md-12">
+        <label class="form-label fw-bold"> Date</label>
+        <input
+          class="form-control"
+          [(ngModel)]="filters.date"
+          type="date"
+          name="date"
+        />
+      </div>
+
+      <div class="col-md-12" style="margin-top: 2%; text-align: end">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="applyFilters()"
+          data-bs-dismiss="offcanvas"
+        >
+          Apply Filters
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="closeenquirymodal"
+  tabindex="-1"
+  aria-labelledby="closedenquiryLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="closedenquiryLabel">Close Enquiry</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <textarea
+          class="form-control"
+          name="remarks"
+          required
+          placeholder="Enter Remarks"
+          rows="6"
+          [(ngModel)]="closedEnqReqDto.remarks"
+        ></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="ClosedEnquiry()">
+          Submit
+        </button>
+        <button type="button" data-bs-dismiss="modal" class="btn btn-danger">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Button -->
+
+<!-- End::app-content -->
+<app-footer></app-footer>

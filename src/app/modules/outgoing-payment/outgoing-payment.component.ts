@@ -184,10 +184,10 @@ export class OutgoingPaymentComponent {
   }
   CancelOrder() {
     if (!this.canceloutgoingpayment.remarks) {
-      this.toast.error('Please enter a cancellation remark');
+      this.toast.error('Please enter a  remark');
       return;
     }
-    if (confirm('Are you sure you want to cancel this outgoing Payment?')) {
+    if (confirm('Are you sure you want to delete this outgoing Payment?')) {
       this.loading = true;
       const cancelorderreq: CommonReqDto<CancelOutgoingPaymentReqDto> = {
         PageSize: 1,
@@ -202,15 +202,15 @@ export class OutgoingPaymentComponent {
         next: (response) => {
           this.loading = false;
           if (response.data) {
-            this.toast.success('Outgoing Payment cancelled successfully');
+            this.toast.success('Outgoing Payment deleted successfully');
             window.location.reload();
           } else {
-            this.toast.error('Failed to cancel Outgoing payment');
+            this.toast.error('Failed to delete Outgoing payment');
           }
         },
         error: (error) => {
           this.loading = false;
-          this.toast.error('Failed to cancel Outgoing payment');
+          this.toast.error('Failed to delete Outgoing payment');
         }
       });
     }
@@ -438,7 +438,7 @@ export class OutgoingPaymentComponent {
      <div  style="display: inline-block; gap: 10px; align-items: center; margin-bottom: 6px;">
         <img src="assets/images/brand-logos/desktop-logo.jpeg" alt="Company Logo" style="height: 45px;"/>
         <div>
-          <strong>Dhan Vatika Developers</strong>
+          <strong>DhanVatikaa Developers</strong>
         </div>
       </div>
 
@@ -497,7 +497,7 @@ export class OutgoingPaymentComponent {
   <p><strong>Amount in words:</strong> ${_amount}</p>
 
   <div style="text-align: right; margin-top: 50px;">
-    for Dhan Vatika Developers<br><br>
+    for DhanVatikaa Developers<br><br>
     Authorised Signatory
   </div>
 

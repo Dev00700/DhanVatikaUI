@@ -1,60 +1,127 @@
 <app-navbar></app-navbar>
 <div class="main-content app-content">
-  <div class="container-fluid page-container main-body-container">
-    <!-- Start::page-header -->
-    <div class="page-header-breadcrumb mb-3">
-      <div class="d-flex align-center justify-content-between flex-wrap">
-        <h1 class="page-title fw-medium fs-18 mb-0">Create Plot Booking</h1>
-      </div>
-    </div>
-    <!-- End::page-header -->
-
+  <div *ngIf="fullpageloader" class="full-page-loader">
+    <div class="loader-spinner"></div>
+  </div>
+  <div class="">
     <!-- Start::row-1 -->
-    <div class="container">
-      <div class="row">
-        <div class="col-xl-12">
-          <div class="card custom-card !border-0">
-            <form (ngSubmit)="onSubmit()" #plotbookingForm="ngForm">
-              <div
-                class="accordion accordion-primary"
-                id="accordionPrimaryExample"
-              >
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingPrimaryOne">
-                    <button
-                      class="accordion-button"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapsePrimaryOne"
-                      aria-expanded="true"
-                      aria-controls="collapsePrimaryOne"
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card custom-card">
+          <div class="card-header">
+            <div class="card-title">Create Plot Booking</div>
+          </div>
+          <form (ngSubmit)="onSubmit()" #plotbookingForm="ngForm">
+            <div class="card-body">
+              <div class="row gy-3">
+                <div class="container mt-4">
+                  <!-- Tabs -->
+                  <ul class="nav nav-tabs" id="propertyTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button
+                        class="nav-link active"
+                        id="overview-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#overview"
+                        type="button"
+                      >
+                        Personal Info
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button
+                        class="nav-link"
+                        id="reference-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#reference"
+                        type="button"
+                      >
+                        Reference Details
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button
+                        class="nav-link"
+                        id="nominee-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#nominee"
+                        type="button"
+                      >
+                        Nominee Details
+                      </button>
+                    </li>
+
+                    <li class="nav-item" role="presentation">
+                      <button
+                        class="nav-link"
+                        id="project-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#project"
+                        type="button"
+                      >
+                        Project Details
+                      </button>
+                    </li>
+
+                    <li class="nav-item" role="presentation">
+                      <button
+                        class="nav-link"
+                        id="booking-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#booking"
+                        type="button"
+                      >
+                        Booking Details
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button
+                        class="nav-link"
+                        id="other-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#other"
+                        type="button"
+                      >
+                        Other Details
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button
+                        class="nav-link"
+                        id="document-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#document"
+                        type="button"
+                      >
+                        Documents Upload
+                      </button>
+                    </li>
+                  </ul>
+
+                  <!-- Tab Content -->
+                  <div class="tab-content mt-3" id="propertyTabContent">
+                    <div
+                      class="tab-pane fade show active"
+                      id="overview"
+                      role="tabpanel"
                     >
-                      Personal Info
-                    </button>
-                  </h2>
-                  <div
-                    id="collapsePrimaryOne"
-                    class="accordion-collapse collapse show"
-                    aria-labelledby="headingPrimaryOne"
-                    data-bs-parent="#accordionPrimaryExample"
-                  >
-                    <div class="accordion-body">
-                      <div class="row gy-4">
-                        <div class="col-xl-3">
+                      <div class="row mb-3">
+                        <div class="col-xl-4">
                           <label for="customerName" class="form-label"
-                            >Customer Name :</label
-                          >
+                            >Customer Name : <span class="red">*</span>
+                          </label>
                           <input
                             type="text"
                             class="form-control"
+                            disabled=""
                             id="customerName"
                             name="customerName"
                             [(ngModel)]="addplotbookingreq.customerName"
                           />
                         </div>
-                        <div class="col-xl-3">
+                        <div class="col-xl-4">
                           <label for="bookingDate" class="form-label"
-                            >Booking Date :</label
+                            >Booking Date : <span class="red">*</span></label
                           >
                           <input
                             type="date"
@@ -62,11 +129,25 @@
                             id="bookingDate"
                             name="bookingDate"
                             [(ngModel)]="addplotbookingreq.bookingDate"
+                            *ngIf="addplotbookingreq.tokenAmount > 0"
+                            disabled=""
+                          />
+
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="bookingDate"
+                            name="bookingDate"
+                            *ngIf="
+                              addplotbookingreq.tokenAmount <= 0 ||
+                              addplotbookingreq.tokenAmount == null
+                            "
+                            [(ngModel)]="addplotbookingreq.bookingDate"
                           />
                         </div>
-                        <div class="col-xl-3">
+                        <div class="col-xl-4">
                           <label for="occupation" class="form-label"
-                            >Occupation :</label
+                            >Occupation : <span class="red">*</span></label
                           >
                           <input
                             type="text"
@@ -76,9 +157,12 @@
                             [(ngModel)]="addplotbookingreq.occupation"
                           />
                         </div>
-                        <div class="col-xl-3">
+                      </div>
+
+                      <div class="row mb-3">
+                        <div class="col-xl-4">
                           <label for="dateOfBirth" class="form-label">
-                            Date Of Birth :</label
+                            Date Of Birth : <span class="red">*</span></label
                           >
                           <input
                             type="date"
@@ -89,7 +173,7 @@
                           />
                         </div>
 
-                        <div class="col-xl-3">
+                        <div class="col-xl-4">
                           <label for="anniversary" class="form-label"
                             >Anniversary :</label
                           >
@@ -102,35 +186,48 @@
                           />
                         </div>
 
-                        <div class="col-xl-3">
+                        <div class="col-xl-4">
                           <label for="contactNo1" class="form-label"
-                            >Mobile No :</label
+                            >Mobile No : <span class="red">*</span></label
                           >
                           <input
                             type="number"
                             class="form-control"
                             id="contactNo1"
                             name="contactNo1"
+                            disabled=""
                             [(ngModel)]="addplotbookingreq.contactNo1"
                           />
                         </div>
+                      </div>
 
-                        <div class="col-xl-3">
+                      <div class="row mb-3">
+                        <div class="col-xl-4">
                           <label for="contactNo2" class="form-label"
-                            >Alternate Mobile No :</label
-                          >
+                            >Alternate Mobile No :
+                          </label>
                           <input
-                            type="text"
+                            type="number"
                             class="form-control"
                             id="contactNo2"
                             name="contactNo2"
+                            (input)="onMobileInput($event, 'contactNo2')"
                             [(ngModel)]="addplotbookingreq.contactNo2"
                           />
+                          <small
+                            *ngIf="
+                              addplotbookingreq.contactNo2 &&
+                              !isValidMobileNo(addplotbookingreq.contactNo2)
+                            "
+                            class="text-danger"
+                          >
+                            Mobile must be 10 digits and start with 6-9
+                          </small>
                         </div>
 
-                        <div class="col-xl-3">
+                        <div class="col-xl-4">
                           <label for="postalAddress" class="form-label"
-                            >Postal Address :</label
+                            >Postal Address : <span class="red">*</span></label
                           >
                           <input
                             type="text"
@@ -141,21 +238,38 @@
                           />
                         </div>
 
-                        <div class="col-xl-3">
+                        <div class="col-xl-4">
                           <label for="emailAddress" class="form-label"
-                            >Email Address :</label
+                            >Email Address : <span class="red">*</span></label
                           >
                           <input
                             type="text"
                             class="form-control"
                             id="emailAddress"
                             name="emailAddress"
+                            disabled=""
                             [(ngModel)]="addplotbookingreq.emailAddress"
                           />
                         </div>
+                      </div>
+                      <div class="row mb-3">
+                        <div class="col-xl-4">
+                          <label for="state" class="form-label"
+                            >State : <span class="red">*</span></label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="state"
+                            name="state"
+                            [(ngModel)]="addplotbookingreq.state"
+                          />
+                        </div>
 
-                        <div class="col-xl-3">
-                          <label for="city" class="form-label">City :</label>
+                        <div class="col-xl-4">
+                          <label for="city" class="form-label"
+                            >City : <span class="red">*</span></label
+                          >
                           <input
                             type="text"
                             class="form-control"
@@ -165,9 +279,9 @@
                           />
                         </div>
 
-                        <div class="col-xl-3">
+                        <div class="col-xl-4">
                           <label for="pinCode" class="form-label"
-                            >PinCode :</label
+                            >PinCode : <span class="red">*</span></label
                           >
                           <input
                             type="text"
@@ -177,46 +291,15 @@
                             [(ngModel)]="addplotbookingreq.pinCode"
                           />
                         </div>
-
-                        <div class="col-xl-3">
-                          <label for="state" class="form-label">State :</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="state"
-                            name="state"
-                            [(ngModel)]="addplotbookingreq.state"
-                          />
-                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingPrimaryTwo">
-                    <button
-                      class="accordion-button collapsed"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapsePrimaryTwo"
-                      aria-expanded="false"
-                      aria-controls="collapsePrimaryTwo"
-                    >
-                      Reference Details
-                    </button>
-                  </h2>
-                  <div
-                    id="collapsePrimaryTwo"
-                    class="accordion-collapse collapse"
-                    aria-labelledby="headingPrimaryTwo"
-                    data-bs-parent="#accordionPrimaryExample"
-                  >
-                    <div class="accordion-body">
-                      <div class="row mb-4">
+
+                    <div class="tab-pane fade" id="reference" role="tabpanel">
+                      <div class="row mb-3">
                         <div class="col-xl-4">
                           <label for="referenceName1" class="form-label"
-                            >Name 1 :</label
-                          >
+                            >Name 1 :
+                          </label>
                           <input
                             type="text"
                             class="form-control"
@@ -228,21 +311,33 @@
 
                         <div class="col-xl-4">
                           <label for="referenceContact1" class="form-label"
-                            >Contact No 1 :</label
-                          >
+                            >Contact No 1 :
+                          </label>
                           <input
-                            type="text"
+                            type="number"
                             class="form-control"
                             id="referenceContact1"
                             name="referenceContact1"
+                            (input)="onMobileInput($event, 'referenceContact1')"
                             [(ngModel)]="addplotbookingreq.referenceContact1"
                           />
+                          <small
+                            *ngIf="
+                              addplotbookingreq.referenceContact1 &&
+                              !isValidMobileNo(
+                                addplotbookingreq.referenceContact1
+                              )
+                            "
+                            class="text-danger"
+                          >
+                            Mobile must be 10 digits and start with 6-9
+                          </small>
                         </div>
 
                         <div class="col-xl-4">
                           <label for="referenceName2" class="form-label"
-                            >Name 2 :</label
-                          >
+                            >Name 2 :
+                          </label>
                           <input
                             type="text"
                             class="form-control"
@@ -251,47 +346,40 @@
                             [(ngModel)]="addplotbookingreq.referenceName2"
                           />
                         </div>
-
+                      </div>
+                      <div class="row mb-3">
                         <div class="col-xl-4">
                           <label for="referenceContact2" class="form-label"
-                            >Contact No. 2 :</label
-                          >
+                            >Contact No. 2 :
+                          </label>
                           <input
-                            type="text"
+                            type="number"
                             class="form-control"
                             id="referenceContact2"
                             name="referenceContact2"
+                            (input)="onMobileInput($event, 'referenceContact2')"
                             [(ngModel)]="addplotbookingreq.referenceContact2"
                           />
+                          <small
+                            *ngIf="
+                              addplotbookingreq.contactNo1 &&
+                              !isValidMobileNo(
+                                addplotbookingreq.referenceContact2
+                              )
+                            "
+                            class="text-danger"
+                          >
+                            Mobile must be 10 digits and start with 6-9
+                          </small>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingPrimaryThree">
-                    <button
-                      class="accordion-button collapsed"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapsePrimaryThree"
-                      aria-expanded="false"
-                      aria-controls="collapsePrimaryThree"
-                    >
-                      Nominee Details
-                    </button>
-                  </h2>
-                  <div
-                    id="collapsePrimaryThree"
-                    class="accordion-collapse collapse"
-                    aria-labelledby="headingPrimaryThree"
-                    data-bs-parent="#accordionPrimaryExample"
-                  >
-                    <div class="accordion-body">
-                      <div class="row mb-4">
+
+                    <div class="tab-pane fade" id="nominee" role="tabpanel">
+                      <div class="row mb-3">
                         <div class="col-xl-4">
                           <label for="nomineeName" class="form-label"
-                            >Nominee's Name :</label
+                            >Nominee's Name : <span class="red">*</span></label
                           >
                           <input
                             type="text"
@@ -304,7 +392,7 @@
 
                         <div class="col-xl-4">
                           <label for="nomineeAddress" class="form-label"
-                            >Address :</label
+                            >Address : <span class="red">*</span></label
                           >
                           <input
                             type="text"
@@ -317,20 +405,32 @@
 
                         <div class="col-xl-4">
                           <label for="nomineePhoneNo" class="form-label"
-                            >Phone No. :</label
+                            >Phone No. : <span class="red">*</span></label
                           >
                           <input
-                            type="text"
+                            type="number"
                             class="form-control"
                             id="nomineePhoneNo"
                             name="nomineePhoneNo"
+                            (input)="onMobileInput($event, 'nomineePhoneNo')"
                             [(ngModel)]="addplotbookingreq.nomineePhoneNo"
                           />
+                          <small
+                            *ngIf="
+                              addplotbookingreq.nomineePhoneNo &&
+                              !isValidMobileNo(addplotbookingreq.nomineePhoneNo)
+                            "
+                            class="text-danger"
+                          >
+                            Mobile must be 10 digits and start with 6-9
+                          </small>
                         </div>
+                      </div>
 
+                      <div class="row mb-3">
                         <div class="col-xl-4">
                           <label for="nomineeRelation" class="form-label"
-                            >Relation :</label
+                            >Relation : <span class="red">*</span></label
                           >
                           <input
                             type="text"
@@ -343,7 +443,7 @@
 
                         <div class="col-xl-4">
                           <label for="nomineeAge" class="form-label"
-                            >Age :</label
+                            >Age : <span class="red">*</span></label
                           >
                           <input
                             type="text"
@@ -355,30 +455,9 @@
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
 
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingPrimaryFour">
-                    <button
-                      class="accordion-button collapsed"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapsePrimaryFour"
-                      aria-expanded="false"
-                      aria-controls="collapsePrimaryFour"
-                    >
-                      Project Details
-                    </button>
-                  </h2>
-                  <div
-                    id="collapsePrimaryFour"
-                    class="accordion-collapse collapse"
-                    aria-labelledby="headingPrimaryFour"
-                    data-bs-parent="#accordionPrimaryExample"
-                  >
-                    <div class="accordion-body">
-                      <div class="row mb-4">
+                    <div class="tab-pane fade" id="project" role="tabpanel">
+                      <div class="row mb-3">
                         <div class="col-xl-4">
                           <label for="nomineeName" class="form-label"
                             >Project Name :</label
@@ -388,12 +467,15 @@
                             class="form-control"
                             id="projectName"
                             name="projectName"
+                            disabled=""
                             [(ngModel)]="addplotbookingreq.projectName"
                           />
                         </div>
 
                         <div class="col-xl-4">
-                          <label for="block" class="form-label">Block :</label>
+                          <label for="block" class="form-label"
+                            >Block : <span class="red">*</span></label
+                          >
                           <input
                             type="text"
                             class="form-control"
@@ -405,7 +487,7 @@
 
                         <div class="col-xl-4">
                           <label for="plotCity" class="form-label"
-                            >City :</label
+                            >City : <span class="red">*</span></label
                           >
                           <input
                             type="text"
@@ -415,10 +497,12 @@
                             [(ngModel)]="addplotbookingreq.plotCity"
                           />
                         </div>
+                      </div>
 
+                      <div class="row mb-3">
                         <div class="col-xl-4">
                           <label for="khasraNo" class="form-label"
-                            >Khasra No. :</label
+                            >Khasra No. : <span class="red">*</span></label
                           >
                           <input
                             type="text"
@@ -442,9 +526,9 @@
                           />
                         </div>
 
-                        <div class="col-xl-4">
+                        <div class="col-xl-4" style="display: none">
                           <label for="plotSize" class="form-label"
-                            >Size :</label
+                            >Size : <span class="red">*</span></label
                           >
                           <input
                             type="text"
@@ -454,7 +538,8 @@
                             [(ngModel)]="addplotbookingreq.plotSize"
                           />
                         </div>
-
+                      </div>
+                      <div class="row mb-3">
                         <div class="col-xl-4">
                           <label for="areaSqFt" class="form-label"
                             >Area (in square feet) :</label
@@ -464,62 +549,46 @@
                             class="form-control"
                             id="areaSqFt"
                             name="areaSqFt"
+                            disabled=""
                             [(ngModel)]="addplotbookingreq.areaSqFt"
                           />
                         </div>
 
                         <div class="col-xl-4">
                           <label for="ratePerSqFt" class="form-label"
-                            >Rate (Per Square Feet) :</label
+                            >Rate (Per Square Feet) :
+                            <span class="red">*</span></label
                           >
                           <input
-                            type="text"
+                            type="number"
                             class="form-control"
                             id="ratePerSqFt"
                             name="ratePerSqFt"
+                            (input)="computeAllAmounts()"
                             [(ngModel)]="addplotbookingreq.ratePerSqFt"
                           />
                         </div>
 
                         <div class="col-xl-4">
                           <label for="totalCost" class="form-label"
-                            >Total Cost (In Rupees) :</label
+                            >Total Cost (In Rupees) :
+                            <span class="red">*</span></label
                           >
                           <input
                             type="text"
                             class="form-control"
                             id="totalCost"
                             name="totalCost"
+                            disabled=""
                             [(ngModel)]="addplotbookingreq.totalCost"
                           />
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
 
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingPrimaryFive">
-                    <button
-                      class="accordion-button collapsed"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapsePrimaryFive"
-                      aria-expanded="false"
-                      aria-controls="collapsePrimaryFive"
-                    >
-                      Booking Details
-                    </button>
-                  </h2>
-                  <div
-                    id="collapsePrimaryFive"
-                    class="accordion-collapse collapse"
-                    aria-labelledby="headingPrimaryFive"
-                    data-bs-parent="#accordionPrimaryExample"
-                  >
-                    <div class="accordion-body">
-                      <div class="row mb-4">
-                        <div class="col-xl-4">
+                    <div class="tab-pane fade" id="booking" role="tabpanel">
+                      <div class="row mb-3">
+                        <!-- <div class="col-xl-4">
                           <label for="bookingDate" class="form-label"
                             >Booking Date :</label
                           >
@@ -530,7 +599,7 @@
                             name="bookingDate"
                             [(ngModel)]="addplotbookingreq.bookingDate"
                           />
-                        </div>
+                        </div> -->
 
                         <div class="col-xl-4">
                           <label for="tokenAmount" class="form-label"
@@ -541,6 +610,7 @@
                             class="form-control"
                             id="tokenAmount"
                             name="tokenAmount"
+                            disabled=""
                             [(ngModel)]="addplotbookingreq.tokenAmount"
                           />
                         </div>
@@ -557,7 +627,9 @@
                             [(ngModel)]="addplotbookingreq.downPaymentDate"
                           />
                         </div>
+                      </div>
 
+                      <div class="row mb-3">
                         <div class="col-xl-4">
                           <label for="khasraNo" class="form-label"
                             >Down Payment Amount :</label
@@ -567,23 +639,63 @@
                             class="form-control"
                             id="downPaymentAmount"
                             name="downPaymentAmount"
+                            (input)="computeAllAmounts()"
                             [(ngModel)]="addplotbookingreq.downPaymentAmount"
                           />
                         </div>
 
                         <div class="col-xl-4">
-                          <label for="numberOfInstallments" class="form-label"
-                            >Number of Installments :</label
+                          <label for="remainingAmount" class="form-label"
+                            >Remaining Amount :</label
                           >
+                          <input
+                            type="number"
+                            step="0.01"
+                            class="form-control"
+                            id="remainingAmount"
+                            name="remainingAmount"
+                            [(ngModel)]="addplotbookingreq.remainingAmount"
+                            readonly
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="numberOfInstallments" class="form-label"
+                            >Number of Installments :
+                            <span
+                              *ngIf="!isNumberOfInstallmentsDisabled()"
+                              class="text-danger"
+                              >*</span
+                            >
+                          </label>
                           <input
                             type="number"
                             class="form-control"
                             id="numberOfInstallments"
                             name="numberOfInstallments"
+                            [disabled]="isNumberOfInstallmentsDisabled()"
                             [(ngModel)]="addplotbookingreq.numberOfInstallments"
+                            (input)="computeAllAmounts()"
                           />
+                          <small
+                            *ngIf="isNumberOfInstallmentsDisabled()"
+                            class="text-muted"
+                          >
+                            (Disabled: Remaining amount is 0)
+                          </small>
+                          <small
+                            *ngIf="
+                              !isNumberOfInstallmentsDisabled() &&
+                              (!addplotbookingreq.numberOfInstallments ||
+                                addplotbookingreq.numberOfInstallments <= 0)
+                            "
+                            class="text-danger"
+                          >
+                            Number of Installments is required
+                          </small>
                         </div>
-
+                      </div>
+                      <div class="row mb-3">
                         <div class="col-xl-4">
                           <label for="emiAmount" class="form-label"
                             >EMI Amount :</label
@@ -594,6 +706,7 @@
                             id="emiAmount"
                             name="emiAmount"
                             [(ngModel)]="addplotbookingreq.emiAmount"
+                            disabled=""
                           />
                         </div>
 
@@ -611,30 +724,9 @@
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
 
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingPrimarySix">
-                    <button
-                      class="accordion-button collapsed"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapsePrimarySix"
-                      aria-expanded="false"
-                      aria-controls="collapsePrimarySix"
-                    >
-                      Other Details
-                    </button>
-                  </h2>
-                  <div
-                    id="collapsePrimarySix"
-                    class="accordion-collapse collapse"
-                    aria-labelledby="headingPrimarySix"
-                    data-bs-parent="#accordionPrimaryExample"
-                  >
-                    <div class="accordion-body">
-                      <div class="row mb-4">
+                    <div class="tab-pane fade" id="other" role="tabpanel">
+                      <div class="row mb-3">
                         <div class="col-xl-4">
                           <label for="executiveId" class="form-label"
                             >Executive's Id :</label
@@ -666,36 +758,42 @@
                             >Executive Signature :</label
                           >
                           <input
-                            type="text"
+                            type="file"
                             class="form-control"
                             id="executiveSignature"
                             name="executiveSignature"
+                            (change)="
+                              onFileChange($event, 'executiveSignature')
+                            "
+                            accept="image/*"
                             [(ngModel)]="addplotbookingreq.executiveSignature"
                           />
                         </div>
-
+                      </div>
+                      <div class="row mb-3">
                         <div class="col-xl-4">
                           <label for="purchaserName" class="form-label"
-                            >Purchase Name :</label
+                            >Purchaser Name :</label
                           >
                           <input
-                            type="date"
+                            type="text"
                             class="form-control"
                             id="purchaserName"
                             name="purchaserName"
                             [(ngModel)]="addplotbookingreq.purchaserName"
                           />
                         </div>
-
                         <div class="col-xl-4">
                           <label for="purchaserSign" class="form-label"
-                            >Sign :</label
+                            >Purchaser Sign :</label
                           >
                           <input
-                            type="number"
+                            type="file"
                             class="form-control"
                             id="purchaserSign"
                             name="purchaserSign"
+                            (change)="onFileChange($event, 'purchaserSign')"
+                            accept="image/*"
                             [(ngModel)]="addplotbookingreq.purchaserSign"
                           />
                         </div>
@@ -705,33 +803,26 @@
                             >Authorized Signatory :</label
                           >
                           <input
-                            type="number"
+                            type="file"
                             class="form-control"
                             id="authorizedSignatory"
                             name="authorizedSignatory"
+                            (change)="
+                              onFileChange($event, 'authorizedSignatory')
+                            "
+                            accept="image/*"
                             [(ngModel)]="addplotbookingreq.authorizedSignatory"
                           />
                         </div>
+                      </div>
 
-                        <div class="col-xl-4">
-                          <label for="directorSalesDate" class="form-label"
-                            >Directory Sales Date :</label
-                          >
-                          <input
-                            type="number"
-                            class="form-control"
-                            id="directorSalesDate"
-                            name="directorSalesDate"
-                            [(ngModel)]="addplotbookingreq.directorSalesDate"
-                          />
-                        </div>
-
+                      <div class="row mb-3">
                         <div class="col-xl-4">
                           <label for="directorName" class="form-label"
                             >Director Name :</label
                           >
                           <input
-                            type="number"
+                            type="text"
                             class="form-control"
                             id="directorName"
                             name="directorName"
@@ -740,43 +831,36 @@
                         </div>
 
                         <div class="col-xl-4">
+                          <label for="directorSalesDate" class="form-label"
+                            >Directory Sales Date :</label
+                          >
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="directorSalesDate"
+                            name="directorSalesDate"
+                            [(ngModel)]="addplotbookingreq.directorSalesDate"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
                           <label for="directorSign" class="form-label"
                             >Directory Sign :</label
                           >
                           <input
-                            type="number"
+                            type="file"
                             class="form-control"
                             id="directorSign"
                             name="directorSign"
+                            (change)="onFileChange($event, 'directorSign')"
+                            accept="image/*"
                             [(ngModel)]="addplotbookingreq.directorSign"
                           />
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingPrimarySeven">
-                    <button
-                      class="accordion-button collapsed"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapsePrimarySeven"
-                      aria-expanded="false"
-                      aria-controls="collapsePrimarySeven"
-                    >
-                      Document Details
-                    </button>
-                  </h2>
-                  <div
-                    id="collapsePrimarySeven"
-                    class="accordion-collapse collapse"
-                    aria-labelledby="headingPrimarySeven"
-                    data-bs-parent="#accordionPrimaryExample"
-                  >
-                    <div class="accordion-body">
-                      <div class="row mb-4">
+                    <div class="tab-pane fade" id="document" role="tabpanel">
+                      <div class="row">
                         <div class="col-xl-12">
                           <table class="table table-bordered table-responsive">
                             <thead>
@@ -784,7 +868,7 @@
                                 <th>S.No.</th>
                                 <th>Document Name</th>
                                 <th>Document Number</th>
-                                <th>Upload Image</th>
+                                <th>Upload Image (PDF / Image)</th>
                                 <th>Image Preview</th>
                               </tr>
                             </thead>
@@ -804,6 +888,18 @@
                                       addplotbookingreq.panCardNumber
                                     "
                                   />
+                                  <small
+                                    *ngIf="
+                                      addplotbookingreq.panCardNumber &&
+                                      !isValidPAN(
+                                        addplotbookingreq.panCardNumber
+                                      )
+                                    "
+                                    class="text-danger"
+                                  >
+                                    PAN format invalid (5 letters + 4 digits + 1
+                                    letter)
+                                  </small>
                                 </td>
                                 <td style="width: 200px">
                                   <input
@@ -811,7 +907,39 @@
                                     class="form-control"
                                     id="panCardImage"
                                     name="panCardImage"
+                                    (change)="
+                                      onFileChange($event, 'panCardImage')
+                                    "
+                                    accept=".pdf,image/*"
                                   />
+                                </td>
+                                <td style="width: 200px">
+                                  <ng-container
+                                    *ngIf="previews['panCardImage'] as pv"
+                                  >
+                                    <img
+                                      *ngIf="pv.type === 'image'"
+                                      [src]="pv.url"
+                                      style="
+                                        max-width: 120px;
+                                        max-height: 80px;
+                                        border: 1px solid #eee;
+                                      "
+                                    />
+                                    <div *ngIf="pv.type === 'pdf'">
+                                      <a [href]="pv.url" target="_blank"
+                                        >Open PDF</a
+                                      >
+                                      <div style="margin-top: 4px">
+                                        <embed
+                                          [src]="pv.url"
+                                          type="application/pdf"
+                                          width="160"
+                                          height="120"
+                                        />
+                                      </div>
+                                    </div>
+                                  </ng-container>
                                 </td>
                               </tr>
 
@@ -837,9 +965,44 @@
                                   <input
                                     type="file"
                                     class="form-control"
-                                    id="drivinglicenceImage"
-                                    name="drivinglicenceImage"
+                                    id="drivingLicenseImage"
+                                    name="drivingLicenseImage"
+                                    (change)="
+                                      onFileChange(
+                                        $event,
+                                        'drivingLicenseImage'
+                                      )
+                                    "
+                                    accept=".pdf,image/*"
                                   />
+                                </td>
+                                <td style="width: 200px">
+                                  <ng-container
+                                    *ngIf="
+                                      previews['drivingLicenseImage'] as pv
+                                    "
+                                  >
+                                    <img
+                                      *ngIf="pv.type === 'image'"
+                                      [src]="pv.url"
+                                      style="
+                                        max-width: 120px;
+                                        max-height: 80px;
+                                        border: 1px solid #eee;
+                                      "
+                                    />
+                                    <div *ngIf="pv.type === 'pdf'">
+                                      <a [href]="pv.url" target="_blank"
+                                        >Open PDF</a
+                                      >
+                                      <embed
+                                        [src]="pv.url"
+                                        type="application/pdf"
+                                        width="160"
+                                        height="120"
+                                      />
+                                    </div>
+                                  </ng-container>
                                 </td>
                               </tr>
 
@@ -863,9 +1026,39 @@
                                   <input
                                     type="file"
                                     class="form-control"
-                                    id="passportimage"
-                                    name="passportimage"
+                                    id="passportImage"
+                                    name="passportImage"
+                                    (change)="
+                                      onFileChange($event, 'passportImage')
+                                    "
+                                    accept=".pdf,image/*"
                                   />
+                                </td>
+                                <td style="width: 200px">
+                                  <ng-container
+                                    *ngIf="previews['passportImage'] as pv"
+                                  >
+                                    <img
+                                      *ngIf="pv.type === 'image'"
+                                      [src]="pv.url"
+                                      style="
+                                        max-width: 120px;
+                                        max-height: 80px;
+                                        border: 1px solid #eee;
+                                      "
+                                    />
+                                    <div *ngIf="pv.type === 'pdf'">
+                                      <a [href]="pv.url" target="_blank"
+                                        >Open PDF</a
+                                      >
+                                      <embed
+                                        [src]="pv.url"
+                                        type="application/pdf"
+                                        width="160"
+                                        height="120"
+                                      />
+                                    </div>
+                                  </ng-container>
                                 </td>
                               </tr>
 
@@ -893,7 +1086,37 @@
                                     class="form-control"
                                     id="voterIdImage"
                                     name="voterIdImage"
+                                    (change)="
+                                      onFileChange($event, 'voterIdImage')
+                                    "
+                                    accept=".pdf,image/*"
                                   />
+                                </td>
+                                <td style="width: 200px">
+                                  <ng-container
+                                    *ngIf="previews['voterIdImage'] as pv"
+                                  >
+                                    <img
+                                      *ngIf="pv.type === 'image'"
+                                      [src]="pv.url"
+                                      style="
+                                        max-width: 120px;
+                                        max-height: 80px;
+                                        border: 1px solid #eee;
+                                      "
+                                    />
+                                    <div *ngIf="pv.type === 'pdf'">
+                                      <a [href]="pv.url" target="_blank"
+                                        >Open PDF</a
+                                      >
+                                      <embed
+                                        [src]="pv.url"
+                                        type="application/pdf"
+                                        width="160"
+                                        height="120"
+                                      />
+                                    </div>
+                                  </ng-container>
                                 </td>
                               </tr>
 
@@ -906,27 +1129,78 @@
                                 </td>
                                 <td style="width: 200px">
                                   <input
-                                    type="text"
+                                    (blur)="
+                                      addplotbookingreq.aadhaarNumber &&
+                                      !isValidAadhaar(
+                                        addplotbookingreq.aadhaarNumber
+                                      )
+                                        ? 76777
+                                        : null
+                                    "
+                                    type="number"
                                     class="form-control"
                                     id="aadhaarNumber"
                                     name="aadhaarNumber"
+                                    (input)="onAadhaarInput($event)"
                                     [(ngModel)]="
                                       addplotbookingreq.aadhaarNumber
                                     "
                                   />
+
+                                  <small
+                                    *ngIf="
+                                      addplotbookingreq.aadhaarNumber &&
+                                      !isValidAadhaar(
+                                        addplotbookingreq.aadhaarNumber
+                                      )
+                                    "
+                                    class="text-danger"
+                                  >
+                                    Aadhaar must be 12 digits
+                                  </small>
                                 </td>
                                 <td style="width: 200px">
                                   <input
                                     type="file"
                                     class="form-control"
-                                    id="adharImage"
-                                    name="adharImage"
+                                    id="aadhaarImage"
+                                    name="aadhaarImage"
+                                    (change)="
+                                      onFileChange($event, 'aadhaarImage')
+                                    "
+                                    accept=".pdf,image/*"
                                   />
+                                </td>
+                                <td style="width: 200px">
+                                  <ng-container
+                                    *ngIf="previews['aadhaarImage'] as pv"
+                                  >
+                                    <img
+                                      *ngIf="pv.type === 'image'"
+                                      [src]="pv.url"
+                                      style="
+                                        max-width: 120px;
+                                        max-height: 80px;
+                                        border: 1px solid #eee;
+                                      "
+                                    />
+                                    <div *ngIf="pv.type === 'pdf'">
+                                      <a [href]="pv.url" target="_blank"
+                                        >Open PDF</a
+                                      >
+                                      <embed
+                                        [src]="pv.url"
+                                        type="application/pdf"
+                                        width="160"
+                                        height="120"
+                                      />
+                                    </div>
+                                  </ng-container>
                                 </td>
                               </tr>
 
                               <tr>
-                                <td style="width: 50px">5</td>
+                                <td style="width: 50px">6</td>
                                 <td>
                                   <b style="font-size: 14px"
                                     >Ration Card Number</b
@@ -947,9 +1221,39 @@
                                   <input
                                     type="file"
                                     class="form-control"
-                                    id="rationcardImage"
-                                    name="rationcardImage"
+                                    id="rationCardImage"
+                                    name="rationCardImage"
+                                    (change)="
+                                      onFileChange($event, 'rationCardImage')
+                                    "
+                                    accept=".pdf,image/*"
                                   />
+                                </td>
+                                <td style="width: 200px">
+                                  <ng-container
+                                    *ngIf="previews['rationCardImage'] as pv"
+                                  >
+                                    <img
+                                      *ngIf="pv.type === 'image'"
+                                      [src]="pv.url"
+                                      style="
+                                        max-width: 120px;
+                                        max-height: 80px;
+                                        border: 1px solid #eee;
+                                      "
+                                    />
+                                    <div *ngIf="pv.type === 'pdf'">
+                                      <a [href]="pv.url" target="_blank"
+                                        >Open PDF</a
+                                      >
+                                      <embed
+                                        [src]="pv.url"
+                                        type="application/pdf"
+                                        width="160"
+                                        height="120"
+                                      />
+                                    </div>
+                                  </ng-container>
                                 </td>
                               </tr>
                             </tbody>
@@ -960,162 +1264,36 @@
                   </div>
                 </div>
               </div>
-
-              <div class="card-footer text-end">
-                <button
-                  type="submit"
-                  [disabled]="loading"
-                  class="btn btn-success m-1"
-                >
-                  <span
-                    *ngIf="loading"
-                    class="spinner-border spinner-border-sm me-2"
-                  ></span>
-                  Submit
-                  <i
-                    class="ri-file-pdf-line ms-1 align-middle d-inline-block"
-                  ></i>
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-warning m-1"
-                  [routerLink]="['/plot']"
-                >
-                  Cancel<i class="ri-cancel-2-line ms-1 d-inline-block"></i>
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--End::row-1 -->
-  </div>
-</div>
-<!-- End::app-content -->
-
-<!-- Start:: select address modal -->
-<div
-  class="modal fade modal-style-1 modal-3"
-  id="select-address"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-body">
-        <div class="d-flex align-items-start justify-content-between mb-4">
-          <h6 class="fs-18 mb-0">Select Address</h6>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card custom-card checkout-address-card">
-              <div class="card-body">
-                <!-- form-check -->
-                <input
-                  class="form-check-input d-none"
-                  type="radio"
-                  id="address1_select"
-                  name="select-address"
-                  checked=""
-                />
-                <label
-                  class="position-absolute all-0 cursor-pointer"
-                  for="address1_select"
-                ></label>
-                <!-- form-check -->
-
-                <span class="badge bg-secondary rounded-pill custom-badge-3"
-                  >Default</span
-                >
-
-                <div class="d-flex align-items-center gap-2 mb-3">
-                  <div class="lh-1">
-                    <span class="avatar avatar-md avatar-rounded border"
-                      ><i class="ti ti-home fs-5"></i
-                    ></span>
-                  </div>
-                  <h6 class="fs-16 mb-0">Home</h6>
-                </div>
-                <p class="mb-1 fw-medium">Ruby Disousa</p>
-                <p class="mb-1 fw-medium text-muted fs-13">
-                  <a
-                    href="https://sprukomarket.com/cdn-cgi/l/email-protection"
-                    class="__cf_email__"
-                    data-cfemail="9fedeafde6fef4eaf1faeddff8f6f1f1feb1f2fef6f3"
-                    >[email&#160;protected]</a
-                  >
-                </p>
-                <p class="mb-2 fw-medium text-muted fs-13">+11-23-1116773</p>
-                <p class="mb-0 fs-13 text-muted">
-                  H.No: 3-116/458, Golden Park, Marias St., Near 12Amet
-                  Residency, 14756, United States Of America
-                </p>
-              </div>
             </div>
-          </div>
-          <div class="col-md-12">
-            <div class="card custom-card checkout-address-card">
-              <div class="card-body">
-                <!-- form-check -->
-                <input
-                  class="form-check-input d-none"
-                  type="radio"
-                  id="address2_select"
-                  name="select-address"
-                />
-                <label
-                  class="position-absolute all-0 cursor-pointer"
-                  for="address2_select"
-                ></label>
-                <!-- form-check -->
-
-                <div class="d-flex align-items-center gap-2 mb-3">
-                  <div class="lh-1">
-                    <span class="avatar avatar-md avatar-rounded border"
-                      ><i class="ti ti-briefcase fs-16"></i
-                    ></span>
-                  </div>
-                  <h6 class="fs-16 mb-0">Work</h6>
-                </div>
-                <p class="mb-1 fw-medium">Ruby Disousa</p>
-                <p class="mb-1 fw-medium text-muted fs-13">
-                  <a
-                    href="https://sprukomarket.com/cdn-cgi/l/email-protection"
-                    class="__cf_email__"
-                    data-cfemail="6f1d1a0d160e041a010a1d2f080601010e41020e0603"
-                    >[email&#160;protected]</a
-                  >
-                </p>
-                <p class="mb-2 fw-medium text-muted fs-13">+11-23-1116773</p>
-                <p class="mb-0 fs-13 text-muted">
-                  Taj Building, 3rd Floor, Room No: 3, Silver St., Adugiahsuk,
-                  LICE, 14756, United States Of America
-                </p>
-              </div>
+            <div class="card-footer text-end">
+              <button
+                type="submit"
+                [disabled]="loading"
+                class="btn btn-success m-1"
+              >
+                <span
+                  *ngIf="loading"
+                  class="spinner-border spinner-border-sm me-2"
+                ></span>
+                Submit
+                <i
+                  class="ri-file-pdf-line ms-1 align-middle d-inline-block"
+                ></i>
+              </button>
+              <button
+                type="button"
+                class="btn btn-warning m-1"
+                [routerLink]="['/plot']"
+              >
+                Cancel<i class="ri-cancel-2-line ms-1 d-inline-block"></i>
+              </button>
             </div>
-          </div>
+          </form>
         </div>
-        <div class="d-flex align-items-center gap-2 justify-content-end">
-          <a
-            href="javascript:void(0);"
-            class="btn btn-light"
-            data-bs-dismiss="modal"
-            >Cancel</a
-          >
-          <a href="javascript:void(0);" class="btn btn-primary"
-            >Select address</a
-          >
-        </div>
+        <!--End::row-1 -->
       </div>
     </div>
   </div>
 </div>
-
 <!-- Flat Picker JS -->
 <app-footer></app-footer>

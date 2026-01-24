@@ -7,7 +7,7 @@ import { ApiService } from './api.service';
 export class incommingpaymentservice {
   private apiUrl = 'IncommingPayment/GetPaymentListService';
 
-  constructor(private http: ApiService) {}
+  constructor(private http: ApiService) { }
 
   getincomingpayment(companyId: number, page: number, pageSize: number, userId: number, filters: any): Observable<any> {
     const body = {

@@ -1,5 +1,8 @@
 <app-navbar></app-navbar>
 <div class="main-content app-content">
+  <div *ngIf="fullpageloader" class="full-page-loader">
+    <div class="loader-spinner"></div>
+  </div>
   <div class="">
     <!-- Start::row-1 -->
     <div class="row">
@@ -68,7 +71,7 @@
                       role="tabpanel"
                     >
                       <div class="row">
-                        <div class="col-xl-4">
+                        <div class="col-xl-4" style="display: none">
                           <label for="plotCode" class="form-label"
                             >Plot Code :</label
                           >
@@ -79,6 +82,31 @@
                             name="plotCode"
                             [(ngModel)]="addplot.plotCode"
                             disabled
+                          />
+                        </div>
+                        <div class="col-xl-4">
+                          <label for="plot_Code" class="form-label"
+                            >Plot Code :<span class="red">*</span></label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="plot_Code"
+                            name="plot_Code"
+                            [(ngModel)]="addplot.plot_Code"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <label for="subPlotCode" class="form-label"
+                            >Sub Plot Code :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="subPlotCode"
+                            name="subPlotCode"
+                            [(ngModel)]="addplot.subPlotCode"
                           />
                         </div>
                         <div class="col-xl-4">
@@ -94,6 +122,8 @@
                             placeholder="Plot Name"
                           />
                         </div>
+                      </div>
+                      <div class="row mt-3">
                         <div class="col-xl-4">
                           <label for="plotType" class="form-label"
                             >Plot Type :</label
@@ -118,14 +148,12 @@
                             </option>
                           </select>
                         </div>
-                      </div>
-                      <div class="row mt-3">
+
                         <div class="col-xl-4">
-                          <label for="price" class="form-label"
-                            >Price :<span class="red">*</span></label
-                          >
+                          <label for="price" class="form-label">Price :</label>
                           <input
                             type="number"
+                            disabled=""
                             class="form-control"
                             id="price"
                             name="price"
@@ -156,7 +184,9 @@
                             <option value="Southwest">Southwest</option>
                           </select>
                         </div>
+                      </div>
 
+                      <div class="row mt-3">
                         <div class="col-xl-4">
                           <label for="remarks" class="form-label"
                             >Remarks :</label
@@ -170,9 +200,7 @@
                             [(ngModel)]="addplot.remarks"
                           />
                         </div>
-                      </div>
 
-                      <div class="row mt-3">
                         <div class="col-xl-12">
                           <label for="description" class="form-label">
                             Description :<span class="red">*</span></label
@@ -205,7 +233,23 @@
                             id="IsShowONWeb"
                             name="IsShowONWeb"
                             placeholder="Enter IsShowONWeb"
-                            [(ngModel)]="addplot.IsShowONWeb"
+                            [(ngModel)]="addplot.isShowONWeb"
+                          />
+                        </div>
+
+                        <div class="col-3">
+                          <label for="remarks" class="form-label"
+                            >Is Active :</label
+                          >
+
+                          <br />
+                          <input
+                            class="form-check-input"
+                            id="isActive"
+                            name="isActive"
+                            type="checkbox"
+                            [(ngModel)]="addplot.isActive"
+                            [disabled]="isActiveDisabled"
                           />
                         </div>
                       </div>
@@ -420,9 +464,7 @@
                     <div class="tab-pane fade" id="gallery" role="tabpanel">
                       <div class="row">
                         <div class="col-xl-4">
-                          <label class="form-label"
-                            >Attachments<span class="red">*</span></label
-                          >
+                          <label class="form-label">Attachments</label>
                           <input
                             type="file"
                             style="height: 38px"
@@ -434,7 +476,72 @@
                         </div>
 
                         <div class="col-xl-12 mt-4">
-                          <table class="table table-bordered table-responsive">
+                          <table
+                            class="table table-bordered table-responsive"
+                            style="width: auto; display: block"
+                          >
+                            <tbody>
+                              <tr>
+                                <td
+                                  *ngFor="
+                                    let img of imagePreviews;
+                                    let i = index
+                                  "
+                                  style="
+                                    position: relative;
+                                    vertical-align: top;
+                                    width: 120px;
+                                  "
+                                >
+                                  <img
+                                    [src]="img.src"
+                                    alt="Preview"
+                                    width="100"
+                                    height="100"
+                                    style="
+                                      margin: 5px;
+                                      border-radius: 8px;
+                                      display: block;
+                                    "
+                                  />
+                                  <button
+                                    type="button"
+                                    (click)="removeImage(i)"
+                                    style="
+                                      position: absolute;
+                                      top: 6px;
+                                      right: 10px;
+                                      background: rgba(255, 255, 255, 0.9);
+                                      border: none;
+                                      cursor: pointer;
+                                      padding: 4px;
+                                      border-radius: 50%;
+                                    "
+                                    title="Delete"
+                                  >
+                                    <i
+                                      class="ri-delete-bin-line text-danger"
+                                    ></i>
+                                  </button>
+
+                                  <!-- show guid/info for existing images -->
+                                  <div
+                                    *ngIf="img.plotImageGuid"
+                                    class="small text-muted"
+                                    style="
+                                      margin-top: 6px;
+                                      word-break: break-all;
+                                      font-size: 11px;
+                                    "
+                                  >
+                                    {{ img.plotImageGuid }}
+                                  </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+
+                          <!-- <table class="table table-bordered table-responsive">
                             <thead>
                               <tr>
                                 <th>S.No.</th>
@@ -476,7 +583,7 @@
                                 </td>
                               </tr>
                             </tbody>
-                          </table>
+                          </table> -->
                         </div>
                       </div>
                     </div>

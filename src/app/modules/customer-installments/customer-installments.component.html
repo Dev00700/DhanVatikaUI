@@ -1,0 +1,208 @@
+<app-navbar> </app-navbar>
+
+<div class="main-content app-content">
+  <div class="container-fluid page-container main-body-container">
+    <!-- Start::page-header -->
+    <div class="page-header-breadcrumb mb-3">
+      <div class="d-flex align-center justify-content-between flex-wrap"></div>
+    </div>
+    <!-- End::page-header -->
+
+    <!-- Start::row-1 -->
+    <div
+      class="row"
+      *ngIf="
+        this.PlotAndCustomerEmiResDtoList != null &&
+        this.PlotAndCustomerEmiResDtoList.length > 0
+      "
+    >
+      <div class="col-xxl-3">
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="card custom-card overflow-hidden">
+              <div class="card-header justify-content-between">
+                <div class="card-title">Customer Details</div>
+              </div>
+              <div class="card-body p-0">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">
+                        <i class="ri-user-line me-2 fs-14"></i>Full Name
+                      </div>
+                      <div class="d-flex align-items-center gap-2">
+                        <div class="lh-1">
+                          <span class="avatar avatar-sm avatar-rounded">
+                            <img src="../assets/images/faces/12.jpg" alt="" />
+                          </span>
+                        </div>
+                        <div class="fw-medium">
+                          {{
+                            this.PlotAndCustomerEmiResDtoList[0].customerName
+                          }}
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">
+                        <i class="ri-mail-line me-2 fs-14"></i>Email
+                      </div>
+                      <div class="fw-medium">
+                        <a class="__cf_email__">{{
+                          this.PlotAndCustomerEmiResDtoList[0].emailId
+                        }}</a>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">
+                        <i class="ri-phone-line me-2 fs-14"></i>Phone
+                      </div>
+                      <div class="fw-medium text-end">
+                        {{ this.PlotAndCustomerEmiResDtoList[0].mobile }}
+                      </div>
+                    </div>
+                  </li>
+
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">
+                        <i class="ri-home-line me-2 fs-14"></i>Plot Name
+                      </div>
+                      <div class="fw-medium text-end">
+                        {{ this.PlotAndCustomerEmiResDtoList[0].plotName }} ({{
+                          this.PlotAndCustomerEmiResDtoList[0].plot_Code
+                        }})
+                      </div>
+                    </div>
+                  </li>
+
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">
+                        <i class="ri-hand-coin-line me-2 fs-14"></i>Total
+                        Pending Amount
+                      </div>
+                      <div class="fw-medium text-end">
+                        {{
+                          this.PlotAndCustomerEmiResDtoList[0]
+                            .totalPendingAmount
+                        }}
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xxl-9">
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="card custom-card overflow-hidden">
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table nowrap text-nowrap">
+                    <thead>
+                      <tr>
+                        <th style="width: 20px">S.No.</th>
+                        <th>EMI No.</th>
+                        <th>EMI Date</th>
+                        <th class="text-end">Original Amount</th>
+                        <th class="text-end">Previous Due</th>
+                        <th class="text-end">Final Amount</th>
+                        <th class="text-end">Paid Amount</th>
+                        <th class="text-end">Due Amount</th>
+                        <th>Paid Status</th>
+                        <th>Remarks</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        *ngFor="
+                          let emi of PlotAndCustomerEmiResDtoList;
+                          let i = index
+                        "
+                      >
+                        <td style="width: 20px">
+                          {{ i + 1 }}
+                        </td>
+                        <td>
+                          {{ emi.emiNo }}
+                        </td>
+                        <td>
+                          {{ emi.emiDate | date : "dd-MM-yyyy" }}
+                        </td>
+
+                        <td class="text-end">{{ emi.amount }}</td>
+                        <td class="text-end">{{ emi.previousDue }}</td>
+                        <td class="text-end">
+                          {{ emi.amount + emi.previousDue }}
+                        </td>
+                        <td class="text-end">{{ emi.paidAmount }}</td>
+                        <td class="text-end">{{ emi.dueAmount }}</td>
+
+                        <td *ngIf="emi.dueAmount == 0">
+                          <span
+                            class="badge"
+                            [ngClass]="emi.isPaid ? 'bg-success' : 'bg-danger'"
+                            >{{ emi.isPaid ? "Paid" : "Pending" }}</span
+                          >
+                        </td>
+
+                        <td *ngIf="emi.dueAmount > 0">
+                          <span
+                            class="badge"
+                            [ngClass]="
+                              emi.dueAmount ? 'bg-warning' : 'bg-danger'
+                            "
+                            >{{ emi.isPaid ? "Partial" : "Pending" }}</span
+                          >
+                        </td>
+                        <td>{{ emi.remarks }}</td>
+                        <td>
+                          <a
+                            class="btn btn-sm btn-primary"
+                            (click)="
+                              openIncomingPayment(
+                                emi.plotId,
+                                emi.customerId,
+                                emi.customerPaymentId,
+                                emi.amount + emi.previousDue
+                              )
+                            "
+                            *ngIf="!emi.isPaid"
+                            >Make Payment</a
+                          >
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--End::row-1 -->
+  </div>
+</div>
+
+<app-footer> </app-footer>

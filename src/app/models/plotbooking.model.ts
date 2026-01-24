@@ -1,4 +1,5 @@
 import { BaseDto } from "./base.model";
+import { PlotAndCustomerEmiResDto } from "./customerinstallment.model";
 
 export interface PlotBookingReqDto extends BaseDto {
     bookingGuid: string | null;
@@ -61,4 +62,33 @@ export interface PlotBookingReqDto extends BaseDto {
     voterIdImage?: string;
     aadhaarImage?: string;
     rationCardImage?: string;
+    customerPlotPaymentList?: PlotBookingPaymentDto[];
+    plot_Code: string;
+    subPlotCode: string;
+
+}
+
+export interface PlotBookingResDto extends BaseDto {
+    customerId: number;
+    plotId: number;
+    customerName: string;
+    plotCode: string;
+    plot_Code: string;
+    subPlotCode: string;
+    plotName: string;
+    totalAmt: number;
+    paidAmt: number;
+    balanceAmt: number;
+}
+
+export interface PlotBookingPaymentDto {
+    customerpaymentid: number;
+    emiNo: number;
+    amount: number;
+    paidAmount: number;
+    emidate: Date;
+    ispaid: boolean;
+    remarks: string;
+    dueAmount: number;
+    previousDue: number;
 }

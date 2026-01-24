@@ -4,7 +4,7 @@ import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { FormsModule } from '@angular/forms';
 import { FooterComponent } from '../shared/footer/footer.component';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { AddIncomingPaymentDto } from '../../models/incomingpayment.model';
+import { AddIncomingPaymentDto, PlotStatus } from '../../models/incomingpayment.model';
 import { ApiService } from '../../services/api.service';
 import { ToastService } from '../../services/toast.service';
 import { CommonReqDto, CommonResDto } from '../../models/common.model';
@@ -33,6 +33,15 @@ export class CreateIncomingPaymentComponent {
   paymentSourceList: any[] = [];
   isActiveDisabled = true;
   selectedFile: File | null = null;
+  isshowplotandcustomerdetails = false;
+  _customername: string = '';
+  _plotname: string = '';
+
+  plotId?: number;
+  customerId?: number;
+  customerPaymentId?: number;
+  plotStatusOptions: { value: number; text: string }[] = [];
+  isPlotOptionsLoading = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -40,15 +49,72 @@ export class CreateIncomingPaymentComponent {
     private apiService: ApiService,
     private toast: ToastService,
     private dropdownData: DropdownDataService,
-  ) { }
+  ) {
+    debugger;
+    const nav = this.router.getCurrentNavigation();
+    const data = nav?.extras?.state as any;
+
+
+    const plotId = data?.plotId || 0;
+    const customerId = data?.customerId;
+    const customerPaymentId = data?.customerPaymentId || 0;
+    const finalAmount = data?.finalAmount || 0;
+
+
+    if (plotId > 0 && customerId > 0 && customerPaymentId <= 0) {
+      this.isPlotOptionsLoading = true;
+      this._customername = localStorage.getItem("customerName") || '';
+      this._plotname = localStorage.getItem("plotname") || '';
+      this.plotId = plotId;
+      this.customerId = customerId;
+      this.customerPaymentId = customerPaymentId;
+      this.isshowplotandcustomerdetails = true;
+      this.loadPlotStatuses();
+    }
+
+    else if (plotId > 0 && customerId > 0 && customerPaymentId > 0) {
+      this.plotId = plotId;
+      this.customerId = customerId;
+      this.customerPaymentId = customerPaymentId;
+      this.addincomingpayment.amount = finalAmount;
+      this.isPlotOptionsLoading = false;
+    }
+    // this.route.queryParams.subscribe(params => {
+    //   const plotId = params['plotId'];
+    //   const customerId = params['customerId'];
+    //   const customerPaymentId = params['customerPaymentId'] || 0;
+    //   if (plotId > 0 && customerId > 0 && customerPaymentId <= 0) {
+    //     this.plotId = +plotId;
+    //     this.customerId = customerId;
+    //     this.customerPaymentId = customerPaymentId;
+    //     this.isPlotOptionsLoading = true;
+    //     this._customername = localStorage.getItem("customerName") || '';
+    //     this._plotname = localStorage.getItem("plotname") || '';
+    //     this.isshowplotandcustomerdetails = true;
+
+    //   }
+    //   else if (plotId > 0 && customerId > 0 && customerPaymentId > 0) {
+    //     this.customerPaymentId = customerPaymentId;
+    //     this.plotId = plotId;
+    //     this.customerId = customerId;
+    //     // this._customername = localStorage.getItem("customerName") || '';
+    //     // this._plotname = localStorage.getItem("plotname") || '';
+    //     this.addincomingpayment.amount = parseFloat(localStorage.getItem("TokenAmount") || '0');
+    //     // this.isshowplotandcustomerdetails = true;
+
+    //     this.isPlotOptionsLoading = false;
+    //   }
+    // });
+  }
 
   ngOnInit() {
+
     this.addincomingpayment.approveStatus = 0;
     this.addincomingpayment.approveStatusF = 0;
     this.fetchPaymentModeList();
     this.fetchPaymentSourceList();
     this.fetchincomingPaymentGuidFromRoute();
-
+    this.loadPlotStatuses();
   }
 
 
@@ -99,7 +165,7 @@ export class CreateIncomingPaymentComponent {
 
 
   fetchincomingPaymentGuidFromRoute() {
-
+    this.loadPlotStatuses();
     this.incomingpaymentGuid = this.route.snapshot.paramMap.get('iPaymentGuid');
     if (this.incomingpaymentGuid) {
       this.loading = true;
@@ -115,11 +181,29 @@ export class CreateIncomingPaymentComponent {
 
       this.apiService.post<CommonResDto<AddIncomingPaymentDto>>(`IncommingPayment/GetPaymentService`, getItemReqDto).subscribe({
         next: (response) => {
+          this.loadPlotStatuses();
           this.addincomingpayment = response.data;
+          this.addincomingpayment.plotStatus = response.data.plotStatus || 0;
+          this.customerId = response.data.customerId;
+          this.plotId = response.data.PlotId || 0;
+          this.customerPaymentId = response.data.customerPaymentId || 0;
+
           if (this.addincomingpayment.paymentDate) {
             const dateObj = new Date(this.addincomingpayment.paymentDate);
             const yyyyMMdd = dateObj.toISOString().slice(0, 10);
             this.addincomingpayment.paymentDate = yyyyMMdd;
+
+          }
+
+
+
+
+
+          if (this.addincomingpayment.plotCode) {
+            this._customername = this.addincomingpayment.customerName || '';
+            this._plotname = this.addincomingpayment.plotName || '';
+            this.isPlotOptionsLoading = true;
+            this.isshowplotandcustomerdetails = true;
           }
           this.addincomingpayment.imageUrl = response.data.image != "" ? response.data.image : null;
           this.loading = false;
@@ -172,6 +256,17 @@ export class CreateIncomingPaymentComponent {
       this.toast.error("Please selcet a Payment Date.");
       return;
     }
+
+    if (this.isPlotOptionsLoading == true) {
+      if (this.addincomingpayment.plotStatus == null || this.addincomingpayment.plotStatus == 0) {
+        this.toast.error("Please select a Plot Status.");
+        return;
+      }
+      if (!this.addincomingpayment.remarks) {
+        this.toast.error("Please enter remarks ");
+        return;
+      }
+    }
     if (this.selectedFile) {
       const formData = new FormData();
       formData.append('images', this.selectedFile);
@@ -204,14 +299,17 @@ export class CreateIncomingPaymentComponent {
 
   saveincommingpayment(imageName: string) {
     this.addincomingpayment.isActive = true;
-    this.addincomingpayment.customerId = 0;
+    //this.addincomingpayment.customerId = 0;
     this.addincomingpayment.image = imageName;
     this.addincomingpayment.remarks = this.addincomingpayment.remarks || "";
     this.addincomingpayment.iPaymentGuid = this.incomingpaymentGuid || null;
     this.addincomingpayment.referenceNo = this.addincomingpayment.referenceNo || "";
     this.addincomingpayment.bankName = this.addincomingpayment.bankName || "";
     this.addincomingpayment.branchName = this.addincomingpayment.branchName || "";
-
+    this.addincomingpayment.PlotId = this.plotId || 0;
+    this.addincomingpayment.customerId = this.customerId || 0;
+    this.addincomingpayment.customerPaymentId = this.customerPaymentId || 0;
+    this.addincomingpayment.plotStatus = this.addincomingpayment.plotStatus || 0;
     const reqBody: CommonReqDto<AddIncomingPaymentDto> = {
       UserId: parseInt(localStorage.getItem("userId") || '0', 10),
       PageSize: 1,
@@ -238,7 +336,16 @@ export class CreateIncomingPaymentComponent {
       }
     });
   }
-
+  loadPlotStatuses() {
+    this.plotStatusOptions = [
+      { value: PlotStatus.Select, text: 'Select Plot Status' },
+      // { value: PlotStatus.Available, text: 'Available' },
+      { value: PlotStatus.PreBooked, text: 'PreBooked' },
+      { value: PlotStatus.Booked, text: 'Booked' },
+      { value: PlotStatus.Sale, text: 'Sale' },
+      { value: PlotStatus.Registry, text: 'Registry' }
+    ];
+  }
 
 
 }

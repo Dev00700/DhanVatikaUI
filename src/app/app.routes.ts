@@ -14,6 +14,12 @@ import { PlotComponent } from './modules/plot/plot.component';
 import { CreatePlotBookingComponent } from './modules/create-plot-booking/create-plot-booking.component';
 import { LocationComponent } from './modules/location/location.component';
 import { CreateLocationComponent } from './modules/create-location/create-location.component';
+import { EnquiryComponent } from './modules/enquiry/enquiry.component';
+import { CustomerListComponent } from './modules/customer-list/customer-list.component';
+import { CustomerInstallmentsComponent } from './modules/customer-installments/customer-installments.component';
+import { PlotBookingComponent } from './modules/plot-booking/plot-booking.component';
+import { PlotBookingDetailsComponent } from './modules/plot-booking-details/plot-booking-details.component';
+import { CreateCustomerComponent } from './modules/create-customer/create-customer.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -37,4 +43,11 @@ export const routes: Routes = [
     { path: 'location', component: LocationComponent, canActivate: [AuthGuard] },
     { path: 'create-location', component: CreateLocationComponent, canActivate: [AuthGuard] },
     { path: 'create-location/:locationGuid', component: CreateLocationComponent, canActivate: [AuthGuard] },
+    { path: 'enquiry', component: EnquiryComponent, canActivate: [AuthGuard] },
+    { path: 'customer-list', component: CustomerListComponent, canActivate: [AuthGuard] },
+    { path: 'customer-installments', component: CustomerInstallmentsComponent, canActivate: [AuthGuard] },
+    { path: 'plot-booking', component: PlotBookingComponent, canActivate: [AuthGuard] },
+    { path: 'plot-booking-details', component: PlotBookingDetailsComponent, canActivate: [AuthGuard] },
+    { path: 'create-customer', component: CreateCustomerComponent, canActivate: [AuthGuard] },
+    { path: 'create-customer/:customerGuid', component: CreateCustomerComponent, canActivate: [AuthGuard] },
 ];

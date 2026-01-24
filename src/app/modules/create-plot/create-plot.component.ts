@@ -27,10 +27,17 @@ export class CreatePlotComponent {
   loadingUnitTypeList = false;
   unittypeList: any[] = []
   selectedFiles: File[] = [];
-  imagePreviews: string[] = [];
+  imagePreviews: {
+    src: string;
+    file?: File;
+    plotImageGuid?: string;
+    plotId?: number;
+    isNew?: boolean;
+  }[] = [];
   newAmenity: Amenity = { amentyname: '', amentydescr: '' };
   plotImages: any[] = [];
   editIndex: number | null = null;
+  fullpageloader: boolean = false;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -52,15 +59,20 @@ export class CreatePlotComponent {
       return;
     }
 
+    if (!this.addplot.plot_Code) {
+      this.toast.error("Please enter a plot code");
+      return;
+    }
+
     if (!this.addplot.plotType || this.addplot.plotType == "1") {
       this.toast.error("Please select a plot type.");
       return;
     }
 
-    if (!this.addplot.price || this.addplot.price <= 0) {
-      this.toast.error("Please enter a price which is greater than zero.");
-      return;
-    }
+    // if (!this.addplot.price || this.addplot.price <= 0) {
+    //   this.toast.error("Please enter a price which is greater than zero.");
+    //   return;
+    // }
 
     if (!this.addplot.facing || this.addplot.facing == "1") {
       this.toast.error("Please select a facing");
@@ -92,12 +104,12 @@ export class CreatePlotComponent {
       return;
     }
 
-    if (this.addplot.plotGuid == null) {
-      if (this.selectedFiles.length == 0) {
-        this.toast.error("Please select at least one image.");
-        return;
-      }
-    }
+    // if (this.addplot.plotGuid == null) {
+    //   if (this.selectedFiles.length == 0) {
+    //     this.toast.error("Please select at least one image.");
+    //     return;
+    //   }
+    // }
 
 
     if (this.selectedFiles && this.selectedFiles.length > 0) {
@@ -178,14 +190,16 @@ export class CreatePlotComponent {
     });
   }
   saveplot() {
-    this.addplot.isActive = true;
+    //this.addplot.isActive = true;
     this.addplot.remarks = this.addplot.remarks || "";
     this.addplot.plotGuid = this.plotGuid || null;
     this.addplot.nearbyLandmarks = this.addplot.nearbyLandmarks || "";
     this.addplot.latitude = this.addplot.latitude || "";
     this.addplot.longitude = this.addplot.longitude || "";
-    this.addplot.IsShowONWeb = this.addplot.IsShowONWeb || false;
-    this.addplot.Amenities = this.addplot.amentieslist.length > 0 ? JSON.stringify(this.addplot.amentieslist) : "";
+    this.addplot.subPlotCode = this.addplot.subPlotCode || "";
+    this.addplot.isShowONWeb = this.addplot.isShowONWeb || false;
+    this.addplot.amenities = this.addplot.amentieslist.length > 0 ? JSON.stringify(this.addplot.amentieslist) : "";
+    this.addplot.price = 0;
     const reqBody: CommonReqDto<PlotRequestDto> = {
       UserId: parseInt(localStorage.getItem("userId") || '0', 10),
       PageSize: 1,
@@ -217,9 +231,10 @@ export class CreatePlotComponent {
   }
 
   fetchplotGuidFromRoute() {
+
     this.plotGuid = this.route.snapshot.paramMap.get('plotGuid');
     if (this.plotGuid) {
-      this.loading = true;
+      this.fullpageloader = true;
       this.isActiveDisabled = false;
       const getItemReqDto: CommonReqDto<any> = {
         PageSize: 1,
@@ -232,19 +247,33 @@ export class CreatePlotComponent {
 
       this.apiService.post<CommonResDto<PlotRequestDto>>(`Plot/GetPlotService`, getItemReqDto).subscribe({
         next: (response) => {
-          debugger;
+
           this.addplot = response.data;
 
+          // map existing plot images into unified preview objects
           if (this.addplot.plotImage && this.addplot.plotImage.length > 0) {
-            this.imagePreviews = this.addplot.plotImage.map(imgDto => imgDto.image);
+            this.imagePreviews = this.addplot.plotImage.map(imgDto => ({
+              src: imgDto.image,
+              plotImageGuid: (imgDto as any).plotImageGuid || (imgDto as any).plotImageGUID || null,
+              plotId: (imgDto as any).plotId || null,
+              isNew: false
+            }));
+          } else {
+            this.imagePreviews = [];
+          }
+
+          if (this.addplot.amenities) {
+            this.addplot.amentieslist = JSON.parse(this.addplot.amenities);
+          } else {
+            this.addplot.amentieslist = [];
           }
 
 
-          this.loading = false;
+          this.fullpageloader = false;
         },
         error: () => {
           this.toast.warning('Failed to load plot  details');
-          this.loading = false;
+          this.fullpageloader = false;
         }
       });
     }
@@ -258,18 +287,26 @@ export class CreatePlotComponent {
     const files: FileList = event.target.files;
 
     if (files && files.length > 0) {
-      this.selectedFiles = Array.from(files); // store all selected files
-      //this.imagePreviews = [];
+      const newFiles = Array.from(files); // store all selected files
+      // push files to selectedFiles for upload later
+      this.selectedFiles.push(...newFiles);
 
-      for (let file of this.selectedFiles) {
+      for (let file of newFiles) {
         const reader = new FileReader();
         reader.onload = (e: any) => {
-          this.imagePreviews.push(e.target.result); // store preview for each image
+          this.imagePreviews.push({
+            src: e.target.result,
+            file: file,
+            isNew: true
+          });
         };
         reader.readAsDataURL(file);
       }
     }
   }
+
+
+
 
   savePlotImages(plotImages: any[]) {
     const plotimagereq: CommonReqDto<any> = {
@@ -285,11 +322,38 @@ export class CreatePlotComponent {
     });
   }
 
+
+  // unified remove handler
+  removeImage(index: number) {
+    const preview = this.imagePreviews[index];
+    if (!preview) { return; }
+
+    if (preview.isNew) {
+      // remove local preview and corresponding file from selectedFiles
+      this.imagePreviews.splice(index, 1);
+      // remove matching file from selectedFiles (match by name + size fallback)
+      if (preview.file) {
+        const idx = this.selectedFiles.findIndex(f => f.name === preview.file!.name && f.size === preview.file!.size);
+        if (idx > -1) { this.selectedFiles.splice(idx, 1); }
+      }
+    } else {
+      // existing image on server - call API DeletePlotImage
+      if (preview.plotImageGuid && preview.plotId != null) {
+        this.DeletePlotImage(preview.plotImageGuid, preview.plotId, index);
+      } else {
+        // if no guid, just remove from preview
+        this.imagePreviews.splice(index, 1);
+      }
+    }
+  }
+
+
+
   deleteImage(index: number) {
     this.imagePreviews.splice(index, 1);
   }
 
-  DeletePlotImage(plotImageGuid: string, plotId: number) {
+  DeletePlotImage(plotImageGuid: string, plotId: number, index?: number) {
     if (!plotImageGuid) {
       return;
     }
@@ -309,7 +373,15 @@ export class CreatePlotComponent {
           this.loading = false;
           if (response.data) {
             this.toast.success('Plot images deleted successfully');
-            window.location.reload();
+            if (typeof index === 'number') {
+              this.imagePreviews.splice(index, 1);
+            } else {
+              // fallback: remove by guid match
+              const i = this.imagePreviews.findIndex(p => p.plotImageGuid === plotImageGuid);
+              if (i > -1) this.imagePreviews.splice(i, 1);
+            }
+
+            //window.location.reload();
           } else {
             this.toast.error('Failed to delete image');
           }

@@ -1,0 +1,903 @@
+<app-navbar></app-navbar>
+
+<div class="main-content app-content">
+  <div class="container-fluid page-container main-body-container">
+    <!-- Start::page-header -->
+    <div class="page-header-breadcrumb mb-3">
+      <div class="d-flex align-center justify-content-between flex-wrap">
+        <h1 class="page-title fw-medium fs-18 mb-0">Plot Booking Details</h1>
+      </div>
+    </div>
+    <!-- End::page-header -->
+
+    <!-- Start::row-1 -->
+    <div class="row" *ngIf="plotbookingres != null">
+      <!-- Left: Customer Details Card -->
+      <div class="col-xxl-3">
+        <div class="row">
+          <!-- Customer Details Card -->
+          <div class="col-xl-12">
+            <div class="card custom-card overflow-hidden">
+              <div class="card-header justify-content-between">
+                <div class="card-title">Customer Details</div>
+              </div>
+              <div class="card-body p-0">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">
+                        <i class="ri-user-line me-2 fs-14"></i>Full Name
+                      </div>
+                      <div class="fw-medium">
+                        {{ plotbookingres.customerName }}
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">
+                        <i class="ri-mail-line me-2 fs-14"></i>Email
+                      </div>
+                      <div class="fw-medium">
+                        <a href="mailto:{{ plotbookingres.emailAddress }}">
+                          {{ plotbookingres.emailAddress }}
+                        </a>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">
+                        <i class="ri-phone-line me-2 fs-14"></i>Mobile No 1
+                      </div>
+                      <div class="fw-medium">
+                        {{ plotbookingres.contactNo1 }}
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">
+                        <i class="ri-phone-line me-2 fs-14"></i>Mobile No 2
+                      </div>
+                      <div class="fw-medium">
+                        {{ plotbookingres.contactNo2 || "N/A" }}
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">
+                        <i class="ri-home-line me-2 fs-14"></i>City
+                      </div>
+                      <div class="fw-medium">{{ plotbookingres.city }}</div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">
+                        <i class="ri-map-pin-line me-2 fs-14"></i>Pin Code
+                      </div>
+                      <div class="fw-medium">{{ plotbookingres.pinCode }}</div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">
+                        <i class="ri-building-line me-2 fs-14"></i>State
+                      </div>
+                      <div class="fw-medium">{{ plotbookingres.state }}</div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">
+                        <i class="ri-map-line me-2 fs-14"></i>Address
+                      </div>
+                      <div class="fw-medium text-truncate">
+                        {{ plotbookingres.postalAddress }}
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">
+                        <i class="ri-briefcase-line me-2 fs-14"></i>Occupation
+                      </div>
+                      <div class="fw-medium">
+                        {{ plotbookingres.occupation }}
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">
+                        <i class="ri-calendar-line me-2 fs-14"></i>DOB
+                      </div>
+                      <div class="fw-medium">
+                        {{ plotbookingres.dateOfBirth | date : "dd-MM-yyyy" }}
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Plot Details Card -->
+          <div class="col-xl-12 mt-3">
+            <div class="card custom-card overflow-hidden">
+              <div class="card-header justify-content-between">
+                <div class="card-title">Plot Details</div>
+              </div>
+              <div class="card-body p-0">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">Project Name</div>
+                      <div class="fw-medium">
+                        {{ plotbookingres.projectName }}
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">Plot No</div>
+                      <div class="fw-medium">
+                        {{ plotbookingres.plot_Code }}
+                      </div>
+                    </div>
+                  </li>
+
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">Sub Plot No</div>
+                      <div class="fw-medium">
+                        {{ plotbookingres.subPlotCode }}
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">Block</div>
+                      <div class="fw-medium">{{ plotbookingres.block }}</div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">Khasra No</div>
+                      <div class="fw-medium">{{ plotbookingres.khasraNo }}</div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">Area (Sq Ft)</div>
+                      <div class="fw-medium">
+                        {{ plotbookingres.areaSqFt | number : "1.0-2" }}
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">Rate/Sq Ft</div>
+                      <div class="fw-medium">
+                        ₹{{ plotbookingres.ratePerSqFt | number : "1.0-2" }}
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">Total Cost</div>
+                      <div class="fw-medium">
+                        ₹{{ plotbookingres.totalCost | number : "1.0-2" }}
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">Booking Date</div>
+                      <div class="fw-medium">
+                        {{ plotbookingres.bookingDate | date : "dd-MM-yyyy" }}
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment Summary Card -->
+          <div class="col-xl-12 mt-3">
+            <div class="card custom-card overflow-hidden">
+              <div class="card-header justify-content-between">
+                <div class="card-title">Payment Summary</div>
+              </div>
+              <div class="card-body p-0">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">Token Amount</div>
+                      <div class="fw-medium">
+                        ₹{{ plotbookingres.tokenAmount | number : "1.0-2" }}
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">Down Payment</div>
+                      <div class="fw-medium">
+                        ₹{{
+                          plotbookingres.downPaymentAmount | number : "1.0-2"
+                        }}
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">Down Payment Date</div>
+                      <div class="fw-medium">
+                        {{
+                          plotbookingres.downPaymentDate | date : "dd-MM-yyyy"
+                        }}
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">No. of Installments</div>
+                      <div class="fw-medium">
+                        {{ plotbookingres.numberOfInstallments }}
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">Total EMI Amount</div>
+                      <div class="fw-medium">
+                        ₹{{ plotbookingres.emiAmount | number : "1.0-2" }}
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nominee Details Card -->
+          <div class="col-xl-12 mt-3">
+            <div class="card custom-card overflow-hidden">
+              <div class="card-header justify-content-between">
+                <div class="card-title">Nominee Details</div>
+              </div>
+              <div class="card-body p-0">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">Nominee Name</div>
+                      <div class="fw-medium">
+                        {{ plotbookingres.nomineeName }}
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">Relation</div>
+                      <div class="fw-medium">
+                        {{ plotbookingres.nomineeRelation }}
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">Age</div>
+                      <div class="fw-medium">
+                        {{ plotbookingres.nomineeAge }}
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">Phone No</div>
+                      <div class="fw-medium">
+                        {{ plotbookingres.nomineePhoneNo }}
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    >
+                      <div class="fs-13 text-muted">Address</div>
+                      <div class="fw-medium text-truncate">
+                        {{ plotbookingres.nomineeAddress }}
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Payment Schedule & Documents -->
+      <div class="col-xxl-9">
+        <div class="row">
+          <!-- Payment Schedule Table -->
+          <div class="col-xl-12">
+            <div class="card custom-card overflow-hidden">
+              <div class="card-header justify-content-between">
+                <div class="card-title">Payment Schedule</div>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table nowrap text-nowrap table-hover">
+                    <thead>
+                      <tr>
+                        <th style="width: 20px">S.No.</th>
+                        <th>EMI No.</th>
+                        <th>EMI Date</th>
+                        <th class="text-end">Original Amount</th>
+                        <th class="text-end">Previous Due</th>
+                        <th class="text-end">Final Amount</th>
+                        <th class="text-end">Paid Amount</th>
+                        <th class="text-end">Due Amount</th>
+                        <th>Status</th>
+                        <th>Remarks</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        *ngFor="
+                          let payment of plotbookingres.customerPlotPaymentList;
+                          let i = index
+                        "
+                        [ngClass]="{
+                          'table-success': payment.ispaid,
+                          'table-warning': !payment.ispaid
+                        }"
+                      >
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ payment.emiNo }}</td>
+                        <td>{{ payment.emidate | date : "dd-MM-yyyy" }}</td>
+                        <td class="text-end fw-medium">
+                          ₹{{ payment.amount | number : "1.0-2" }}
+                        </td>
+
+                        <td class="text-end fw-medium">
+                          {{ payment.previousDue }}
+                        </td>
+
+                        <td class="text-end">
+                          {{ payment.amount + payment.previousDue }}
+                        </td>
+                        <td class="text-end">{{ payment.paidAmount }}</td>
+                        <td class="text-end">{{ payment.dueAmount }}</td>
+
+                        <td *ngIf="payment.dueAmount == 0">
+                          <span
+                            class="badge"
+                            [ngClass]="
+                              payment.ispaid ? 'bg-success' : 'bg-danger'
+                            "
+                            >{{ payment.ispaid ? "Paid" : "Pending" }}</span
+                          >
+                        </td>
+
+                        <td *ngIf="payment.dueAmount > 0">
+                          <span
+                            class="badge"
+                            [ngClass]="
+                              payment.dueAmount ? 'bg-warning' : 'bg-danger'
+                            "
+                            >{{ payment.ispaid ? "Partial" : "Pending" }}</span
+                          >
+                        </td>
+                        <td>
+                          <small>{{ payment.remarks }}</small>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Document Details Tabs -->
+          <div class="col-xl-12 mt-3">
+            <div class="card custom-card overflow-hidden">
+              <div class="card-header justify-content-between">
+                <div class="card-title">Documents</div>
+              </div>
+              <div class="card-body">
+                <ul class="nav nav-tabs" id="documentTabs" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link active"
+                      id="pan-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#pan"
+                      type="button"
+                      role="tab"
+                      aria-controls="pan"
+                      aria-selected="true"
+                    >
+                      PAN Card
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link"
+                      id="driving-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#driving"
+                      type="button"
+                      role="tab"
+                      aria-controls="driving"
+                      aria-selected="false"
+                    >
+                      Driving License
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link"
+                      id="passport-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#passport"
+                      type="button"
+                      role="tab"
+                      aria-controls="passport"
+                      aria-selected="false"
+                    >
+                      Passport
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link"
+                      id="voter-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#voter"
+                      type="button"
+                      role="tab"
+                      aria-controls="voter"
+                      aria-selected="false"
+                    >
+                      Voter ID
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link"
+                      id="aadhaar-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#aadhaar"
+                      type="button"
+                      role="tab"
+                      aria-controls="aadhaar"
+                      aria-selected="false"
+                    >
+                      Aadhaar
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link"
+                      id="ration-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#ration"
+                      type="button"
+                      role="tab"
+                      aria-controls="ration"
+                      aria-selected="false"
+                    >
+                      Ration Card
+                    </button>
+                  </li>
+                </ul>
+
+                <div
+                  class="tab-content mt-3"
+                  id="documentTabContent"
+                  style="height: 300px"
+                >
+                  <!-- PAN Card Tab -->
+                  <div
+                    class="tab-pane fade show active"
+                    id="pan"
+                    role="tabpanel"
+                    aria-labelledby="pan-tab"
+                  >
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label class="fw-medium mb-2">PAN Number</label>
+                        <p>{{ plotbookingres.panCardNumber || "N/A" }}</p>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="">Document Preview</label>
+                        <div *ngIf="plotbookingres.panCardImage; else noPanDoc">
+                          <img
+                            *ngIf="isImageUrl(plotbookingres.panCardImage)"
+                            [src]="plotbookingres.panCardImage"
+                            class="rounded"
+                            alt="PAN Card"
+                          />
+                          <embed
+                            *ngIf="isPdfUrl(plotbookingres.panCardImage)"
+                            [src]="plotbookingres.panCardImage"
+                            type="application/pdf"
+                          />
+                          <a
+                            *ngIf="isPdfUrl(plotbookingres.panCardImage)"
+                            [href]="plotbookingres.panCardImage"
+                            target="_blank"
+                            class="btn btn-sm btn-primary mt-2"
+                          >
+                            <i class="ri-download-line"></i> Download PDF
+                          </a>
+                        </div>
+                        <ng-template #noPanDoc>
+                          <p class="text-muted">No document uploaded</p>
+                        </ng-template>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Driving License Tab -->
+                  <div
+                    class="tab-pane fade"
+                    id="driving"
+                    role="tabpanel"
+                    aria-labelledby="driving-tab"
+                  >
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label class="fw-medium mb-2">License Number</label>
+                        <p>
+                          {{ plotbookingres.drivingLicenseNumber || "N/A" }}
+                        </p>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="fw-medium mb-2">Document Preview</label>
+                        <div
+                          *ngIf="
+                            plotbookingres.drivingLicenseImage;
+                            else noDrivingDoc
+                          "
+                        >
+                          <img
+                            *ngIf="
+                              isImageUrl(plotbookingres.drivingLicenseImage)
+                            "
+                            [src]="plotbookingres.drivingLicenseImage"
+                            class="rounded"
+                            height="100"
+                            alt="Driving License"
+                          />
+                          <embed
+                            *ngIf="isPdfUrl(plotbookingres.drivingLicenseImage)"
+                            [src]="plotbookingres.drivingLicenseImage"
+                            type="application/pdf"
+                            width="100%"
+                            height="300"
+                          />
+                          <a
+                            *ngIf="isPdfUrl(plotbookingres.drivingLicenseImage)"
+                            [href]="plotbookingres.drivingLicenseImage"
+                            target="_blank"
+                            class="btn btn-sm btn-primary mt-2"
+                          >
+                            <i class="ri-download-line"></i> Download PDF
+                          </a>
+                        </div>
+                        <ng-template #noDrivingDoc>
+                          <p class="text-muted">No document uploaded</p>
+                        </ng-template>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Passport Tab -->
+                  <div
+                    class="tab-pane fade"
+                    id="passport"
+                    role="tabpanel"
+                    aria-labelledby="passport-tab"
+                  >
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label class="fw-medium mb-2">Passport Number</label>
+                        <p>{{ plotbookingres.passportNumber || "N/A" }}</p>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="fw-medium mb-2">Document Preview</label>
+                        <div
+                          *ngIf="
+                            plotbookingres.passportImage;
+                            else noPassportDoc
+                          "
+                        >
+                          <img
+                            *ngIf="isImageUrl(plotbookingres.passportImage)"
+                            [src]="plotbookingres.passportImage"
+                            class="rounded"
+                            height="100"
+                            alt="Passport"
+                          />
+                          <embed
+                            *ngIf="isPdfUrl(plotbookingres.passportImage)"
+                            [src]="plotbookingres.passportImage"
+                            type="application/pdf"
+                            width="100%"
+                            height="300"
+                          />
+                          <a
+                            *ngIf="isPdfUrl(plotbookingres.passportImage)"
+                            [href]="plotbookingres.passportImage"
+                            target="_blank"
+                            class="btn btn-sm btn-primary mt-2"
+                          >
+                            <i class="ri-download-line"></i> Download PDF
+                          </a>
+                        </div>
+                        <ng-template #noPassportDoc>
+                          <p class="text-muted">No document uploaded</p>
+                        </ng-template>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Voter ID Tab -->
+                  <div
+                    class="tab-pane fade"
+                    id="voter"
+                    role="tabpanel"
+                    aria-labelledby="voter-tab"
+                  >
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label class="fw-medium mb-2">Voter ID Number</label>
+                        <p>{{ plotbookingres.voterIdNumber || "N/A" }}</p>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="fw-medium mb-2">Document Preview</label>
+                        <div
+                          *ngIf="plotbookingres.voterIdImage; else noVoterDoc"
+                        >
+                          <img
+                            *ngIf="isImageUrl(plotbookingres.voterIdImage)"
+                            [src]="plotbookingres.voterIdImage"
+                            class="rounded"
+                            height="100"
+                            alt="Voter ID"
+                          />
+                          <embed
+                            *ngIf="isPdfUrl(plotbookingres.voterIdImage)"
+                            [src]="plotbookingres.voterIdImage"
+                            type="application/pdf"
+                            width="100%"
+                            height="300"
+                          />
+                          <a
+                            *ngIf="isPdfUrl(plotbookingres.voterIdImage)"
+                            [href]="plotbookingres.voterIdImage"
+                            target="_blank"
+                            class="btn btn-sm btn-primary mt-2"
+                          >
+                            <i class="ri-download-line"></i> Download PDF
+                          </a>
+                        </div>
+                        <ng-template #noVoterDoc>
+                          <p class="text-muted">No document uploaded</p>
+                        </ng-template>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Aadhaar Tab -->
+                  <div
+                    class="tab-pane fade"
+                    id="aadhaar"
+                    role="tabpanel"
+                    aria-labelledby="aadhaar-tab"
+                  >
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label class="fw-medium mb-2">Aadhaar Number</label>
+                        <p>{{ plotbookingres.aadhaarNumber || "N/A" }}</p>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="fw-medium mb-2">Document Preview</label>
+                        <div
+                          *ngIf="plotbookingres.aadhaarImage; else noAadhaarDoc"
+                        >
+                          <img
+                            *ngIf="isImageUrl(plotbookingres.aadhaarImage)"
+                            [src]="plotbookingres.aadhaarImage"
+                            class="rounded"
+                            height="100"
+                            alt="Aadhaar"
+                          />
+                          <embed
+                            *ngIf="isPdfUrl(plotbookingres.aadhaarImage)"
+                            [src]="plotbookingres.aadhaarImage"
+                            type="application/pdf"
+                            width="100%"
+                            height="300"
+                          />
+                          <a
+                            *ngIf="isPdfUrl(plotbookingres.aadhaarImage)"
+                            [href]="plotbookingres.aadhaarImage"
+                            target="_blank"
+                            class="btn btn-sm btn-primary mt-2"
+                          >
+                            <i class="ri-download-line"></i> Download PDF
+                          </a>
+                        </div>
+                        <ng-template #noAadhaarDoc>
+                          <p class="text-muted">No document uploaded</p>
+                        </ng-template>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Ration Card Tab -->
+                  <div
+                    class="tab-pane fade"
+                    id="ration"
+                    role="tabpanel"
+                    aria-labelledby="ration-tab"
+                  >
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label class="fw-medium mb-2">Ration Card Number</label>
+                        <p>{{ plotbookingres.rationCardNumber || "N/A" }}</p>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="fw-medium mb-2">Document Preview</label>
+                        <div
+                          *ngIf="
+                            plotbookingres.rationCardImage;
+                            else noRationDoc
+                          "
+                        >
+                          <img
+                            *ngIf="isImageUrl(plotbookingres.rationCardImage)"
+                            [src]="plotbookingres.rationCardImage"
+                            class="rounded"
+                            height="100"
+                            alt="Ration Card"
+                          />
+                          <embed
+                            *ngIf="isPdfUrl(plotbookingres.rationCardImage)"
+                            [src]="plotbookingres.rationCardImage"
+                            type="application/pdf"
+                            width="100%"
+                            height="300"
+                          />
+                          <a
+                            *ngIf="isPdfUrl(plotbookingres.rationCardImage)"
+                            [href]="plotbookingres.rationCardImage"
+                            target="_blank"
+                            class="btn btn-sm btn-primary mt-2"
+                          >
+                            <i class="ri-download-line"></i> Download PDF
+                          </a>
+                        </div>
+                        <ng-template #noRationDoc>
+                          <p class="text-muted">No document uploaded</p>
+                        </ng-template>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Executive & Director Details -->
+          <div class="col-xl-12 mt-3">
+            <div class="card custom-card overflow-hidden">
+              <div class="card-header justify-content-between">
+                <div class="card-title">Executive & Director Details</div>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <label class="fw-medium mb-2">Executive Name</label>
+                    <p>{{ plotbookingres.executiveName }}</p>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="fw-medium mb-2">Director Name</label>
+                    <p>{{ plotbookingres.directorName }}</p>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-md-6">
+                    <label class="fw-medium mb-2">Purchaser Name</label>
+                    <p>{{ plotbookingres.purchaserName }}</p>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="fw-medium mb-2">Director Sales Date</label>
+                    <p>
+                      {{
+                        plotbookingres.directorSalesDate | date : "dd-MM-yyyy"
+                      }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-md-6">
+                    <label class="fw-medium mb-2">Remarks</label>
+                    <p>{{ plotbookingres.remarks }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--End::row-1 -->
+  </div>
+</div>
+
+<app-footer></app-footer>

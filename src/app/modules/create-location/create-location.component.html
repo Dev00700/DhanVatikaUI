@@ -68,6 +68,22 @@
                     />
                   </div>
                 </div>
+
+                <div class="col-3">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      id="isActive"
+                      name="isActive"
+                      type="checkbox"
+                      [(ngModel)]="locationreqdto.isActive"
+                      [disabled]="isActiveDisabled"
+                    />
+                    <label class="form-check-label" for="isActive"
+                      >Is Active</label
+                    >
+                  </div>
+                </div>
               </div>
             </div>
             <div class="card-footer text-end">

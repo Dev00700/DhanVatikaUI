@@ -135,6 +135,7 @@ export class IncomingPaymentComponent {
   }
 
   getIncommingpaymentList() {
+    debugger;
     this.fullpageloader = true;
     const UserId = parseInt(localStorage.getItem("userId") || '0', 10);
     const Data = {
@@ -194,7 +195,7 @@ export class IncomingPaymentComponent {
       this.toast.error('Please enter a cancellation remark');
       return;
     }
-    if (confirm('Are you sure you want to cancel this incoming Payment?')) {
+    if (confirm('Are you sure you want to delete this incoming Payment?')) {
       this.loading = true;
       const cancelorderreq: CommonReqDto<CancelIncomingPaymentReqDto> = {
         PageSize: 1,
@@ -209,15 +210,15 @@ export class IncomingPaymentComponent {
         next: (response) => {
           this.loading = false;
           if (response.data) {
-            this.toast.success('Incoming Payment cancelled successfully');
+            this.toast.success('Incoming Payment deleted successfully');
             window.location.reload();
           } else {
-            this.toast.error('Failed to cancel incoming payment');
+            this.toast.error('Failed to delete incoming payment');
           }
         },
         error: (error) => {
           this.loading = false;
-          this.toast.error('Failed to cancel incoming payment');
+          this.toast.error('Failed to delete incoming payment');
         }
       });
     }
@@ -399,7 +400,7 @@ export class IncomingPaymentComponent {
         next: (response) => {
           this.fullpageloader = false;
           const dateObj = new Date(response.data.paymentDate);
-
+          const customerId = response.data.customerId || 0;
           const day = String(dateObj.getDate()).padStart(2, '0');
           const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Months are 0-based
           const year = dateObj.getFullYear();
@@ -449,7 +450,7 @@ export class IncomingPaymentComponent {
      <div  style="display: inline-block; gap: 10px; align-items: center; margin-bottom: 6px;">
         <img src="assets/images/brand-logos/desktop-logo.jpeg" alt="Company Logo" style="height: 45px;"/>
         <div>
-          <strong>Dhan Vatika Developers</strong>
+          <strong>DhanVatikaa Developers</strong>
         </div>
       </div>
 
@@ -464,6 +465,19 @@ export class IncomingPaymentComponent {
 
   <table style="width: 100%; border-collapse: collapse; margin-top: 5px;">
     <tbody> 
+     <tr ${customerId > 0 ? '' : 'style="display:none"'}>
+      <td style="border: 1px solid #000; padding: 4px; font-size: 13px;"><strong>Customer Name</strong> </td>
+      <td style="border: 1px solid #000; padding: 4px; font-size: 13px;">${response.data.customerName}</td>
+      </tr>
+      <tr ${customerId > 0 ? '' : 'style="display:none"'}>
+      <td style="border: 1px solid #000; padding: 4px; font-size: 13px;"><strong>Plot Name</strong> </td>
+      <td style="border: 1px solid #000; padding: 4px; font-size: 13px;">${response.data.plotName} (${response.data.plot_Code})</td>
+      </tr>
+        <tr ${customerId > 0 ? '' : 'style="display:none"'}>
+      <td style="border: 1px solid #000; padding: 4px; font-size: 13px;"><strong>Plot Status</strong> </td>
+      <td style="border: 1px solid #000; padding: 4px; font-size: 13px;">${response.data.plotStatusName} </td>
+      </tr>
+      
     <tr>
       <td style="border: 1px solid #000; padding: 4px; font-size: 13px;"><strong>Payment Type</strong> </td>
       <td style="border: 1px solid #000; padding: 4px; font-size: 13px;">${response.data.paymentType}</td>
@@ -508,7 +522,7 @@ export class IncomingPaymentComponent {
   <p><strong>Amount in words:</strong> ${_amount}</p>
 
   <div   style="text-align: right; margin-top: 50px;">
-    for Dhan Vatika Developers<br><br>
+    for DhanVatikaa Developers<br><br>
     Authorised Signatory
   </div>
 

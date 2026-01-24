@@ -10,7 +10,7 @@
       <div class="col-xl-12">
         <div class="card custom-card">
           <div class="card-header justify-content-between">
-            <!-- <div *ngIf="selectedChips.length > 0">
+            <div *ngIf="selectedChips.length > 0">
               <span
                 class="badge bg-primary"
                 style="margin-left: 1px"
@@ -24,7 +24,7 @@
                   (click)="removeChip(chip.key)"
                 ></button>
               </span>
-            </div> -->
+            </div>
 
             <div
               class="d-flex flex-wrap justify-content-end"
@@ -56,7 +56,9 @@
                 <thead>
                   <tr>
                     <th scope="col">S.No.</th>
+                    <th hidden scope="col">Plot Code</th>
                     <th scope="col">Plot Code</th>
+                    <th scope="col">Sub Plot Code</th>
                     <th scope="col">Plot Name</th>
                     <th scope="col">Plot Type</th>
                     <th scope="col">Location</th>
@@ -71,7 +73,9 @@
                     *ngFor="let item of plotlist; index as i"
                   >
                     <td class="text-primary">#{{ i + 1 }}</td>
-                    <td>{{ item.plotCode }}</td>
+                    <td hidden>{{ item.plotCode }}</td>
+                    <td>{{ item.plot_Code }}</td>
+                    <td>{{ item.subPlotCode }}</td>
                     <td>{{ item.plotName }}</td>
                     <td>{{ item.plotType }}</td>
                     <td>{{ item.locationName }}</td>
@@ -84,6 +88,17 @@
                           [routerLink]="['/create-plot', item.plotGuid]"
                         >
                           <i class="ri-edit-line"></i>
+                        </a>
+
+                        <a
+                          class="modal-effect btn btn-danger-light btn-icon ms-1 btn-sm invoice-btn"
+                          (click)="ChangePlotStatus(item.plotId)"
+                          data-bs-effect="effect-rotate-left"
+                          data-bs-toggle="modal"
+                          href="#plotstatusModal"
+                          title="Change Plot Status"
+                        >
+                          <i class="ri-circle-fill"></i>
                         </a>
                       </span>
                     </td>
@@ -105,6 +120,121 @@
       </div>
     </div>
     <!--End::row-1 -->
+  </div>
+</div>
+
+<div
+  class="offcanvas offcanvas-start"
+  data-bs-scroll="true"
+  tabindex="-1"
+  id="filtercanvas"
+  aria-labelledby="filtercanvasLabel"
+>
+  <div class="offcanvas-header border-bottom border-block-end-dashed">
+    <h5 class="offcanvas-title" id="filtercanvasLabel">Fiters</h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body">
+    <form class="row">
+      <!-- Year -->
+      <div class="col-md-12">
+        <label class="form-label fw-bold">Plot Name</label>
+        <input
+          class="form-control"
+          [(ngModel)]="filters.plotName"
+          name="plotName"
+        />
+      </div>
+
+      <div class="col-md-12">
+        <label class="form-label fw-bold">Plot Type</label>
+        <select
+          name="plotType"
+          class="form-control"
+          [(ngModel)]="filters.plotType"
+        >
+          <option value="1" selected>Select Plot Type</option>
+          <option value="Residential Plot">Residential Plot</option>
+          <option value="Commercial Plot">Commercial Plot</option>
+          <option value="Industrial Plot">Industrial Plot</option>
+          <option value="North-Facing Plot">North-Facing Plot</option>
+        </select>
+      </div>
+
+      <div class="col-md-12">
+        <label class="form-label fw-bold">Location</label>
+        <select
+          class="form-select"
+          [(ngModel)]="filters.locationId"
+          name="locationId"
+        >
+          <option *ngFor="let m of this.locationList" [value]="m.value">
+            {{ m.text }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-md-12" style="margin-top: 2%; text-align: end">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="applyFilters()"
+          data-bs-dismiss="offcanvas"
+        >
+          Apply Filters
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="plotstatusModal"
+  tabindex="-1"
+  aria-labelledby="changestatusModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="changestatusModalLabel">
+          Change Plot Status
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <label class="form-label fw-bold">Select Plot Status</label>
+        <select
+          class="form-select"
+          name="plotStatus"
+          [(ngModel)]="changeplotstatus.PlotStatus"
+          required
+        >
+          <option *ngFor="let s of plotStatusOptions" [value]="s.value">
+            {{ s.text }}
+          </option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="ChangeStatus()">
+          Submit
+        </button>
+        <button type="button" data-bs-dismiss="modal" class="btn btn-danger">
+          Close
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 

@@ -1,0 +1,172 @@
+<app-navbar></app-navbar>
+
+<div class="main-content app-content">
+  <div class="container-fluid page-container main-body-container">
+    <!-- Start::page-header -->
+    <div class="page-header-breadcrumb mb-3">
+      <div class="d-flex align-center justify-content-between flex-wrap">
+        <h1 class="page-title fw-medium fs-18 mb-0">
+          {{ addcustomerreqdto.customerGuid ? "Update " : "Create " }}Customer
+        </h1>
+      </div>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" #customerForm="ngForm">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card custom-card">
+            <div class="card-body">
+              <div class="row gy-3">
+                <div class="col-xl-3">
+                  <label for="name" class="form-label"> Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="name"
+                    name="name"
+                    [(ngModel)]="addcustomerreqdto.name"
+                  />
+                </div>
+
+                <div class="col-xl-3">
+                  <label for="mobile" class="form-label"> Mobile No.</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="mobile"
+                    name="mobile"
+                    [(ngModel)]="addcustomerreqdto.mobile"
+                  />
+                </div>
+
+                <div class="col-xl-3">
+                  <label for="emailId" class="form-label"> Email Id</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="emailId"
+                    name="emailId"
+                    [(ngModel)]="addcustomerreqdto.emailId"
+                  />
+                </div>
+
+                <div
+                  class="col-xl-3"
+                  *ngIf="addcustomerreqdto.bookingFlag == 0"
+                >
+                  <label for="plotId" class="form-label">Plot</label>
+                  <select
+                    class="form-select"
+                    [(ngModel)]="addcustomerreqdto.plotId"
+                    name="plotId"
+                    required
+                  >
+                    <option *ngFor="let c of plotList" [value]="c.value">
+                      {{ c.text }}
+                    </option>
+                  </select>
+                </div>
+
+                <div
+                  class="col-xl-3"
+                  *ngIf="addcustomerreqdto.bookingFlag == 1"
+                >
+                  <label for="plotname" class="form-label"> Plot Name</label>
+                  <input
+                    disabled=""
+                    type="text"
+                    class="form-control"
+                    id="plotname"
+                    name="plotname"
+                    [(ngModel)]="addcustomerreqdto.plotName"
+                  />
+                </div>
+
+                <div class="col-xl-3">
+                  <label for="remarks" class="form-label">Remark</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="remarks"
+                    name="remarks"
+                    [(ngModel)]="addcustomerreqdto.remarks"
+                    placeholder="Enter remarks"
+                  />
+                </div>
+                <div class="col-xl-3">
+                  <label for="image" class="form-label">image</label>
+                  <input
+                    class="form-control"
+                    type="file"
+                    name="image"
+                    style="height: 39px"
+                    (change)="onFileSelected($event)"
+                  />
+                </div>
+
+                <div class="col-xl-3">
+                  <div *ngIf="addcustomerreqdto.imageUrl" class="mt-2">
+                    <img
+                      [src]="addcustomerreqdto.imageUrl"
+                      name="imageUrl"
+                      alt="Image"
+                      style="
+                        max-width: 100px;
+                        max-height: 100px;
+                        border-radius: 6px;
+                        border: 1px solid #eee;
+                      "
+                    />
+                  </div>
+                </div>
+
+                <div class="col-3">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      id="isActive"
+                      name="isActive"
+                      type="checkbox"
+                      [(ngModel)]="addcustomerreqdto.isActive"
+                      [disabled]="isActiveDisabled"
+                    />
+                    <label class="form-check-label" for="isActive"
+                      >Is Active</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer text-end">
+              <button
+                type="submit"
+                [disabled]="loading"
+                class="btn btn-success m-1"
+              >
+                <span
+                  *ngIf="loading"
+                  class="spinner-border spinner-border-sm me-2"
+                ></span>
+                Submit
+                <i
+                  class="ri-file-pdf-line ms-1 align-middle d-inline-block"
+                ></i>
+              </button>
+              <button
+                type="button"
+                class="btn btn-warning m-1"
+                [routerLink]="['/customer-list']"
+              >
+                Cancel<i class="ri-cancel-2-line ms-1 d-inline-block"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <!--End::row-1 -->
+  </div>
+</div>
+<!-- End::app-content -->
+
+<app-footer></app-footer>

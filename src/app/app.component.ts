@@ -21,10 +21,10 @@ import { AutoLogoutService } from './services/autologout.service';
 
 
 
-export class AppComponent  {
-  title = 'DHANVATIKA';
+export class AppComponent {
+  title = 'DHANVATIKAA';
 
-  constructor(private autoLogoutService: AutoLogoutService) {}
+  constructor(private autoLogoutService: AutoLogoutService) { }
 
   // ngOnInit() {
   //   layout_change("false");

@@ -115,7 +115,8 @@ export class CreateLocationComponent {
   }
 
   savelocation(imageName: string) {
-    this.locationreqdto.isActive = true;
+    debugger;
+    //this.locationreqdto.isActive = this.locationreqdto.isActive || true;
     this.locationreqdto.image = imageName;
     this.locationreqdto.remarks = this.locationreqdto.remarks || "";
     this.locationreqdto.locationGuid = this.locationGuid || null;

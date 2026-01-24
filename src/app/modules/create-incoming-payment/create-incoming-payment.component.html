@@ -32,6 +32,38 @@
           <div class="card custom-card">
             <div class="card-body">
               <div class="row gy-3">
+                <div
+                  class="col-xl-3"
+                  *ngIf="isshowplotandcustomerdetails == true"
+                >
+                  <label for="_customername" class="form-label">
+                    Customer Name</label
+                  >
+                  <input
+                    type="text"
+                    disabled=""
+                    class="form-control"
+                    id="_customername"
+                    name="_customername"
+                    [(ngModel)]="this._customername"
+                  />
+                </div>
+
+                <div
+                  class="col-xl-3"
+                  *ngIf="isshowplotandcustomerdetails == true"
+                >
+                  <label for="_plotname" class="form-label"> Plot Name</label>
+                  <input
+                    disabled=""
+                    type="text"
+                    class="form-control"
+                    id="_plotname"
+                    name="_plotname"
+                    [(ngModel)]="this._plotname"
+                  />
+                </div>
+
                 <div class="col-xl-3">
                   <label for="invoice-number" class="form-label">
                     Payment Type</label
@@ -75,6 +107,23 @@
                       [value]="c.value"
                     >
                       {{ c.text }}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="col-xl-3" *ngIf="isPlotOptionsLoading">
+                  <label class="form-label">Plot Status</label>
+                  <select
+                    class="form-select"
+                    name="plotStatus"
+                    [(ngModel)]="addincomingpayment.plotStatus"
+                    required
+                  >
+                    <option
+                      *ngFor="let s of plotStatusOptions"
+                      [value]="s.value"
+                    >
+                      {{ s.text }}
                     </option>
                   </select>
                 </div>
