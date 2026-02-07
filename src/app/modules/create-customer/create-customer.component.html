@@ -11,7 +11,19 @@
       </div>
     </div>
 
-    <form (ngSubmit)="onSubmit()" #customerForm="ngForm">
+    <!-- Loading Spinner -->
+    <div *ngIf="loading && customerGuid" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-3">Loading customer details...</p>
+    </div>
+
+    <form
+      (ngSubmit)="onSubmit()"
+      #customerForm="ngForm"
+      *ngIf="!loading || !customerGuid"
+    >
       <div class="row">
         <div class="col-xl-12">
           <div class="card custom-card">
@@ -31,10 +43,11 @@
                 <div class="col-xl-3">
                   <label for="mobile" class="form-label"> Mobile No.</label>
                   <input
-                    type="text"
+                    type="number"
                     class="form-control"
                     id="mobile"
                     name="mobile"
+                    maxlength="10"
                     [(ngModel)]="addcustomerreqdto.mobile"
                   />
                 </div>
@@ -50,36 +63,69 @@
                   />
                 </div>
 
-                <div
-                  class="col-xl-3"
-                  *ngIf="addcustomerreqdto.bookingFlag == 0"
-                >
-                  <label for="plotId" class="form-label">Plot</label>
-                  <select
-                    class="form-select"
-                    [(ngModel)]="addcustomerreqdto.plotId"
-                    name="plotId"
-                    required
+                <div class="col-xl-3">
+                  <label for="plotId" class="form-label">
+                    <span
+                      *ngIf="selectedPlots.length > 0"
+                      class="badge bg-success me-2"
+                    >
+                      {{ selectedPlots.length }} Selected
+                    </span>
+                    Plot
+                  </label>
+                  <button
+                    type="button"
+                    class="btn btn-primary w-100"
+                    (click)="openPlotModal()"
+                    [hidden]="!customerGuid && selectedPlots.length > 0"
                   >
-                    <option *ngFor="let c of plotList" [value]="c.value">
-                      {{ c.text }}
-                    </option>
-                  </select>
+                    <i class="ri-add-line me-2"></i>Add Plot
+                  </button>
                 </div>
 
-                <div
-                  class="col-xl-3"
-                  *ngIf="addcustomerreqdto.bookingFlag == 1"
-                >
-                  <label for="plotname" class="form-label"> Plot Name</label>
-                  <input
-                    disabled=""
-                    type="text"
-                    class="form-control"
-                    id="plotname"
-                    name="plotname"
-                    [(ngModel)]="addcustomerreqdto.plotName"
-                  />
+                <!-- Selected Plots Display -->
+                <div class="col-xl-12" *ngIf="selectedPlots.length > 0">
+                  <label class="form-label">Selected Plots</label>
+                  <div class="table-responsive">
+                    <table class="table table-sm table-hover mb-0">
+                      <thead>
+                        <tr>
+                          <th>S.No.</th>
+                          <th>Plot Code</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let plot of selectedPlots; let i = index">
+                          <td>{{ i + 1 }}</td>
+
+                          <td>
+                            {{ plot.plotCode }}
+                          </td>
+                          <td>
+                            <button
+                              type="button"
+                              class="btn btn-sm"
+                              [ngClass]="
+                                plot.bookingflag == true
+                                  ? 'btn-secondary disabled'
+                                  : 'btn-danger'
+                              "
+                              (click)="removePlot(i)"
+                              [disabled]="plot.bookingflag == true"
+                              [title]="
+                                plot.bookingflag == true
+                                  ? 'Cannot delete original plot'
+                                  : 'Remove plot'
+                              "
+                            >
+                              <i class="ri-delete-bin-line"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
 
                 <div class="col-xl-3">
@@ -168,5 +214,110 @@
   </div>
 </div>
 <!-- End::app-content -->
+
+<!-- Add Plot Modal -->
+<app-add-plot-modal
+  [isOpen]="showPlotModal"
+  [availablePlots]="plotList"
+  [selectedPlots]="selectedPlots"
+  (plotAdded)="onPlotAdded($event)"
+  (modalClosed)="closePlotModal()"
+></app-add-plot-modal>
+
+<!-- Save Confirmation Dialog -->
+<div
+  class="modal-overlay"
+  *ngIf="showSaveConfirmation"
+  (click)="onCancelSaveAndAdd()"
+>
+  <div
+    class="modal-content confirmation-modal"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="modal-header bg-warning bg-opacity-10 border-bottom">
+      <h5 class="modal-title"><i class="ri-alert-line me-2"></i>Save Plots</h5>
+      <button
+        type="button"
+        class="btn-close"
+        (click)="onCancelSaveAndAdd()"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <p class="mb-0">
+        You have <strong>{{ selectedPlots.length }} plots</strong> selected. Do
+        you want to <strong>save</strong> these plots before adding a new one?
+      </p>
+      <small class="text-muted d-block mt-2">
+        This will update the customer record with the current plot selection.
+      </small>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-success"
+        (click)="onSaveAndAddPlot()"
+      >
+        <i class="ri-save-line me-2"></i>Yes, Save & Add
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .modal-content {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    min-width: 400px;
+    max-width: 500px;
+  }
+
+  .modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .modal-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  .btn-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #6c757d;
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+  }
+
+  .modal-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+</style>
 
 <app-footer></app-footer>

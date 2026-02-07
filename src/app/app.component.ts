@@ -22,7 +22,7 @@ import { AutoLogoutService } from './services/autologout.service';
 
 
 export class AppComponent {
-  title = 'DHANVATIKAA';
+  title = 'DHANVATIKAA DEVELOPERS PVT. LTD.';
 
   constructor(private autoLogoutService: AutoLogoutService) { }
 

@@ -11,7 +11,7 @@ export class PaginationComponent {
   @Input() totalItems = 0;        // total records from API
   @Input() pageSize = 10;         // per page records
   @Input() currentPage = 1;       // active page
-  @Input() pageSizeOptions = [5, 10, 20, 50];
+  @Input() pageSizeOptions = [10, 20, 50];
 
   @Output() pageChange = new EventEmitter<number>();
   @Output() pageSizeChange = new EventEmitter<number>();

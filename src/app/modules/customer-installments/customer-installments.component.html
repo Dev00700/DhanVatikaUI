@@ -129,6 +129,7 @@
                         <th class="text-end">Paid Amount</th>
                         <th class="text-end">Due Amount</th>
                         <th>Paid Status</th>
+                        <th>Payment Type</th>
                         <th>Remarks</th>
                         <th>Action</th>
                       </tr>
@@ -147,7 +148,7 @@
                           {{ emi.emiNo }}
                         </td>
                         <td>
-                          {{ emi.emiDate | date : "dd-MM-yyyy" }}
+                          {{ emi.emiDate | date: "dd-MM-yyyy" }}
                         </td>
 
                         <td class="text-end">{{ emi.amount }}</td>
@@ -158,7 +159,13 @@
                         <td class="text-end">{{ emi.paidAmount }}</td>
                         <td class="text-end">{{ emi.dueAmount }}</td>
 
-                        <td *ngIf="emi.dueAmount == 0">
+                        <td *ngIf="emi.isrejected == true">
+                          <span class="badge bg-warning">Rejected</span>
+                        </td>
+
+                        <td
+                          *ngIf="emi.dueAmount == 0 && emi.isrejected == false"
+                        >
                           <span
                             class="badge"
                             [ngClass]="emi.isPaid ? 'bg-success' : 'bg-danger'"
@@ -176,7 +183,20 @@
                           >
                         </td>
                         <td>{{ emi.remarks }}</td>
+                        <td>{{ emi.newremarks }}</td>
                         <td>
+                          <span
+                            title="Generate PDF"
+                            *ngIf="emi.receiptFlag == true"
+                          >
+                            <a
+                              (click)="generatePDFEMI(emi.iPaymentGuid)"
+                              class="btn btn-primary-light btn-icon btn-sm btn-icon ms-1 btn-sm invoice-btn"
+                            >
+                              <i class="ri-file-pdf-2-fill"></i>
+                            </a>
+                          </span>
+
                           <a
                             class="btn btn-sm btn-primary"
                             (click)="
@@ -187,7 +207,7 @@
                                 emi.amount + emi.previousDue
                               )
                             "
-                            *ngIf="!emi.isPaid"
+                            *ngIf="!emi.isPaid && emi.isrejected == false"
                             >Make Payment</a
                           >
                         </td>

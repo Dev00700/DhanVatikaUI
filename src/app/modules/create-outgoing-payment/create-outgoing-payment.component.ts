@@ -30,7 +30,9 @@ export class CreateOutgoingPaymentComponent {
   paymentModeList: any[] = [];
   isActiveDisabled = true;
   loadingExpenseCatList = false;
+  loadingPlotCatList = false;
   expenseCatList: any[] = [];
+  plotCatList: any[] = [];
   selectedFile: File | null = null;
 
   constructor(
@@ -63,7 +65,7 @@ export class CreateOutgoingPaymentComponent {
     };
     this.dropdownData.getDropdownDataByParam<any>('DropDown/GetDropdownListService', dropdownreqdto).subscribe({
       next: res => {
-        debugger;
+
         this.paymentModeList = res.data;
         this.loadingPaymentModeList = false;
       },
@@ -85,12 +87,34 @@ export class CreateOutgoingPaymentComponent {
     };
     this.dropdownData.getDropdownDataByParam<any>('DropDown/GetDropdownListService', dropdownreqdto).subscribe({
       next: res => {
-        debugger;
+
         this.expenseCatList = res.data;
         this.loadingExpenseCatList = false;
       },
       error: () => {
         this.loadingExpenseCatList = false;
+      }
+    });
+  }
+
+  fetchPlotList() {
+    this.loadingPlotCatList = true;
+    const dropdownreqdto: CommonReqDto<any> = {
+      PageSize: 1,
+      PageRecordCount: 1000,
+      UserId: parseInt(localStorage.getItem("userId") || '0', 10),
+      Data: {
+        "SearchDDL": "Plot"
+      },
+    };
+    this.dropdownData.getDropdownDataByParam<any>('DropDown/GetDropdownListService', dropdownreqdto).subscribe({
+      next: res => {
+
+        this.plotCatList = res.data;
+        this.loadingPlotCatList = false;
+      },
+      error: () => {
+        this.loadingPlotCatList = false;
       }
     });
   }
@@ -123,6 +147,12 @@ export class CreateOutgoingPaymentComponent {
       return;
     }
 
+
+    if (this.addoutgoingpayment.expenseCategoryId == 12 && !this.addoutgoingpayment.plotId) {
+      this.toast.error("Please select a plot.");
+      return;
+    }
+
     if (this.selectedFile) {
       const formData = new FormData();
       formData.append('images', this.selectedFile);
@@ -143,6 +173,7 @@ export class CreateOutgoingPaymentComponent {
   }
 
   saveOutgoingPayment(imageName: string) {
+    debugger;
     this.addoutgoingpayment.isActive = true;
     this.addoutgoingpayment.remarks = this.addoutgoingpayment.remarks || "";
     this.addoutgoingpayment.oPaymentGuid = this.outgoingPaymentGuid || null;
@@ -150,6 +181,7 @@ export class CreateOutgoingPaymentComponent {
     this.addoutgoingpayment.referenceNo = this.addoutgoingpayment.referenceNo || "";
     this.addoutgoingpayment.partyName = this.addoutgoingpayment.partyName || "";
     this.addoutgoingpayment.createdBy = parseInt(localStorage.getItem("userId") || '0', 10);
+    this.addoutgoingpayment.plotId = this.addoutgoingpayment.plotId || 0;
 
     const reqBody: CommonReqDto<AddOutgoingPaymentDto> = {
       UserId: parseInt(localStorage.getItem("userId") || '0', 10),
@@ -197,8 +229,12 @@ export class CreateOutgoingPaymentComponent {
 
       this.apiService.post<CommonResDto<AddOutgoingPaymentDto>>(`OutgoingPayment/GetOutgoingPaymentService`, getItemReqDto).subscribe({
         next: (response) => {
-          debugger;
+
           this.addoutgoingpayment = response.data;
+          if (this.addoutgoingpayment.expenseCategoryId == 12) {
+            this.GetPlotList(this.addoutgoingpayment.expenseCategoryId);
+          }
+
           if (this.addoutgoingpayment.expenseDate) {
             const dateObj = new Date(this.addoutgoingpayment.expenseDate);
             // Get YYYY-MM-DD string
@@ -235,4 +271,13 @@ export class CreateOutgoingPaymentComponent {
     }
   }
 
+  GetPlotList(expenseCategoryId: number) {
+    if (expenseCategoryId == 12) {
+      this.fetchPlotList();
+    }
+    else {
+      this.addoutgoingpayment.plotId = 0;
+      this.plotCatList = [];
+    }
+  }
 }

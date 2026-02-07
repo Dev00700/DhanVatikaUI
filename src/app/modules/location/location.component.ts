@@ -20,7 +20,7 @@ export class LocationComponent {
   fullpageloader: boolean = false;
   totalRecords = 0;
   currentPage = 1;
-  pageSize = 5;
+  pageSize = 10;
   locationlist: LocationResDto[] = [];
   filters = {
     locationName: null,
@@ -39,7 +39,9 @@ export class LocationComponent {
   getlocationlist() {
     this.fullpageloader = true;
     const UserId = parseInt(localStorage.getItem("userId") || '0', 10);
-    const Data = null;
+    const Data = {
+      "LocationName": this.filters.locationName || '',
+    };
     this.locationData.getLocationList(1, this.currentPage, this.pageSize, UserId, Data)
       .subscribe({
         next: (response) => {
@@ -74,4 +76,23 @@ export class LocationComponent {
     this.currentPage = 1;
     this.getlocationlist();
   }
+
+  selectedChips: { key: string; label: string }[] = [];
+
+  applyFilters() {
+    this.selectedChips = [];
+    if (this.filters.locationName) {
+      this.selectedChips.push({
+        key: 'locationName',
+        label: `Location Name: ${this.filters.locationName}`
+      });
+    }
+    this.getlocationlist();
+  }
+
+  removeChip(key: string) {
+    this.filters[key as keyof typeof this.filters] = null;
+    this.applyFilters();
+  }
+
 }

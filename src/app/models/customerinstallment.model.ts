@@ -18,4 +18,8 @@ export interface PlotAndCustomerEmiResDto {
     dueAmount: number;
     previousDue: number;
     totalPendingAmount: number;
+    isrejected: boolean;
+    newremarks: string;
+    receiptFlag: boolean;
+    iPaymentGuid: string;
 }

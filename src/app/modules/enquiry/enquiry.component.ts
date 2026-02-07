@@ -23,7 +23,7 @@ export class EnquiryComponent {
   fullpageloader: boolean = false;
   totalRecords = 0;
   currentPage = 1;
-  pageSize = 5;
+  pageSize = 10;
   enquiryslist: EnquiryResponeDto[] = [];
   closedEnqReqDto: ClosedEnquiryReqDto = {} as ClosedEnquiryReqDto;
   loading: boolean = false;

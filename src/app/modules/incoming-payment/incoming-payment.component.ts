@@ -34,7 +34,7 @@ export class IncomingPaymentComponent {
   isAdmin: boolean = localStorage.getItem("isAdmin") == '0' ? false : true;
   totalRecords = 0;
   currentPage = 1;
-  pageSize = 5;
+  pageSize = 10;
   yearlist: any | null;
   monthlist: any | null;
   paymentSourceList: any | null;
@@ -50,7 +50,9 @@ export class IncomingPaymentComponent {
     month: 0,
     paymentType: null,
     paymentsource: null,
-    paymentmode: null
+    paymentmode: null,
+    plotCode: null,
+    subCode: null
   };
 
   constructor(
@@ -144,7 +146,9 @@ export class IncomingPaymentComponent {
       "PaymentModeId": this.filters.paymentmode == 0 ? null : this.filters.paymentmode,
       "PaymentDate": null,
       "Year": this.filters.year == 0 ? null : this.filters.year,
-      "Month": this.filters.month == 0 || this.filters.year == null || 0 ? null : this.filters.month
+      "Month": this.filters.month == 0 || this.filters.year == null || 0 ? null : this.filters.month,
+      "PlotCode": this.filters.plotCode || "",
+      "SubCode": this.filters.subCode || ""
     };
     this.incominpaymentser.getincomingpayment(1, this.currentPage, this.pageSize, UserId, Data)
       .subscribe({
@@ -364,6 +368,22 @@ export class IncomingPaymentComponent {
       });
     }
 
+
+    if (this.filters.plotCode) {
+      this.selectedChips.push({
+        key: 'plotCode',
+        label: `Plot Code: ${this.filters.plotCode}`
+      });
+    }
+
+    if (this.filters.subCode) {
+      this.selectedChips.push({
+        key: 'subCode',
+        label: `Sub Code: ${this.filters.subCode}`
+      });
+    }
+
+
     if (this.filters.paymentmode && this.filters.paymentmode !== 0) {
       const paymentMode = this.paymentModeList.find((m: { value: number; text: string }) => m.value == this.filters.paymentmode)?.text;
       this.selectedChips.push({
@@ -426,7 +446,7 @@ export class IncomingPaymentComponent {
           const element = `
    <html lang="en"><head>
   <meta charset="UTF-8">
-  <title>Icomming Payment</title>
+  <title>Incoming Payment</title>
   <head>
   
 </head>
@@ -440,7 +460,7 @@ export class IncomingPaymentComponent {
       font-size: 12px;
       font-weight: bold;
       padding: 2px 6px;">Original for Recipient</div>
-   <div style="text-align: center; font-weight: bold; font-size: 18px; margin-bottom: 5px;">Incomming Payment</div>
+   <div style="text-align: center; font-weight: bold; font-size: 18px; margin-bottom: 5px;">Incoming Payment</div>
 <div  style="border-bottom: 2px solid #000; margin: 4px 0px 1px 0;"></div>
 
   <!-- Company + Consignee + Buyer -->
@@ -450,7 +470,7 @@ export class IncomingPaymentComponent {
      <div  style="display: inline-block; gap: 10px; align-items: center; margin-bottom: 6px;">
         <img src="assets/images/brand-logos/desktop-logo.jpeg" alt="Company Logo" style="height: 45px;"/>
         <div>
-          <strong>DhanVatikaa Developers</strong>
+          <strong>DhanVatikaa Developers Pvt. Ltd.</strong>
         </div>
       </div>
 
@@ -522,7 +542,7 @@ export class IncomingPaymentComponent {
   <p><strong>Amount in words:</strong> ${_amount}</p>
 
   <div   style="text-align: right; margin-top: 50px;">
-    for DhanVatikaa Developers<br><br>
+    for DhanVatikaa Developers Pvt. Ltd.<br><br>
     Authorised Signatory
   </div>
 

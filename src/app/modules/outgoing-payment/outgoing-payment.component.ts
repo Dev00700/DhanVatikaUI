@@ -35,7 +35,7 @@ export class OutgoingPaymentComponent {
   isAdmin: boolean = localStorage.getItem("isAdmin") == '0' ? false : true;
   totalRecords = 0;
   currentPage = 1;
-  pageSize = 5;
+  pageSize = 10;
   yearlist: any | null;
   monthlist: any | null;
   expenseCategoryList: any | null;
@@ -51,7 +51,8 @@ export class OutgoingPaymentComponent {
     month: 0,
     ExpenseTitle: null,
     paymentmode: null,
-    ReferenceNo: null
+    ReferenceNo: null,
+    PlotCode: null
   };
 
   constructor(
@@ -133,6 +134,7 @@ export class OutgoingPaymentComponent {
     const UserId = parseInt(localStorage.getItem("userId") || '0', 10);
     const Data = {
       "ExpenseTitle": this.filters.ExpenseTitle,
+      "PlotCode": this.filters.PlotCode == "" ? null : this.filters.PlotCode,
       "ReferenceNo": this.filters.ReferenceNo,
       "PaymentModeId": this.filters.paymentmode == 0 ? null : this.filters.paymentmode,
       "Year": this.filters.year == 0 ? null : this.filters.year,
@@ -319,7 +321,7 @@ export class OutgoingPaymentComponent {
   selectedChips: { key: string; label: string }[] = [];
 
   applyFilters() {
-    debugger;
+
     this.selectedChips = [];
 
     if (this.filters.year && this.filters.year !== 0) {
@@ -334,6 +336,14 @@ export class OutgoingPaymentComponent {
       this.selectedChips.push({
         key: 'month',
         label: `Month: ${month}`
+      });
+    }
+
+
+    if (this.filters.PlotCode) {
+      this.selectedChips.push({
+        key: 'PlotCode',
+        label: `Plot Code: ${this.filters.PlotCode}`
       });
     }
 
@@ -366,7 +376,8 @@ export class OutgoingPaymentComponent {
   }
 
   removeChip(key: string) {
-    (this.filters as any)[key] = key === 'year' || key === 'month' ? 0 : '';
+
+    (this.filters as any)[key] = key === 'year' || key === 'month' ? 0 : key == "PlotCode" ? '' : null;
     this.applyFilters();
   }
 
@@ -388,6 +399,7 @@ export class OutgoingPaymentComponent {
       this.apiService.post<CommonResDto<AddOutgoingPaymentDto>>(`OutgoingPayment/GetOutgoingPaymentService`, getItemReqDto).subscribe({
         next: (response) => {
           this.fullpageloader = false;
+          const plotId = response.data.plotId || 0;
           const dateObj = new Date(response.data.expenseDate);
           const day = String(dateObj.getDate()).padStart(2, '0');
           const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Months are 0-based
@@ -438,7 +450,7 @@ export class OutgoingPaymentComponent {
      <div  style="display: inline-block; gap: 10px; align-items: center; margin-bottom: 6px;">
         <img src="assets/images/brand-logos/desktop-logo.jpeg" alt="Company Logo" style="height: 45px;"/>
         <div>
-          <strong>DhanVatikaa Developers</strong>
+          <strong>DhanVatikaa Developers Pvt. Ltd.</strong>
         </div>
       </div>
 
@@ -457,6 +469,11 @@ export class OutgoingPaymentComponent {
       <tr>
       <td style="border: 1px solid #000; padding: 4px; font-size: 13px;"><strong>Expense Category</strong> </td>
       <td style="border: 1px solid #000; padding: 4px; font-size: 13px;">${response.data.expenseCategoryName}</td>
+      </tr>
+
+       <tr ${plotId > 0 ? '' : 'style="display:none"'}>
+      <td style="border: 1px solid #000; padding: 4px; font-size: 13px;"><strong>Plot Name</strong> </td>
+      <td style="border: 1px solid #000; padding: 4px; font-size: 13px;">${response.data.plotCode}</td>
       </tr>
 
 
@@ -497,7 +514,7 @@ export class OutgoingPaymentComponent {
   <p><strong>Amount in words:</strong> ${_amount}</p>
 
   <div style="text-align: right; margin-top: 50px;">
-    for DhanVatikaa Developers<br><br>
+    for DhanVatikaa Developers Pvt. Ltd.<br><br>
     Authorised Signatory
   </div>
 

@@ -40,9 +40,26 @@
                     class="form-select"
                     [(ngModel)]="addoutgoingpayment.expenseCategoryId"
                     name="expenseCategoryId"
+                    (change)="GetPlotList(addoutgoingpayment.expenseCategoryId)"
                     required
                   >
                     <option *ngFor="let c of expenseCatList" [value]="c.value">
+                      {{ c.text }}
+                    </option>
+                  </select>
+                </div>
+
+                <div
+                  class="col-xl-3"
+                  *ngIf="addoutgoingpayment.expenseCategoryId == 12"
+                >
+                  <label for="plotId" class="form-label">Select Plot</label>
+                  <select
+                    class="form-select"
+                    [(ngModel)]="addoutgoingpayment.plotId"
+                    name="plotId"
+                  >
+                    <option *ngFor="let c of plotCatList" [value]="c.value">
                       {{ c.text }}
                     </option>
                   </select>

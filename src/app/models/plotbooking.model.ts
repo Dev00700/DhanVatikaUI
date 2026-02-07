@@ -91,4 +91,6 @@ export interface PlotBookingPaymentDto {
     remarks: string;
     dueAmount: number;
     previousDue: number;
+    newRemarks: string;
+    isRejected: boolean;
 }

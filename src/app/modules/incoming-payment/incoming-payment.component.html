@@ -76,8 +76,8 @@
                       {{ item.customerName }} <br />({{ item.plot_Code }})
                     </td>
                     <td>{{ item.paymentMode }}</td>
-                    <td>{{ item.amount | currency : "INR" : "symbol" }}</td>
-                    <td>{{ item.paymentDate | date : "dd-MM-yyyy" }}</td>
+                    <td>{{ item.amount | currency: "INR" : "symbol" }}</td>
+                    <td>{{ item.paymentDate | date: "dd-MM-yyyy" }}</td>
                     <td>
                       <span
                         ><a>
@@ -196,7 +196,7 @@
                           class="btn btn-success-light btn-icon ms-1 btn-sm invoice-btn"
                           [routerLink]="[
                             '/create-incoming-payment',
-                            item.iPaymentGuid
+                            item.iPaymentGuid,
                           ]"
                         >
                           <i class="ri-edit-line"></i>
@@ -212,7 +212,7 @@
                           class="btn btn-secondary-light btn-icon ms-1 btn-sm invoice-btn"
                           [routerLink]="[
                             '/create-incoming-payment',
-                            item.iPaymentGuid
+                            item.iPaymentGuid,
                           ]"
                         >
                           <i class="ri-eye-line"></i>
@@ -394,30 +394,6 @@
   </div>
 </div>
 
-<!-- Filter Modal -->
-<div class="modal fade" id="filterModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content rounded-3 shadow">
-      <div class="modal-header">
-        <h5 class="modal-title">Filter Options</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-        ></button>
-      </div>
-
-      <div class="modal-body"></div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div
   class="offcanvas offcanvas-start"
   data-bs-scroll="true"
@@ -426,7 +402,7 @@
   aria-labelledby="filtercanvasLabel"
 >
   <div class="offcanvas-header border-bottom border-block-end-dashed">
-    <h5 class="offcanvas-title" id="filtercanvasLabel">Notifications</h5>
+    <h5 class="offcanvas-title" id="filtercanvasLabel">Filters</h5>
     <button
       type="button"
       class="btn-close"
@@ -497,6 +473,27 @@
             {{ m.text }}
           </option>
         </select>
+      </div>
+
+      <div class="col-md-12">
+        <label class="form-label fw-bold">Plot Code</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="filters.plotCode"
+          name="plotCode"
+          placeholder="Search by Plot Code"
+        />
+      </div>
+      <div class="col-md-12">
+        <label class="form-label fw-bold">Sub Code</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="filters.subCode"
+          name="subCode"
+          placeholder="Search by sub Code"
+        />
       </div>
       <div class="col-md-12" style="margin-top: 2%; text-align: end">
         <button

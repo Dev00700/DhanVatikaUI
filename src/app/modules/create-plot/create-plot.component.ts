@@ -213,14 +213,14 @@ export class CreatePlotComponent {
     this.apiService.post<any>(apiUrl, reqBody).subscribe({
       next: (response) => {
         this.loading = false;
-        if (response.flag === 1) {
+        if (response.data.flag === 1) {
           if (this.selectedFiles && this.selectedFiles.length > 0) {
             this.uploadImages(response.data.plotId);
           }
-          this.toast.success(response.message);
+          this.toast.success(response.data.message);
           this.router.navigate(['/plot']);
         } else {
-          this.toast.warning(response.message);
+          this.toast.warning(response.data.message);
         }
       },
       error: () => {

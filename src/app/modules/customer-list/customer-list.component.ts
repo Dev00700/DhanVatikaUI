@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { customerListResponseDto } from '../../models/customer.model';
+import { customerListResponseDto, CustomerPlotCancelReqDto, customerplotListResponseDto } from '../../models/customer.model';
 import { ApiService } from '../../services/api.service';
 import { Router, RouterModule } from '@angular/router';
 import { ToastService } from '../../services/toast.service';
@@ -10,6 +10,7 @@ import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { FormsModule } from '@angular/forms';
 import { PaginationComponent } from '../shared/pagination/pagination.component';
 import { FooterComponent } from '../shared/footer/footer.component';
+import { CommonReqDto, CommonResDto } from '../../models/common.model';
 
 @Component({
   selector: 'app-customer-list',
@@ -21,13 +22,17 @@ export class CustomerListComponent {
   fullpageloader: boolean = false;
   loading: boolean = false;
   customerlist: customerListResponseDto[] = [];
+  cancelcustomerplotreqdto: CustomerPlotCancelReqDto = {} as CustomerPlotCancelReqDto;
+  selectedCustomerPlots: customerplotListResponseDto[] = [];
+  selectedCustomerName: string = '';
+  selectedCustomerId: number = 0;
   totalRecords = 0;
   currentPage = 1;
-  pageSize = 5;
+  pageSize = 10;
   filters = {
-    name: "",
-    emailId: "",
-    mobile: "",
+    name: null,
+    emailId: null,
+    mobile: null,
   };
 
   constructor(
@@ -46,9 +51,9 @@ export class CustomerListComponent {
     this.fullpageloader = true;
     const UserId = parseInt(localStorage.getItem("userId") || '0', 10);
     const Data = {
-      "Name": this.filters.name,
-      "Mobile": this.filters.mobile,
-      "EmailId": this.filters.emailId,
+      "Name": this.filters.name || '',
+      "Mobile": this.filters.mobile || '',
+      "EmailId": this.filters.emailId || '',
     }
     this.customerser.getcustomerlist(1, this.currentPage, this.pageSize, UserId, Data)
       .subscribe({
@@ -84,37 +89,58 @@ export class CustomerListComponent {
     this.currentPage = 1;
     this.getcustomerlist();
   }
-
   selectedChips: { key: string; label: string }[] = [];
 
   applyFilters() {
     this.selectedChips = [];
+
+
+
+
     if (this.filters.name) {
       this.selectedChips.push({
         key: 'name',
         label: `Name: ${this.filters.name}`
       });
     }
-    if (this.filters.mobile) {
-      this.selectedChips.push({
-        key: 'mobile',
-        label: `Mobile: ${this.filters.mobile}`
-      });
-    }
+
     if (this.filters.emailId) {
       this.selectedChips.push({
         key: 'emailId',
         label: `EmailId: ${this.filters.emailId}`
       });
     }
+
+    if (this.filters.mobile) {
+      this.selectedChips.push({
+        key: 'mobile',
+        label: `Mobile No: ${this.filters.mobile}`
+      });
+    }
+
+
+
+
     this.getcustomerlist();
   }
 
   removeChip(key: string) {
+    this.filters[key as keyof typeof this.filters] = null;
     this.applyFilters();
   }
 
+  closeModalAndNavigate() {
+    const modal = document.getElementById('customerPlotsModal');
+    if (modal) {
+      const bootstrapModal = (window as any).bootstrap.Modal.getInstance(modal);
+      if (bootstrapModal) {
+        bootstrapModal.hide();
+      }
+    }
+  }
+
   openIncomingPayment(plotId: number, customerId: number, customerName: string, plotName: string) {
+    this.closeModalAndNavigate();
     //const params: any = {};
     this.router.navigate(['/create-incoming-payment'], {
       state: { plotId, customerId }
@@ -124,6 +150,22 @@ export class CustomerListComponent {
     localStorage.setItem('plotname', plotName || '');
     localStorage.setItem('customerName', customerName || '');
     // this.router.navigate(['/create-incoming-payment'], { queryParams: params });
+  }
+
+  openplotbookingFromModal(plotId: number, customerId: number) {
+    this.closeModalAndNavigate();
+    const params: any = {};
+    if (plotId != null) params.plotId = plotId;
+    if (customerId != null) params.customerId = customerId;
+    this.router.navigate(['/create-plot-booking'], { queryParams: params });
+  }
+
+  opencustomerinstallmentsFromModal(plotId: number, customerId: number) {
+    this.closeModalAndNavigate();
+    const params: any = {};
+    if (plotId != null) params.plotId = plotId;
+    if (customerId != null) params.customerId = customerId;
+    this.router.navigate(['/customer-installments'], { queryParams: params });
   }
 
   openplotbooking(plotId: number, customerId: number) {
@@ -139,5 +181,56 @@ export class CustomerListComponent {
     if (customerId != null) params.customerId = customerId;
     this.router.navigate(['/customer-installments'], { queryParams: params });
   }
+  openCancelModel(customerId: number, plotId: number) {
+    this.cancelcustomerplotreqdto.customerId = customerId;
+    this.cancelcustomerplotreqdto.plotId = plotId;
+    this.cancelcustomerplotreqdto.remarks = '';
+  }
 
+  openCustomerPlotsModal(customer: customerListResponseDto) {
+    this.selectedCustomerName = customer.name;
+    this.selectedCustomerId = customer.customerId;
+    this.selectedCustomerPlots = customer.pLotList || [];
+  }
+  CancelPlot() {
+    if (!this.cancelcustomerplotreqdto.remarks) {
+      this.toast.error('Please enter a cancellation remark');
+      return;
+    }
+    if (confirm('Are you sure you want to cancel this plot?')) {
+      this.loading = true;
+      const cancelorderreq: CommonReqDto<CustomerPlotCancelReqDto> = {
+        PageSize: 1,
+        PageRecordCount: 10,
+        Data: {
+          customerId: this.cancelcustomerplotreqdto.customerId,
+          plotId: this.cancelcustomerplotreqdto.plotId,
+          remarks: this.cancelcustomerplotreqdto.remarks,
+
+
+        },
+        UserId: parseInt(localStorage.getItem("userId") || '0', 10),
+      };
+      this.apiService.post<CommonResDto<any>>('Customer/CustomerPlotCancelService', cancelorderreq).subscribe({
+        next: (response) => {
+          this.loading = false;
+          if (response.data) {
+            debugger;
+            if (response.data.flag == 0) {
+              this.toast.error(response.data.message);
+            }
+            else
+              this.toast.success(response.data.message);
+            window.location.reload();
+          } else {
+            this.toast.error('Failed to cancel plot');
+          }
+        },
+        error: (error) => {
+          this.loading = false;
+          this.toast.error('Failed to cancel plot');
+        }
+      });
+    }
+  }
 }

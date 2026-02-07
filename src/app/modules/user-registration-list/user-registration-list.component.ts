@@ -9,10 +9,11 @@ import { ToastService } from '../../services/toast.service';
 import { CommonReqDto, CommonResDto } from '../../models/common.model';
 import { userregistrationlistservice } from '../../services/user-registration-list.service';
 import { PaginationComponent } from "../shared/pagination/pagination.component";
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-user-registration-list',
-  imports: [CommonModule, NavbarComponent, PaginationComponent, FooterComponent, RouterModule],
+  imports: [CommonModule, NavbarComponent, RouterModule, FormsModule, PaginationComponent, FooterComponent],
   templateUrl: './user-registration-list.component.html',
   styleUrl: './user-registration-list.component.css'
 })
@@ -22,6 +23,16 @@ export class UserRegistrationListComponent {
   currentPage = 1;
   pageSize = 10;
   userlist: UserRegistrtionDto[] = [];
+
+  // Filter configuration
+  filters = {
+    userCode: null,
+    userName: null,
+    email: null,
+    mobileNo: null,
+  };
+
+
   constructor(
     private userregservice: userregistrationlistservice,
     private router: Router,
@@ -35,7 +46,16 @@ export class UserRegistrationListComponent {
     this.fullpageloader = true;
     const UserId = parseInt(localStorage.getItem("userId") || '0', 10)
 
-    this.userregservice.getUserRegistrationList(1, this.currentPage, this.pageSize, UserId, null)
+    const Data = {
+      "UserCode": this.filters.userCode || '',
+      "UserName": this.filters.userName || '',
+      "Email": this.filters.email || '',
+      "MobileNo": this.filters.mobileNo || '',
+      "Password": '',
+
+    };
+
+    this.userregservice.getUserRegistrationList(1, this.currentPage, this.pageSize, UserId, Data)
       .subscribe({
         next: (response) => {
           this.fullpageloader = false;
@@ -53,6 +73,54 @@ export class UserRegistrationListComponent {
         }
       });
   }
+
+
+  selectedChips: { key: string; label: string }[] = [];
+
+  applyFilters() {
+    this.selectedChips = [];
+
+
+
+
+    if (this.filters.userCode) {
+      this.selectedChips.push({
+        key: 'userCode',
+        label: `User Code: ${this.filters.userCode}`
+      });
+    }
+
+    if (this.filters.userName) {
+      this.selectedChips.push({
+        key: 'userName',
+        label: `User Name: ${this.filters.userName}`
+      });
+    }
+
+    if (this.filters.email) {
+      this.selectedChips.push({
+        key: 'email',
+        label: `Email: ${this.filters.email}`
+      });
+    }
+
+
+    if (this.filters.mobileNo) {
+      this.selectedChips.push({
+        key: 'mobileNo',
+        label: `Mobile No: ${this.filters.mobileNo}`
+      });
+    }
+
+    this.getUserList();
+  }
+
+  removeChip(key: string) {
+    this.filters[key as keyof typeof this.filters] = null;
+    this.applyFilters();
+  }
+
+
 
   onPageChange(page: number) {
     this.currentPage = page;

@@ -7,9 +7,17 @@ export interface customerListResponseDto {
     name: string;
     emailId: string;
     mobile: string;
+    pLotList: customerplotListResponseDto[];
+}
+
+export interface customerplotListResponseDto {
     plotId: number;
+    plotCode: string;
+    subPlotCode: string;
+    customerId: number;
     plotName: string;
     bookingFlag: number;
+    plotStatus: number
 }
 
 export interface addcustomerRequestDto extends BaseDto {
@@ -22,7 +30,18 @@ export interface addcustomerRequestDto extends BaseDto {
     plotId: number;
     image: string | null;
     imageUrl?: string | null;
-    bookingFlag: number | 0;
-    plotName?: string | null;
-    customerPlotId?: number | null;
+    pLotList: customerplotListResponseDto[] | null;
 }
+
+export interface CustomerPlotCancelReqDto {
+    customerId: number;
+    plotId: number;
+    remarks: string
+}
+
+export interface AddMultiplePlotReqDto {
+    customerId: number;
+    plotId: number;
+    flag: number; // 1 for add,2 for remove
+}
+

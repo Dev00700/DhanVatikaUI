@@ -44,7 +44,7 @@
               <a
                 [routerLink]="['/create-customer']"
                 class="btn btn-sm btn-primary btn-wave waves-light waves-effect waves-light"
-                ><i class="ri-add-line fw-medium align-middle me-1"></i> Add
+                ><i class="ri-add-line fw-medium align-middle me-1"></i> Create
                 Customer</a
               >
             </div>
@@ -72,45 +72,20 @@
                     <td>{{ item.mobile }}</td>
                     <td>
                       <a
+                        class="btn btn-info-light btn-icon ms-1 btn-sm invoice-btn"
+                        title="Click to view plots"
+                        (click)="openCustomerPlotsModal(item)"
+                        data-bs-toggle="modal"
+                        href="#customerPlotsModal"
+                      >
+                        <i class="ri-map-2-line"></i>
+                      </a>
+
+                      <a
                         class="btn btn-secondary-light btn-icon ms-1 btn-sm invoice-btn"
                         [routerLink]="['/create-customer', item.customerGuid]"
                       >
                         <i class="ri-edit-line"></i>
-                      </a>
-
-                      <a
-                        *ngIf="item.bookingFlag == 0"
-                        (click)="
-                          openIncomingPayment(
-                            item.plotId,
-                            item.customerId,
-                            item.name,
-                            item.plotName
-                          )
-                        "
-                        title="Click to Pay"
-                        class="btn btn-success-light btn-icon ms-1 btn-sm invoice-btn"
-                      >
-                        <i class="ri-wallet-line"></i>
-                      </a>
-
-                      <a
-                        *ngIf="item.bookingFlag == 0"
-                        (click)="openplotbooking(item.plotId, item.customerId)"
-                        title="Click to Add booking"
-                        class="btn btn-primary-light btn-icon ms-1 btn-sm invoice-btn"
-                      >
-                        <i class="ri-add-line"></i>
-                      </a>
-
-                      <a
-                        (click)="
-                          opencustomerinstallments(item.plotId, item.customerId)
-                        "
-                        title="Click to view Installments"
-                        class="btn btn-warning-light btn-icon ms-1 btn-sm invoice-btn"
-                      >
-                        <i class="ri-eye-line"></i>
                       </a>
                     </td>
                   </tr>
@@ -141,7 +116,7 @@
   aria-labelledby="filtercanvasLabel"
 >
   <div class="offcanvas-header border-bottom border-block-end-dashed">
-    <h5 class="offcanvas-title" id="filtercanvasLabel">Fiters</h5>
+    <h5 class="offcanvas-title" id="filtercanvasLabel">Filters</h5>
     <button
       type="button"
       class="btn-close"
@@ -153,24 +128,34 @@
     <form class="row">
       <div class="col-md-12">
         <label class="form-label fw-bold"> Name</label>
-        <input class="form-control" [(ngModel)]="filters.name" name="name" />
-      </div>
-
-      <div class="col-md-12">
-        <label class="form-label fw-bold"> Mobile</label>
         <input
+          type="text"
           class="form-control"
-          [(ngModel)]="filters.mobile"
-          name="mobile"
+          [(ngModel)]="filters.name"
+          name="name"
+          placeholder="Search by Name"
         />
       </div>
 
       <div class="col-md-12">
         <label class="form-label fw-bold"> Email</label>
         <input
+          type="text"
           class="form-control"
           [(ngModel)]="filters.emailId"
           name="emailId"
+          placeholder="Search by Email"
+        />
+      </div>
+
+      <div class="col-md-12">
+        <label class="form-label fw-bold"> Mobile No</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="filters.mobile"
+          name="mobile"
+          placeholder="Search by Mobile No"
         />
       </div>
 
@@ -185,6 +170,170 @@
         </button>
       </div>
     </form>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="cancelModal"
+  tabindex="-1"
+  aria-labelledby="cancelModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cancelModalLabel">Cancel Plot</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <textarea
+          class="form-control"
+          name="remarks"
+          required
+          placeholder="Enter Remarks"
+          rows="6"
+          [(ngModel)]="cancelcustomerplotreqdto.remarks"
+        ></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="CancelPlot()">
+          Cancel
+        </button>
+        <button type="button" data-bs-dismiss="modal" class="btn btn-danger">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Customer Plots Modal -->
+<div
+  class="modal fade"
+  id="customerPlotsModal"
+  tabindex="-1"
+  aria-labelledby="customerPlotsModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="customerPlotsModalLabel">
+          Plots for {{ selectedCustomerName }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="selectedCustomerPlots.length > 0; else noPlots">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr class="table-light">
+                  <th scope="col">S.No.</th>
+                  <th scope="col">Plot Code(Sub Plot Code)</th>
+                  <th scope="col">Plot Name</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let plot of selectedCustomerPlots; index as i">
+                  <td>
+                    <span class="badge bg-primary">{{ i + 1 }}</span>
+                  </td>
+                  <td
+                    *ngIf="plot.subPlotCode == '' || plot.subPlotCode == null"
+                  >
+                    {{ plot.plotCode }}
+                  </td>
+                  <td *ngIf="plot.subPlotCode != ''">
+                    {{ plot.plotCode }}({{ plot.subPlotCode }} )
+                  </td>
+                  <td class="fw-bold">{{ plot.plotName }}</td>
+                  <td>
+                    <a
+                      *ngIf="plot.bookingFlag == 0"
+                      (click)="
+                        openIncomingPayment(
+                          plot.plotId,
+                          selectedCustomerId,
+                          selectedCustomerName,
+                          plot.plotName
+                        )
+                      "
+                      title="Click to Pay"
+                      class="btn btn-success-light btn-icon ms-1 btn-sm invoice-btn"
+                    >
+                      <i class="ri-wallet-line"></i>
+                    </a>
+
+                    <a
+                      *ngIf="plot.bookingFlag == 0"
+                      (click)="
+                        openplotbookingFromModal(
+                          plot.plotId,
+                          selectedCustomerId
+                        )
+                      "
+                      title="Click to Add booking"
+                      class="btn btn-primary-light btn-icon ms-1 btn-sm invoice-btn"
+                    >
+                      <i class="ri-add-line"></i>
+                    </a>
+
+                    <a
+                      (click)="
+                        opencustomerinstallmentsFromModal(
+                          plot.plotId,
+                          selectedCustomerId
+                        )
+                      "
+                      title="Click to view Installments"
+                      class="btn btn-warning-light btn-icon ms-1 btn-sm invoice-btn"
+                    >
+                      <i class="ri-eye-line"></i>
+                    </a>
+                    <span *ngIf="plot.bookingFlag == 1 && plot.plotStatus != 5">
+                      <a
+                        class="modal-effect btn btn-danger-light btn-icon ms-1 btn-sm invoice-btn"
+                        (click)="
+                          openCancelModel(selectedCustomerId, plot.plotId)
+                        "
+                        data-bs-effect="effect-rotate-left"
+                        data-bs-toggle="modal"
+                        href="#cancelModal"
+                      >
+                        <i class="ri-close-line"></i>
+                      </a>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <ng-template #noPlots>
+          <div class="alert alert-info" role="alert">
+            No plots associated with this customer.
+          </div>
+        </ng-template>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 

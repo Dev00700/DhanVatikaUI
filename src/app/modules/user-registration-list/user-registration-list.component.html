@@ -10,11 +10,40 @@
       <div class="col-xl-12">
         <div class="card custom-card">
           <div class="card-header justify-content-between">
-            <div class="card-title">Manage User</div>
-            <div class="d-flex">
+            <div *ngIf="selectedChips.length > 0">
+              <span
+                class="badge bg-primary"
+                style="margin-left: 1px"
+                *ngFor="let chip of selectedChips"
+              >
+                {{ chip.label }}
+                <button
+                  type="button"
+                  class="btn-close btn-close-white btn-sm ms-2"
+                  aria-label="Remove"
+                  (click)="removeChip(chip.key)"
+                ></button>
+              </span>
+            </div>
+
+            <div
+              class="d-flex flex-wrap justify-content-end"
+              style="width: 100%"
+            >
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#filtercanvas"
+                aria-controls="filtercanvas"
+                style="margin-right: 1%"
+              >
+                <i class="bi bi-funnel"></i> Filters
+              </button>
+
               <a
                 [routerLink]="['/user-registration']"
-                class="btn btn-sm btn-primary btn-wave waves-light"
+                class="btn btn-sm btn-primary btn-wave waves-light waves-effect waves-light"
                 ><i class="ri-add-line fw-medium align-middle me-1"></i> Create
                 User</a
               >
@@ -44,7 +73,7 @@
                     <td>{{ item.userName }}</td>
                     <td>{{ item.email }}</td>
                     <td>{{ item.mobileNo }}</td>
-                    <td>{{ item.createdOn | date : "dd-MM-yyyy" }}</td>
+                    <td>{{ item.createdOn | date: "dd-MM-yyyy" }}</td>
                     <td>
                       <a
                         class="btn btn-danger-light btn-icon ms-1 btn-sm invoice-btn"
@@ -71,6 +100,104 @@
       </div>
     </div>
     <!--End::row-1 -->
+  </div>
+</div>
+
+<div class="modal fade" id="filterModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-3 shadow">
+      <div class="modal-header">
+        <h5 class="modal-title">Filter Options</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+
+      <div class="modal-body"></div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="offcanvas offcanvas-start"
+  data-bs-scroll="true"
+  tabindex="-1"
+  id="filtercanvas"
+  aria-labelledby="filtercanvasLabel"
+>
+  <div class="offcanvas-header border-bottom border-block-end-dashed">
+    <h5 class="offcanvas-title" id="filtercanvasLabel">Filters</h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body">
+    <form class="row">
+      <div class="col-md-12">
+        <label class="form-label fw-bold">User Code</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="filters.userCode"
+          name="userCode"
+          placeholder="Search by User Code"
+        />
+      </div>
+
+      <div class="col-md-12">
+        <label class="form-label fw-bold">User Name</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="filters.userName"
+          name="userName"
+          placeholder="Search by User Name"
+        />
+      </div>
+
+      <div class="col-md-12">
+        <label class="form-label fw-bold">Email</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="filters.email"
+          name="email"
+          placeholder="Search by Email"
+        />
+      </div>
+
+      <div class="col-md-12">
+        <label class="form-label fw-bold">Mobile No</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="filters.mobileNo"
+          name="mobileNo"
+          placeholder="Search by Mobile No"
+        />
+      </div>
+
+      <div class="col-md-12" style="margin-top: 2%; text-align: end">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="applyFilters()"
+          data-bs-dismiss="offcanvas"
+        >
+          Apply Filters
+        </button>
+      </div>
+    </form>
   </div>
 </div>
 <!-- End::app-content -->

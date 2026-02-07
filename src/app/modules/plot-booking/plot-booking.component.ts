@@ -22,7 +22,16 @@ export class PlotBookingComponent {
   plotbookinglist: PlotBookingResDto[] = [];
   totalRecords = 0;
   currentPage = 1;
-  pageSize = 5;
+  pageSize = 10;
+
+  filters = {
+    customerName: null,
+    plotCode: null,
+    subPlotCode: null,
+    plotName: null,
+    mobile: null
+  };
+
 
   constructor(
     private apiService: ApiService,
@@ -38,7 +47,17 @@ export class PlotBookingComponent {
   getPlotBookingList() {
     this.fullpageloader = true;
     const UserId = parseInt(localStorage.getItem("userId") || '0', 10);
-    this.plotbookingser.getplotbooking(1, this.currentPage, this.pageSize, UserId, null)
+
+    const Data = {
+      "CustomerName": this.filters.customerName || '',
+      "PlotCode": this.filters.plotCode || '',
+      "SubPlotCode": this.filters.subPlotCode || '',
+      "PlotName": this.filters.plotName || '',
+      "Mobile": this.filters.mobile || '',
+    }
+
+
+    this.plotbookingser.getplotbooking(1, this.currentPage, this.pageSize, UserId, Data)
       .subscribe({
         next: (response) => {
           this.plotbookinglist = response.data;
@@ -69,4 +88,58 @@ export class PlotBookingComponent {
     if (customerId != null) params.customerId = customerId;
     this.router.navigate(['/plot-booking-details'], { queryParams: params });
   }
+
+
+  selectedChips: { key: string; label: string }[] = [];
+
+  applyFilters() {
+    this.selectedChips = [];
+
+    if (this.filters.customerName) {
+      this.selectedChips.push({
+        key: 'customerName',
+        label: `Customer Name: ${this.filters.customerName}`
+      });
+    }
+
+    if (this.filters.plotCode) {
+      this.selectedChips.push({
+        key: 'plotCode',
+        label: `Plot Code: ${this.filters.plotCode}`
+      });
+    }
+
+    if (this.filters.subPlotCode) {
+      this.selectedChips.push({
+        key: 'subPlotCode',
+        label: `Sub Plot Code: ${this.filters.subPlotCode}`
+      });
+    }
+
+    if (this.filters.plotName) {
+      this.selectedChips.push({
+        key: 'plotName',
+        label: `Plot Name: ${this.filters.plotName}`
+      });
+    }
+
+    if (this.filters.mobile) {
+      this.selectedChips.push({
+        key: 'mobile',
+        label: `Mobile No: ${this.filters.mobile}`
+      });
+    }
+
+
+
+
+    this.getPlotBookingList();
+  }
+
+  removeChip(key: string) {
+    this.filters[key as keyof typeof this.filters] = null;
+    this.applyFilters();
+  }
+
+
 }

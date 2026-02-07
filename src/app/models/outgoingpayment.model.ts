@@ -16,6 +16,8 @@ export interface AddOutgoingPaymentDto extends BaseDto {
     paymentMode?: string | null;
     approveStatus: number | 0;
     approveStatusF: number | 0;
+    plotId: number | 0;
+    plotCode?: string | null;
 }
 
 
@@ -39,6 +41,7 @@ export interface OutgoingPaymentDto extends BaseDto {
     superAdminApproveDate?: string;
     superAdminApproveRemarks?: string;
     image?: string | null;
+    plotCode?: string | null;
 }
 
 export interface ApproveOutgoingPaymentReqDto {

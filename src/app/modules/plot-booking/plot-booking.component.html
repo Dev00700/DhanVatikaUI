@@ -10,10 +10,37 @@
       <div class="col-xl-12">
         <div class="card custom-card">
           <div class="card-header justify-content-between">
+            <div *ngIf="selectedChips.length > 0">
+              <span
+                class="badge bg-primary"
+                style="margin-left: 1px"
+                *ngFor="let chip of selectedChips"
+              >
+                {{ chip.label }}
+                <button
+                  type="button"
+                  class="btn-close btn-close-white btn-sm ms-2"
+                  aria-label="Remove"
+                  (click)="removeChip(chip.key)"
+                ></button>
+              </span>
+            </div>
+
             <div
               class="d-flex flex-wrap justify-content-end"
               style="width: 100%"
-            ></div>
+            >
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#filtercanvas"
+                aria-controls="filtercanvas"
+                style="margin-right: 1%"
+              >
+                <i class="bi bi-funnel"></i> Filters
+              </button>
+            </div>
           </div>
           <div class="card-body p-0">
             <div class="table-responsive">
@@ -39,9 +66,9 @@
                     <td>{{ item.customerName }}</td>
                     <td>{{ item.plot_Code }}</td>
                     <td>{{ item.plotName }}</td>
-                    <td>{{ item.totalAmt | currency : "INR" : "symbol" }}</td>
-                    <td>{{ item.paidAmt | currency : "INR" : "symbol" }}</td>
-                    <td>{{ item.balanceAmt | currency : "INR" : "symbol" }}</td>
+                    <td>{{ item.totalAmt | currency: "INR" : "symbol" }}</td>
+                    <td>{{ item.paidAmt | currency: "INR" : "symbol" }}</td>
+                    <td>{{ item.balanceAmt | currency: "INR" : "symbol" }}</td>
                     <td>
                       <a
                         (click)="openplotbooking(item.plotId, item.customerId)"
@@ -66,6 +93,82 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<div
+  class="offcanvas offcanvas-start"
+  data-bs-scroll="true"
+  tabindex="-1"
+  id="filtercanvas"
+  aria-labelledby="filtercanvasLabel"
+>
+  <div class="offcanvas-header border-bottom border-block-end-dashed">
+    <h5 class="offcanvas-title" id="filtercanvasLabel">Filters</h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body">
+    <form class="row">
+      <div class="col-md-12">
+        <label class="form-label fw-bold"> Customer Name</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="filters.customerName"
+          name="customerName"
+          placeholder="Search by Customer Name"
+        />
+      </div>
+
+      <div class="col-md-12">
+        <label class="form-label fw-bold"> Plot Code</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="filters.plotCode"
+          name="plotCode"
+          placeholder="Search by Plot Code"
+        />
+      </div>
+
+      <div class="col-md-12">
+        <label class="form-label fw-bold">Sub Plot Code</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="filters.subPlotCode"
+          name="subPlotCode"
+          placeholder="Search by Sub Plot Code"
+        />
+      </div>
+
+      <div class="col-md-12">
+        <label class="form-label fw-bold"> Mobile No</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="filters.mobile"
+          name="mobile"
+          placeholder="Search by Mobile No"
+        />
+      </div>
+
+      <div class="col-md-12" style="margin-top: 2%; text-align: end">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="applyFilters()"
+          data-bs-dismiss="offcanvas"
+        >
+          Apply Filters
+        </button>
+      </div>
+    </form>
   </div>
 </div>
 

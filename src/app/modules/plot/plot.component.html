@@ -80,7 +80,7 @@
                     <td>{{ item.plotType }}</td>
                     <td>{{ item.locationName }}</td>
                     <td>{{ item.areaSize }} {{ item.unitTypeName }}</td>
-                    <td>{{ item.price | currency : "INR" : "symbol" }}</td>
+                    <td>{{ item.price | currency: "INR" : "symbol" }}</td>
                     <td>
                       <span>
                         <a
@@ -131,7 +131,7 @@
   aria-labelledby="filtercanvasLabel"
 >
   <div class="offcanvas-header border-bottom border-block-end-dashed">
-    <h5 class="offcanvas-title" id="filtercanvasLabel">Fiters</h5>
+    <h5 class="offcanvas-title" id="filtercanvasLabel">Filters</h5>
     <button
       type="button"
       class="btn-close"
@@ -141,13 +141,32 @@
   </div>
   <div class="offcanvas-body">
     <form class="row">
-      <!-- Year -->
+      <div class="col-md-12">
+        <label class="form-label fw-bold">Plot Code</label>
+        <input
+          class="form-control"
+          [(ngModel)]="filters.plot_Code"
+          name="plot_Code"
+          placeholder="Search by Plot Code"
+        />
+      </div>
+
+      <div class="col-md-12">
+        <label class="form-label fw-bold">Sub Plot Code</label>
+        <input
+          class="form-control"
+          [(ngModel)]="filters.subPlotCode"
+          name="subPlotCode"
+          placeholder="Search by Sub Plot Code"
+        />
+      </div>
       <div class="col-md-12">
         <label class="form-label fw-bold">Plot Name</label>
         <input
           class="form-control"
           [(ngModel)]="filters.plotName"
           name="plotName"
+          placeholder="Search by Plot Name"
         />
       </div>
 

@@ -25,14 +25,16 @@ export class PlotComponent {
   fullpageloader: boolean = false;
   totalRecords = 0;
   currentPage = 1;
-  pageSize = 5;
+  pageSize = 10;
   plotStatusOptions: { value: number; text: string }[] = [];
   changeplotstatus: PlotStatusReqDto = {} as PlotStatusReqDto;
   plotlist: PlotResponseDto[] = [];
   filters = {
     plotName: "",
     plotType: "",
-    locationId: 0
+    locationId: 0,
+    plot_Code: "",
+    subPlotCode: ""
   };
   constructor(
     private apiService: ApiService,
@@ -53,6 +55,8 @@ export class PlotComponent {
     const Data = {
       "PlotName": this.filters.plotName,
       "PlotType": this.filters.plotType,
+      "Plot_Code": this.filters.plot_Code,
+      "SubPlotCode": this.filters.subPlotCode,
       "PaymentModeId": this.filters.locationId == 0 ? null : this.filters.locationId,
     };
     this.plotdata.getplotlist(1, this.currentPage, this.pageSize, UserId, Data)
@@ -115,6 +119,21 @@ export class PlotComponent {
       this.selectedChips.push({
         key: 'plotName',
         label: `Plot Name: ${this.filters.plotName}`
+      });
+    }
+
+    if (this.filters.plot_Code) {
+      this.selectedChips.push({
+        key: 'plot_Code',
+        label: `Plot Code: ${this.filters.plot_Code}`
+      });
+    }
+
+
+    if (this.filters.subPlotCode) {
+      this.selectedChips.push({
+        key: 'subPlotCode',
+        label: `Sub Plot Code: ${this.filters.subPlotCode}`
       });
     }
 

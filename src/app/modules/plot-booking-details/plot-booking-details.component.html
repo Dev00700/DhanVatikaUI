@@ -135,7 +135,7 @@
                         <i class="ri-calendar-line me-2 fs-14"></i>DOB
                       </div>
                       <div class="fw-medium">
-                        {{ plotbookingres.dateOfBirth | date : "dd-MM-yyyy" }}
+                        {{ plotbookingres.dateOfBirth | date: "dd-MM-yyyy" }}
                       </div>
                     </div>
                   </li>
@@ -205,7 +205,7 @@
                     >
                       <div class="fs-13 text-muted">Area (Sq Ft)</div>
                       <div class="fw-medium">
-                        {{ plotbookingres.areaSqFt | number : "1.0-2" }}
+                        {{ plotbookingres.areaSqFt | number: "1.0-2" }}
                       </div>
                     </div>
                   </li>
@@ -215,7 +215,7 @@
                     >
                       <div class="fs-13 text-muted">Rate/Sq Ft</div>
                       <div class="fw-medium">
-                        ₹{{ plotbookingres.ratePerSqFt | number : "1.0-2" }}
+                        ₹{{ plotbookingres.ratePerSqFt | number: "1.0-2" }}
                       </div>
                     </div>
                   </li>
@@ -225,7 +225,7 @@
                     >
                       <div class="fs-13 text-muted">Total Cost</div>
                       <div class="fw-medium">
-                        ₹{{ plotbookingres.totalCost | number : "1.0-2" }}
+                        ₹{{ plotbookingres.totalCost | number: "1.0-2" }}
                       </div>
                     </div>
                   </li>
@@ -235,7 +235,7 @@
                     >
                       <div class="fs-13 text-muted">Booking Date</div>
                       <div class="fw-medium">
-                        {{ plotbookingres.bookingDate | date : "dd-MM-yyyy" }}
+                        {{ plotbookingres.bookingDate | date: "dd-MM-yyyy" }}
                       </div>
                     </div>
                   </li>
@@ -258,7 +258,7 @@
                     >
                       <div class="fs-13 text-muted">Token Amount</div>
                       <div class="fw-medium">
-                        ₹{{ plotbookingres.tokenAmount | number : "1.0-2" }}
+                        ₹{{ plotbookingres.tokenAmount | number: "1.0-2" }}
                       </div>
                     </div>
                   </li>
@@ -269,7 +269,7 @@
                       <div class="fs-13 text-muted">Down Payment</div>
                       <div class="fw-medium">
                         ₹{{
-                          plotbookingres.downPaymentAmount | number : "1.0-2"
+                          plotbookingres.downPaymentAmount | number: "1.0-2"
                         }}
                       </div>
                     </div>
@@ -281,7 +281,7 @@
                       <div class="fs-13 text-muted">Down Payment Date</div>
                       <div class="fw-medium">
                         {{
-                          plotbookingres.downPaymentDate | date : "dd-MM-yyyy"
+                          plotbookingres.downPaymentDate | date: "dd-MM-yyyy"
                         }}
                       </div>
                     </div>
@@ -302,7 +302,7 @@
                     >
                       <div class="fs-13 text-muted">Total EMI Amount</div>
                       <div class="fw-medium">
-                        ₹{{ plotbookingres.emiAmount | number : "1.0-2" }}
+                        ₹{{ plotbookingres.emiAmount | number: "1.0-2" }}
                       </div>
                     </div>
                   </li>
@@ -398,8 +398,9 @@
                         <th class="text-end">Final Amount</th>
                         <th class="text-end">Paid Amount</th>
                         <th class="text-end">Due Amount</th>
-                        <th>Status</th>
+                        <th>Payment Type</th>
                         <th>Remarks</th>
+                        <th>Status</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -410,14 +411,14 @@
                         "
                         [ngClass]="{
                           'table-success': payment.ispaid,
-                          'table-warning': !payment.ispaid
+                          'table-warning': !payment.ispaid,
                         }"
                       >
                         <td>{{ i + 1 }}</td>
                         <td>{{ payment.emiNo }}</td>
-                        <td>{{ payment.emidate | date : "dd-MM-yyyy" }}</td>
+                        <td>{{ payment.emidate | date: "dd-MM-yyyy" }}</td>
                         <td class="text-end fw-medium">
-                          ₹{{ payment.amount | number : "1.0-2" }}
+                          ₹{{ payment.amount | number: "1.0-2" }}
                         </td>
 
                         <td class="text-end fw-medium">
@@ -429,8 +430,19 @@
                         </td>
                         <td class="text-end">{{ payment.paidAmount }}</td>
                         <td class="text-end">{{ payment.dueAmount }}</td>
+                        <td class="text-end">{{ payment.remarks }}</td>
+                        <td class="text-end">{{ payment.newRemarks }}</td>
 
-                        <td *ngIf="payment.dueAmount == 0">
+                        <td *ngIf="payment.isRejected == true">
+                          <span class="badge bg-warning">rejected</span>
+                        </td>
+
+                        <td
+                          *ngIf="
+                            payment.dueAmount == 0 &&
+                            payment.isRejected == false
+                          "
+                        >
                           <span
                             class="badge"
                             [ngClass]="
@@ -440,7 +452,11 @@
                           >
                         </td>
 
-                        <td *ngIf="payment.dueAmount > 0">
+                        <td
+                          *ngIf="
+                            payment.dueAmount > 0 && payment.isRejected == false
+                          "
+                        >
                           <span
                             class="badge"
                             [ngClass]="
@@ -448,9 +464,6 @@
                             "
                             >{{ payment.ispaid ? "Partial" : "Pending" }}</span
                           >
-                        </td>
-                        <td>
-                          <small>{{ payment.remarks }}</small>
                         </td>
                       </tr>
                     </tbody>
@@ -879,7 +892,7 @@
                     <label class="fw-medium mb-2">Director Sales Date</label>
                     <p>
                       {{
-                        plotbookingres.directorSalesDate | date : "dd-MM-yyyy"
+                        plotbookingres.directorSalesDate | date: "dd-MM-yyyy"
                       }}
                     </p>
                   </div>
