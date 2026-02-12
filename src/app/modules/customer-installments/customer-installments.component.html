@@ -4,7 +4,15 @@
   <div class="container-fluid page-container main-body-container">
     <!-- Start::page-header -->
     <div class="page-header-breadcrumb mb-3">
-      <div class="d-flex align-center justify-content-between flex-wrap"></div>
+      <div class="d-flex align-center justify-content-between flex-wrap">
+        <button
+          class="btn btn-primary"
+          (click)="generateMainPagePDF()"
+          title="Download as PDF"
+        >
+          <i class="ri-file-pdf-2-fill me-2"></i>Download PDF
+        </button>
+      </div>
     </div>
     <!-- End::page-header -->
 
@@ -123,6 +131,7 @@
                         <th style="width: 20px">S.No.</th>
                         <th>EMI No.</th>
                         <th>EMI Date</th>
+                        <th>Payment Date</th>
                         <th class="text-end">Original Amount</th>
                         <th class="text-end">Previous Due</th>
                         <th class="text-end">Final Amount</th>
@@ -148,8 +157,20 @@
                           {{ emi.emiNo }}
                         </td>
                         <td>
-                          {{ emi.emiDate | date: "dd-MM-yyyy" }}
+                          <div class="d-flex align-items-center gap-2">
+                            {{ emi.emiDate | date: "dd-MM-yyyy" }}
+                            <button
+                              class="btn btn-sm btn-outline-primary"
+                              title="Edit EMI Date"
+                              (click)="openEditEmiDateModal(i)"
+                              *ngIf="!emi.isPaid && !emi.isrejected"
+                            >
+                              <i class="ri-edit-line"></i>
+                            </button>
+                          </div>
                         </td>
+
+                        <td>{{ emi.paymentDate }}</td>
 
                         <td class="text-end">{{ emi.amount }}</td>
                         <td class="text-end">{{ emi.previousDue }}</td>
@@ -187,7 +208,11 @@
                         <td>
                           <span
                             title="Generate PDF"
-                            *ngIf="emi.receiptFlag == true"
+                            *ngIf="
+                              emi.receiptFlag == true &&
+                              emi.isPaid == true &&
+                              emi.isrejected == false
+                            "
                           >
                             <a
                               (click)="generatePDFEMI(emi.iPaymentGuid)"
@@ -226,3 +251,58 @@
 </div>
 
 <app-footer> </app-footer>
+
+<!-- Edit EMI Date Modal -->
+<div
+  class="modal fade"
+  [class.show]="showEditModal"
+  [style.display]="showEditModal ? 'block' : 'none'"
+  tabindex="-1"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit EMI Date</h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="closeEditModal()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group mb-3">
+          <label for="emiDateInput" class="form-label">New EMI Date</label>
+          <input
+            type="date"
+            class="form-control"
+            id="emiDateInput"
+            [(ngModel)]="newEmiDate"
+          />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="closeEditModal()"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="confirmUpdateEmiDate()"
+        >
+          Update Date
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Backdrop -->
+<div
+  class="modal-backdrop fade"
+  [class.show]="showEditModal"
+  *ngIf="showEditModal"
+></div>

@@ -64,3 +64,23 @@ export interface OutgoingPaymentReqDto {
     Year?: number | 0,
     Month?: number
 }
+
+export interface OutgoingPaymentExcelDto {
+    expenseCategoryName: string;
+    expenseTitle: string;
+    expenseDate: Date;
+    amount: number;
+    referenceNo: string;
+    partyName: string;
+    remarks: string;
+    adminName: string;
+    adminApproveDate: string;
+    adminApproveRemarks: string;
+    superAdminName?: string;
+    superAdminApproveDate?: string;
+    superAdminApproveRemarks?: string;
+    paymentMode: string;
+    plotCode?: string | null;
+    adminApprover?: string | null;
+    superAdminApprover?: string | null;
+}

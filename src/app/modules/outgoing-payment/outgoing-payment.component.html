@@ -61,9 +61,7 @@
                     <th scope="col">Amount</th>
                     <th scope="col">Date</th>
                     <th scope="col">Admin Approver</th>
-                    <th scope="col" *ngIf="issuperadmin == true">
-                      Super Admin Approver
-                    </th>
+                    <th scope="col">Super Admin Approver</th>
                     <th scope="col">Actions</th>
                   </tr>
                 </thead>
@@ -139,7 +137,7 @@
                       >
                     </td>
 
-                    <td *ngIf="issuperadmin == true">
+                    <td>
                       <span
                         ><a>
                           <div
@@ -167,7 +165,11 @@
                                 >{{ item.superAdminApproveDate }}</span
                               >
 
-                              <span *ngIf="item.approveStatusF == 0"
+                              <span
+                                *ngIf="
+                                  item.approveStatusF == 0 &&
+                                  issuperadmin == true
+                                "
                                 ><span
                                   (click)="
                                     openapprovalmodel(item.oPaymentGuid, 1)
@@ -179,6 +181,15 @@
                                   style="cursor: pointer"
                                   >Pending</span
                                 ></span
+                              >
+
+                              <span
+                                *ngIf="
+                                  item.approveStatusF == 0 &&
+                                  this.issuperadmin == false
+                                "
+                                class="fw-medium text-orange"
+                                >Not Yet Approved</span
                               >
                             </div>
                           </div>
@@ -235,7 +246,15 @@
                         </a>
                       </span>
 
-                      <span>
+                      <span
+                        *ngIf="
+                          (item.approveStatus == 1 &&
+                            item.approveStatusF == 0) ||
+                          (item.approveStatus == 2 &&
+                            item.approveStatusF == 1) ||
+                          (item.approveStatusF == 1 && item.approveStatus == 0)
+                        "
+                      >
                         <a
                           (click)="generatePDF(item.oPaymentGuid)"
                           class="btn btn-primary-light btn-icon btn-sm btn-icon ms-1 btn-sm invoice-btn"
@@ -416,6 +435,27 @@
       </div>
 
       <div class="col-md-12">
+        <label class="form-label fw-bold">From Date</label>
+        <input
+          type="date"
+          class="form-control"
+          [(ngModel)]="filters.fromDate"
+          name="fromDate"
+        />
+      </div>
+
+      <!-- To Date -->
+      <div class="col-md-12">
+        <label class="form-label fw-bold">To Date</label>
+        <input
+          type="date"
+          class="form-control"
+          [(ngModel)]="filters.toDate"
+          name="toDate"
+        />
+      </div>
+
+      <div class="col-md-12">
         <label class="form-label fw-bold">Expense Title</label>
         <input
           type="text"
@@ -451,6 +491,18 @@
       </div>
 
       <div class="col-md-12" style="margin-top: 2%; text-align: end">
+        <button
+          type="button"
+          style="margin-right: 2%"
+          class="btn btn-danger"
+          (click)="downloadexcelreport()"
+          data-bs-dismiss="offcanvas"
+          title="Download Excel report (requires at least one filter)"
+          matTooltip="Select at least one filter before downloading"
+        >
+          <i class="ri-file-excel-line"></i> Download
+        </button>
+
         <button
           type="button"
           class="btn btn-primary"

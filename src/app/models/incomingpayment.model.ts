@@ -93,6 +93,32 @@ export enum PlotStatus {
 }
 
 
+export interface IncomingPaymentExcelDto extends BaseDto {
+    customerName: string;
+    plotCode: string;
+    plotName: string;
+    plotStatus: number;
+    amount: number;
+    paymentType: string;
+    paymentMode: string;
+    paymentSource: number;
+    paymentSourceName: string;
+    paymentDate: Date;
+    referenceNo: string;
+    bankName: string;
+    branchName: string;
+    adminApproveDate: string;
+    adminApproveRemarks: string;
+    superAdminName?: string;
+    superAdminApproveDate?: string;
+    superAdminApprover?: string;
+    superAdminApproveRemarks?: string;
+    adminApprover?: string | null;
+    plotStatusName?: string | null;
+}
+
+
+
 
 // export interface IncomingPaymentFilterReqDto {
 //     PaymentType?: string | null,

@@ -16,17 +16,33 @@ import { FormsModule } from '@angular/forms';
         <div class="modal-body">
           <div class="form-group">
             <label for="plotSelect" class="form-label">Choose Plot</label>
-            <select 
-              id="plotSelect"
-              class="form-select" 
-              [(ngModel)]="selectedPlot" 
-              name="plotSelect"
-            >
-              <option value="">-- Select a Plot --</option>
-              <option *ngFor="let plot of availablePlots" [value]="plot.value">
-                {{ plot.text }}
-              </option>
-            </select>
+            
+            <div class="custom-dropdown">
+              <input 
+                type="text"
+                class="form-control dropdown-input"
+                placeholder="Search or select..."
+                [(ngModel)]="searchText"
+                (input)="filterPlots()"
+                (focus)="openDropdown()"
+                (blur)="closeDropdownDelay()"
+                name="plotSearch"
+              />
+              
+              <div class="dropdown-list" *ngIf="isDropdownOpen">
+                <div 
+                  *ngFor="let plot of filteredPlots"
+                  class="dropdown-item"
+                  [class.active]="selectedPlot ===(plot.value)"
+                  (mousedown)="selectFromDropdown(plot)"
+                >
+                  {{ plot.text }}
+                </div>
+                <div *ngIf="filteredPlots.length === 0" class="dropdown-empty">
+                  No plots found
+                </div>
+              </div>
+            </div>
            
           </div>
         </div>
@@ -93,6 +109,65 @@ import { FormsModule } from '@angular/forms';
     .modal-body {
       padding: 1.5rem;
     }
+
+    .custom-dropdown {
+      position: relative;
+    }
+
+    .dropdown-input {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+
+    .dropdown-input:focus {
+      outline: none;
+      border-color: #0d6efd;
+      box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    }
+
+    .dropdown-list {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #ced4da;
+      border-top: none;
+      border-radius: 0 0 4px 4px;
+      max-height: 250px;
+      overflow-y: auto;
+      z-index: 1001;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .dropdown-item {
+      padding: 0.75rem;
+      cursor: pointer;
+      border-bottom: 1px solid #f0f0f0;
+      transition: background-color 0.2s ease;
+    }
+
+    .dropdown-item:last-child {
+      border-bottom: none;
+    }
+
+    .dropdown-item:hover {
+      background-color: #f8f9fa;
+    }
+
+    .dropdown-item.active {
+      background-color: #0d6efd;
+      color: white;
+    }
+
+    .dropdown-empty {
+      padding: 1rem;
+      text-align: center;
+      color: #666;
+    }
     
     .modal-footer {
       padding: 1rem 1.5rem;
@@ -103,7 +178,7 @@ import { FormsModule } from '@angular/forms';
     }
     
     .form-group {
-      margin-bottom: 0;
+      margin-bottom: 1rem;
     }
   `]
 })
@@ -115,6 +190,60 @@ export class AddPlotModalComponent {
   @Output() modalClosed = new EventEmitter<void>();
 
   selectedPlot: string = '';
+  searchText: string = '';
+  filteredPlots: any[] = [];
+  isDropdownOpen = false;
+  closeDropdownTimeout: any;
+
+  ngOnInit() {
+    this.filteredPlots = this.availablePlots;
+  }
+
+  ngOnChanges() {
+    if (this.isOpen) {
+      this.filteredPlots = this.availablePlots;
+      this.searchText = '';
+      this.selectedPlot = '';
+      this.isDropdownOpen = false;
+    }
+  }
+
+  openDropdown() {
+    this.isDropdownOpen = true;
+    if (this.closeDropdownTimeout) {
+      clearTimeout(this.closeDropdownTimeout);
+    }
+  }
+
+  closeDropdownDelay() {
+    this.closeDropdownTimeout = setTimeout(() => {
+      this.isDropdownOpen = false;
+    }, 200);
+  }
+
+  filterPlots() {
+    if (!this.searchText.trim()) {
+      this.filteredPlots = this.availablePlots;
+    } else {
+      const searchLower = this.searchText.toLowerCase();
+      this.filteredPlots = this.availablePlots.filter(plot => {
+        const textLower = String(plot.text).toLowerCase();
+        const valueLower = String(plot.value).toLowerCase();
+        return textLower.includes(searchLower) || valueLower.includes(searchLower);
+      });
+    }
+  }
+
+  selectFromDropdown(plot: any) {
+    this.selectedPlot = String(plot.value);
+    this.searchText = plot.text;
+    // Close dropdown immediately without delay
+    this.isDropdownOpen = false;
+    // Clear the timeout if it exists
+    if (this.closeDropdownTimeout) {
+      clearTimeout(this.closeDropdownTimeout);
+    }
+  }
 
   addPlot() {
     if (this.selectedPlot) {
@@ -122,24 +251,11 @@ export class AddPlotModalComponent {
       if (plot) {
         // Extract plot code and sub plot code from text if available
         // Example: "PLOT-97-SubPlot-1"
-        let plotCode = plot.value?.toString() || '';
-        let subPlotCode = '';
 
-        // Try to parse from text property
-        if (plot.text && plot.text.includes('-')) {
-          const parts = plot.text.split('-');
-          if (parts.length >= 2) {
-            plotCode = parts[0] + '-' + parts[1]; // e.g., "PLOT-97"
-            if (parts.length > 2) {
-              subPlotCode = parts.slice(2).join('-'); // e.g., "SubPlot-1"
-            }
-          }
-        }
 
         const plotWithBookingFlag = {
-          ...plot,
-          plotCode: plotCode,
-          subPlotCode: subPlotCode,
+          plotId: plot.value,
+          plotCode: plot.text,
           bookingFlag: 0
         };
         this.plotAdded.emit(plotWithBookingFlag);
@@ -151,6 +267,12 @@ export class AddPlotModalComponent {
 
   closeModal() {
     this.selectedPlot = '';
+    this.searchText = '';
+    this.filteredPlots = this.availablePlots;
+    this.isDropdownOpen = false;
+    if (this.closeDropdownTimeout) {
+      clearTimeout(this.closeDropdownTimeout);
+    }
     this.modalClosed.emit();
   }
 }

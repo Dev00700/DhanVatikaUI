@@ -22,4 +22,6 @@ export interface PlotAndCustomerEmiResDto {
     newremarks: string;
     receiptFlag: boolean;
     iPaymentGuid: string;
+    paymentDate: string;
+
 }

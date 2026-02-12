@@ -15,9 +15,9 @@ import { FilterComponent } from '../shared/filter/filter.component';
 import html2pdf from 'html2pdf.js';
 import { numbertowords } from '../../services/number-to-words.service';
 import { HttpClient } from '@angular/common/http';
-import { AddOutgoingPaymentDto, ApproveOutgoingPaymentReqDto, CancelOutgoingPaymentReqDto, OutgoingPaymentDto, OutgoingPaymentReqDto } from '../../models/outgoingpayment.model';
+import { AddOutgoingPaymentDto, ApproveOutgoingPaymentReqDto, CancelOutgoingPaymentReqDto, OutgoingPaymentDto, OutgoingPaymentExcelDto, OutgoingPaymentReqDto } from '../../models/outgoingpayment.model';
 import { outgoingpaymentservice } from '../../services/outgoing-payment.service';
-
+import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-outgoing-payment',
   imports: [CommonModule, NavbarComponent, RouterModule, FormsModule, PaginationComponent, FooterComponent],
@@ -52,7 +52,9 @@ export class OutgoingPaymentComponent {
     ExpenseTitle: null,
     paymentmode: null,
     ReferenceNo: null,
-    PlotCode: null
+    PlotCode: null,
+    fromDate: null,
+    toDate: null
   };
 
   constructor(
@@ -138,7 +140,9 @@ export class OutgoingPaymentComponent {
       "ReferenceNo": this.filters.ReferenceNo,
       "PaymentModeId": this.filters.paymentmode == 0 ? null : this.filters.paymentmode,
       "Year": this.filters.year == 0 ? null : this.filters.year,
-      "Month": this.filters.month == 0 || this.filters.year == null || 0 ? null : this.filters.month
+      "Month": this.filters.month == 0 || this.filters.year == null || 0 ? null : this.filters.month,
+      "FromDate": this.filters.fromDate ? this.formatDateForAPI(this.filters.fromDate) : null,
+      "ToDate": this.filters.toDate ? this.formatDateForAPI(this.filters.toDate) : null
     };
     this.outgoingpayment.getoutgoingpayment(1, this.currentPage, this.pageSize, UserId, Data)
       .subscribe({
@@ -159,6 +163,24 @@ export class OutgoingPaymentComponent {
       });
   }
 
+
+  formatDateForAPI(date: any): string {
+    if (!date) return '';
+    const d = new Date(date);
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    const year = d.getFullYear();
+    return `${year}-${month}-${day}`;
+  }
+
+  formatDateForDisplay(date: any): string {
+    if (!date) return '';
+    const d = new Date(date);
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    const year = d.getFullYear();
+    return `${day}-${month}-${year}`;
+  }
 
 
   onPageChange(page: number) {
@@ -372,13 +394,40 @@ export class OutgoingPaymentComponent {
       });
     }
 
+
+    if (this.filters.fromDate) {
+      this.selectedChips.push({
+        key: 'fromDate',
+        label: `From Date: ${this.formatDateForDisplay(this.filters.fromDate)}`
+      });
+    }
+
+    if (this.filters.toDate) {
+      this.selectedChips.push({
+        key: 'toDate',
+        label: `To Date: ${this.formatDateForDisplay(this.filters.toDate)}`
+      });
+    }
+
+
     this.getOutgoingpaymentList();
   }
 
   removeChip(key: string) {
 
-    (this.filters as any)[key] = key === 'year' || key === 'month' ? 0 : key == "PlotCode" ? '' : null;
+    if (key === 'year' || key === 'month') {
+      (this.filters as any)[key] = 0;
+    } else if (key === 'fromDate' || key === 'toDate') {
+      (this.filters as any)[key] = null;
+    } else if (key === 'PlotCode') {
+      (this.filters as any)[key] = '';
+    } else {
+      (this.filters as any)[key] = null;
+    }
     this.applyFilters();
+
+    // (this.filters as any)[key] = key === 'year' || key === 'month' ? 0 : key == "PlotCode" ? '' : null;
+    // this.applyFilters();
   }
 
 
@@ -569,5 +618,120 @@ export class OutgoingPaymentComponent {
       }
     });
   }
+
+  downloadexcelreport() {
+    debugger;
+    // Validate that at least one filter is required
+    const hasYearFilter = this.filters.year && this.filters.year !== 0;
+    const hasMonthFilter = this.filters.month && this.filters.month !== 0;
+    const hasExpenseTitleFilter = this.filters.ExpenseTitle && this.filters.ExpenseTitle !== '';
+    const hasPlotCodeFilter = this.filters.PlotCode && this.filters.PlotCode !== '';
+    const hasReferenceNoFilter = this.filters.ReferenceNo && this.filters.ReferenceNo !== '';
+    const hasPaymentModeFilter = this.filters.paymentmode && this.filters.paymentmode !== 0;
+    const hasFromDateFilter = this.filters.fromDate && this.filters.fromDate !== '';
+    const hasToDateFilter = this.filters.toDate && this.filters.toDate !== '';
+
+    const isAnyFilterApplied = hasYearFilter || hasMonthFilter || hasExpenseTitleFilter ||
+      hasReferenceNoFilter || hasPaymentModeFilter ||
+      hasPlotCodeFilter || hasFromDateFilter || hasToDateFilter;
+
+    if (!isAnyFilterApplied) {
+      this.toast.warning('Please apply at least one filter to download Excel report');
+      return;
+    }
+
+    // Prepare the data for API call
+    this.fullpageloader = true;
+    const UserId = parseInt(localStorage.getItem("userId") || '0', 10);
+    const Data = {
+      "ExpenseTitle": this.filters.ExpenseTitle,
+      "PlotCode": this.filters.PlotCode == "" ? null : this.filters.PlotCode,
+      "ReferenceNo": this.filters.ReferenceNo,
+      "PaymentModeId": this.filters.paymentmode == 0 ? null : this.filters.paymentmode,
+      "Year": this.filters.year == 0 ? null : this.filters.year,
+      "Month": this.filters.month == 0 || this.filters.year == null || 0 ? null : this.filters.month,
+      "FromDate": this.filters.fromDate ? this.formatDateForAPI(this.filters.fromDate) : null,
+      "ToDate": this.filters.toDate ? this.formatDateForAPI(this.filters.toDate) : null
+    };
+    const reportReqDto: CommonReqDto<any> = {
+      PageSize: 10000,
+      PageRecordCount: 10000,
+      UserId: UserId,
+      Data: Data
+    };
+
+    // Call the Excel report API
+    this.apiService.post<CommonResDto<OutgoingPaymentExcelDto[]>>('OutgoingPayment/GetOPaymentExcelService', reportReqDto)
+      .subscribe({
+        next: (response) => {
+          this.fullpageloader = false;
+          if (response.data !== null && response.data.length > 0) {
+            this.exportToExcel(response.data);
+          } else {
+            this.toast.warning('No records found for the applied filters');
+          }
+        },
+        error: (error) => {
+          this.fullpageloader = false;
+          this.toast.error('Failed to export Excel report');
+        }
+      });
+  }
+
+  exportToExcel(data: OutgoingPaymentExcelDto[]) {
+    // Prepare data for Excel with formatted columns
+    const excelData = data.map((item, index) => ({
+      'S.No.': index + 1,
+      'Expense Category Name': item.expenseCategoryName || '',
+      'Expense Title': item.expenseTitle || '',
+      'Expense Date': item.expenseDate ? new Date(item.expenseDate).toLocaleDateString('en-IN') : '',
+      'Payment Mode': item.paymentMode || '',
+      'Plot Code': item.plotCode || '',
+      'Amount': item.amount || 0,
+      'Reference No': item.referenceNo || '',
+      'Party Name': item.partyName || '',
+      'Admin Name': item.adminName || '',
+      'Admin Status': item.adminApprover || 'Not Approved',
+      'Admin Approver Date': item.adminApproveDate || '',
+      'Admin Remarks': item.adminApproveRemarks || '',
+      'Super Admin Name': item.superAdminName || '',
+      'Super Admin Approver Date': item.superAdminApproveDate || '',
+      'Super Admin Remarks': item.superAdminApproveRemarks || '',
+      'Super Admin Status': item.superAdminApprover || 'Not Approved',
+      'Remarks': item.remarks || '',
+    }));
+
+    // Create a new workbook
+    const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+    // Set column widths for better readability
+    worksheet['!cols'] = [
+      { wch: 8 },   // S.No.
+      { wch: 20 },  // Customer Name
+      { wch: 15 },  // Plot Code
+      { wch: 15 },  // Payment Mode
+      { wch: 12 },  // Amount
+      { wch: 15 },  // Payment Date
+      { wch: 15 },  // Payment Type
+      { wch: 15 },  // Payment Source
+      { wch: 15 },  // Admin Approver
+      { wch: 15 },  // Admin Status
+      { wch: 15 },  // Super Admin Approver
+      { wch: 15 },  // Super Admin Status
+      { wch: 20 }   // Remarks
+    ];
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Outgoing Payments');
+
+    // Generate filename with timestamp
+    const fileName = `Outgoing_Payments_${new Date().toLocaleDateString('en-IN').replace(/\//g, '-')}_${new Date().getTime()}.xlsx`;
+
+    // Save the file
+    XLSX.writeFile(workbook, fileName);
+    this.toast.success('Excel report downloaded successfully');
+  }
+
+
 }
 
