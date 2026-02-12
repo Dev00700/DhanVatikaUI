@@ -12,6 +12,9 @@ import { incommingpaymentservice } from '../../services/incoming-payment.service
 import { PaginationComponent } from '../shared/pagination/pagination.component';
 import { DropdownDataService } from '../../services/dropdown-select-data.service';
 import { FilterComponent } from '../shared/filter/filter.component';
+import { HttpClient } from '@angular/common/http';
+import autoTable from 'jspdf-autotable';
+import { jsPDF } from 'jspdf';
 
 @Component({
   selector: 'app-incoming-payment',
@@ -38,7 +41,6 @@ export class IncomingPaymentComponent {
   cancelincommingpayment: CancelIncomingPaymentReqDto = {} as CancelIncomingPaymentReqDto;
   incomingPaymentFilterReqDto: IIncommingPaymentReqDto = {} as IIncommingPaymentReqDto;
 
-
   // Filter configuration
   filters = {
     year: 0,
@@ -53,7 +55,9 @@ export class IncomingPaymentComponent {
     private router: Router,
     private toast: ToastService,
     private incominpaymentser: incommingpaymentservice,
-    private dropdownData: DropdownDataService) { }
+    private dropdownData: DropdownDataService,
+  private http: HttpClient
+  ) { }
 
 
   ngOnInit() {
@@ -371,5 +375,40 @@ export class IncomingPaymentComponent {
     (this.filters as any)[key] = key === 'year' || key === 'month' ? 0 : '';
     this.applyFilters();
   }
+
+  downloadReport() {
+    const docreq: CommonReqDto<IIncommingPaymentReqDto> = {
+        PageSize: 1,
+        PageRecordCount: 10,
+        Data: {
+          IPaymentGuid: this.cancelincommingpayment.IPaymentGuid,
+        
+        },
+        UserId: parseInt(localStorage.getItem("userId") || '0', 10),
+      };
+   this.apiService.post<CommonResDto<any>>('IncommingPayment/GetPaymentService', docreq).subscribe({
+        next: (response) => {
+          this.loading = false;
+          if (response.data) {
+            const doc = new jsPDF();
+            doc.setFontSize(14);
+        doc.text('Report Data', 14, 15);
+        autoTable(doc, {
+          head: [['ID', 'Name', 'Amount']],
+          body: response.data.map((item) => [item.id, item.name, item.amount]),
+          startY: 25,
+        });
+            
+          } else {
+            this.toast.error('Failed to cancel incoming payment');
+          }
+        },
+        error: (error) => {
+          this.loading = false;
+          this.toast.error('Failed to cancel incoming payment');
+        }
+      });
+    }
+
 
 }
