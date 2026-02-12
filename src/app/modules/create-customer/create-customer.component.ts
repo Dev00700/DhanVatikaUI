@@ -436,4 +436,10 @@ export class CreateCustomerComponent {
       }
     });
   }
+
+  onlyNumber(event: any) {
+  const input = event.target;
+  input.value = input.value.replace(/[^0-9]/g, '');
+  this.addcustomerreqdto.mobile = input.value;
+}
 }
