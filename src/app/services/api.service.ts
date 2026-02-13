@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-  private readonly baseUrl = "http://68.178.164.44:85/api"
+  private readonly baseUrl = //"http://68.178.164.44:85/api"
 
-  //"https://localhost:7266/api";
+    "https://localhost:7266/api";
 
   constructor(private http: HttpClient) { }
 

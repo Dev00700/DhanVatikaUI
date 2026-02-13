@@ -407,6 +407,7 @@ export class CreatePlotBookingComponent {
 
           this.addplotbookingreq.customerName = response.data[0].customerName || "";
           this.addplotbookingreq.purchaserName = response.data[0].customerName || "";
+          this.addplotbookingreq.plotNo = response.data[0].plotCode || "";
           const d = new Date(response.data[0].createdOn);
           const year = d.getFullYear();
           const month = String(d.getMonth() + 1).padStart(2, '0');
