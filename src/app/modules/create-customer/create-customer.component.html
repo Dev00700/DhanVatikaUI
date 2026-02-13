@@ -43,13 +43,14 @@
                 <div class="col-xl-3">
                   <label for="mobile" class="form-label"> Mobile No.</label>
                   <input
-                    type="number"
-                    class="form-control"
-                    id="mobile"
-                    name="mobile"
-                    maxlength="10"
-                    [(ngModel)]="addcustomerreqdto.mobile"
-                  />
+  type="tel"
+  class="form-control"
+  maxlength="10"
+  pattern="[0-9]*"
+  inputmode="numeric"
+  [(ngModel)]="addcustomerreqdto.mobile"
+   (input)="onlyNumber($event)"
+>
                 </div>
 
                 <div class="col-xl-3">
