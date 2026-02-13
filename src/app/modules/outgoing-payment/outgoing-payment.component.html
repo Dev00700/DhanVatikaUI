@@ -61,7 +61,9 @@
                     <th scope="col">Amount</th>
                     <th scope="col">Date</th>
                     <th scope="col">Admin Approver</th>
-                    <th scope="col">Super Admin Approver</th>
+                    <th scope="col" *ngIf="this.issuperadmin == true">
+                      Super Admin Approver
+                    </th>
                     <th scope="col">Actions</th>
                   </tr>
                 </thead>
@@ -137,7 +139,7 @@
                       >
                     </td>
 
-                    <td>
+                    <td *ngIf="this.issuperadmin == true">
                       <span
                         ><a>
                           <div
@@ -182,7 +184,7 @@
                                   >Pending</span
                                 ></span
                               >
-
+                              <!-- 
                               <span
                                 *ngIf="
                                   item.approveStatusF == 0 &&
@@ -190,7 +192,7 @@
                                 "
                                 class="fw-medium text-orange"
                                 >Not Yet Approved</span
-                              >
+                              > -->
                             </div>
                           </div>
                         </a></span

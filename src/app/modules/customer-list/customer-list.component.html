@@ -262,7 +262,9 @@
                   <td class="fw-bold">{{ plot.plotName }}</td>
                   <td>
                     <a
-                      *ngIf="plot.bookingFlag == 0"
+                      *ngIf="
+                        plot.bookingFlag == 0 && plot.isTokenAmount == false
+                      "
                       (click)="
                         openIncomingPayment(
                           plot.plotId,

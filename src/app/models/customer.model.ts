@@ -18,6 +18,7 @@ export interface customerplotListResponseDto {
     plotName: string;
     bookingFlag: number;
     plotStatus: number
+    isTokenAmount: boolean
 }
 
 export interface addcustomerRequestDto extends BaseDto {
